@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDatabase, now } from '../db';
 
 const router = Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'flosaloon-local-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'diegomartins-local-secret-change-in-production';
 const JWT_EXPIRES_IN = '24h';
 
 function buildLocalTenant(db: ReturnType<typeof getDatabase>, userRole: string) {
@@ -14,7 +14,7 @@ function buildLocalTenant(db: ReturnType<typeof getDatabase>, userRole: string) 
 
   return {
     id: 1,
-    business_name:   s.business_name   || 'Estética Radiante',
+    business_name:   s.business_name   || 'Diego Martins Barbearia',
     slug:            'local',
     database_name:   'local',
     business_type:   'salon',

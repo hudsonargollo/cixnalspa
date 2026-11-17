@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import './booking.css';
 
 export const metadata: Metadata = {
-  title: 'Estética Radiante · Agendamento',
-  description: 'Agende seu horário na Estética Radiante com Elis Carvalho. Tratamentos corporais, faciais, depilação e bem-estar.',
+  title: 'Diego Martins Barbearia · Agendamento',
+  description: 'Agende seu horário na Diego Martins Barbearia. Cortes, barbas, combos e cuidados para o visual masculino.',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0e0812',
+  themeColor: '#141618',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,

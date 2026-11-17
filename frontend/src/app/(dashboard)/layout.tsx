@@ -7,7 +7,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('er_booking_theme');
+    const stored = localStorage.getItem('dm_booking_theme');
     if (stored === 'light') setIsDarkMode(false);
   }, []);
 

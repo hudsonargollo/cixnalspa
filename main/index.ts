@@ -36,7 +36,7 @@ function setupAutoUpdater(): void {
     dialog.showMessageBox({
       type: 'info',
       title: 'Update Available',
-      message: `FloSalon ${info.version} is available!`,
+      message: `Diego Martins ${info.version} is available!`,
       buttons: ['Download', 'Later'],
       defaultId: 0,
     }).then((result) => {
@@ -101,7 +101,7 @@ function createWindow(): void {
     height: 900,
     minWidth: 1024,
     minHeight: 768,
-    title: 'FloSalon',
+    title: 'Diego Martins',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -123,7 +123,7 @@ function createWindow(): void {
     if (isLocal) {
       return {
         action: 'allow',
-        overrideBrowserWindowOptions: { width: 1280, height: 800, title: 'FloSalon', webPreferences: { contextIsolation: true, nodeIntegration: false } },
+        overrideBrowserWindowOptions: { width: 1280, height: 800, title: 'Diego Martins', webPreferences: { contextIsolation: true, nodeIntegration: false } },
       };
     }
     shell.openExternal(url);
@@ -159,12 +159,12 @@ function createTray(): void {
     tray = new Tray(icon.resize({ width: 16, height: 16 }));
 
     const contextMenu = Menu.buildFromTemplate([
-      { label: 'Open FloSalon', click: () => mainWindow?.show() },
+      { label: 'Open Diego Martins', click: () => mainWindow?.show() },
       { type: 'separator' },
       { label: 'Quit', click: () => { isQuitting = true; app.quit(); } },
     ]);
 
-    tray.setToolTip('FloSalon');
+    tray.setToolTip('Diego Martins');
     tray.setContextMenu(contextMenu);
     tray.on('double-click', () => mainWindow?.show());
   } catch {
@@ -176,14 +176,14 @@ function startMdns(): void {
   try {
     bonjour = new Bonjour();
     bonjour.publish({
-      name: 'FloSalon',
+      name: 'Diego Martins',
       type: 'http',
       port: PORT,
-      host: 'flosaloon',
+      host: 'diegomartins',
       txt: { version: app.getVersion() },
     });
     const ip = getLocalIP();
-    console.log(`[mDNS] Advertising flosaloon.local:${PORT}  (IP fallback: http://${ip}:${PORT})`);
+    console.log(`[mDNS] Advertising diegomartins.local:${PORT}  (IP fallback: http://${ip}:${PORT})`);
   } catch (err) {
     console.warn('[mDNS] Could not start Bonjour:', err);
   }
@@ -236,7 +236,7 @@ function createMenu(): void {
     {
       label: 'Help',
       submenu: [
-        { label: 'About FloSalon', click: () => showAbout() },
+        { label: 'About Diego Martins', click: () => showAbout() },
         ...(isMasBuild ? [] : [{ label: 'Check for Updates', click: () => checkForUpdates() }]),
       ],
     },
@@ -259,8 +259,8 @@ function showAbout(): void {
   const ip = getLocalIP();
   dialog.showMessageBox({
     type: 'info',
-    title: 'About FloSalon',
-    message: 'FloSalon Desktop',
+    title: 'About Diego Martins',
+    message: 'Diego Martins Desktop',
     detail: [
       `Version: ${app.getVersion()}`,
       `Electron: ${process.versions.electron}`,
@@ -268,7 +268,7 @@ function showAbout(): void {
       '',
       'A self-hosted, offline-first Salon POS system.',
       '',
-      `URL: http://flosaloon.local:${PORT}`,
+      `URL: http://diegomartins.local:${PORT}`,
       `IP:  http://${ip}:${PORT}`,
     ].join('\n'),
   });
@@ -276,21 +276,21 @@ function showAbout(): void {
 
 async function initialize(): Promise<void> {
   try {
-    console.log('[FloSalon] Initializing...');
+    console.log('[Diego Martins] Initializing...');
 
-    console.log('[FloSalon] Initializing database...');
+    console.log('[Diego Martins] Initializing database...');
     initDatabase();
 
-    console.log('[FloSalon] Starting local server...');
+    console.log('[Diego Martins] Starting local server...');
     await startServer();
 
-    console.log('[FloSalon] Starting mDNS advertisement...');
+    console.log('[Diego Martins] Starting mDNS advertisement...');
     startMdns();
 
-    console.log('[FloSalon] Initializing printer...');
+    console.log('[Diego Martins] Initializing printer...');
     await initPrinter();
 
-    console.log('[FloSalon] Registering IPC handlers...');
+    console.log('[Diego Martins] Registering IPC handlers...');
     registerIpcHandlers();
 
     ipcMain.handle('get-update-status', () => ({ updateAvailable, updateDownloaded, version: app.getVersion() }));
@@ -305,7 +305,7 @@ async function initialize(): Promise<void> {
       };
     });
 
-    console.log('[FloSalon] Creating window...');
+    console.log('[Diego Martins] Creating window...');
     createWindow();
     createTray();
     createMenu();
@@ -314,10 +314,10 @@ async function initialize(): Promise<void> {
       setTimeout(() => checkForUpdates(), 5000);
     }
 
-    console.log('[FloSalon] Ready!');
+    console.log('[Diego Martins] Ready!');
   } catch (error) {
-    console.error('[FloSalon] Initialization error:', error);
-    dialog.showErrorBox('Initialization Error', `Failed to start FloSalon: ${error}`);
+    console.error('[Diego Martins] Initialization error:', error);
+    dialog.showErrorBox('Initialization Error', `Failed to start Diego Martins: ${error}`);
     app.quit();
   }
 }
@@ -336,12 +336,12 @@ app.on('activate', () => {
 app.on('before-quit', () => { isQuitting = true; });
 
 app.on('quit', () => {
-  console.log('[FloSalon] Shutting down...');
+  console.log('[Diego Martins] Shutting down...');
   stopMdns();
   stopServer();
   closeDatabase();
-  console.log('[FloSalon] Goodbye!');
+  console.log('[Diego Martins] Goodbye!');
 });
 
-process.on('uncaughtException', (error) => { log.error('[FloSalon] Uncaught exception:', error); });
-process.on('unhandledRejection', (reason) => { log.error('[FloSalon] Unhandled rejection:', reason); });
+process.on('uncaughtException', (error) => { log.error('[Diego Martins] Uncaught exception:', error); });
+process.on('unhandledRejection', (reason) => { log.error('[Diego Martins] Unhandled rejection:', reason); });

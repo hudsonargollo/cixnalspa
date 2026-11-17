@@ -7,10 +7,10 @@ export const SCHEMA_VERSION = 2;
 
 let db: Database.Database;
 
-// Electron's app.getPath('userData') when packaged; FLOSALON_DATA_DIR overrides
+// Electron's app.getPath('userData') when packaged; DIEGOMARTINS_DATA_DIR overrides
 // for headless (web) deployments; project root fallback for dev.
 function resolveDataDir(): string {
-  if (process.env.FLOSALON_DATA_DIR) return process.env.FLOSALON_DATA_DIR;
+  if (process.env.DIEGOMARTINS_DATA_DIR) return process.env.DIEGOMARTINS_DATA_DIR;
   try {
     const electron: any = require('electron');
     const app = electron && typeof electron === 'object' ? electron.app : null;
@@ -24,7 +24,7 @@ function resolveDataDir(): string {
 }
 
 export function getDbPath(): string {
-  return path.join(resolveDataDir(), 'flosaloon.db');
+  return path.join(resolveDataDir(), 'diegomartins.db');
 }
 
 function getBackupDir(): string {
@@ -171,7 +171,7 @@ export async function createBackup(targetPath?: string): Promise<{ path: string;
     fs.mkdirSync(backupDir, { recursive: true });
   }
 
-  const backupPath = targetPath || path.join(backupDir, `flosaloon-backup-${timestamp}.db`);
+  const backupPath = targetPath || path.join(backupDir, `diegomartins-backup-${timestamp}.db`);
 
   await db.backup(backupPath);
 
@@ -589,8 +589,8 @@ function seedData(): void {
     db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)').run(key, value);
 
   insert('schema_version',       String(SCHEMA_VERSION));
-  insert('business_name',        'Estética Radiante');
-  insert('business_tagline',     'Estética & Bem-estar');
+  insert('business_name',        'Diego Martins Barbearia');
+  insert('business_tagline',     'Barbearia & Estilo');
   insert('business_type',        'salon');
   insert('country',              'BR');
   insert('currency',             'BRL');
@@ -599,7 +599,7 @@ function seedData(): void {
   insert('address',              '');
   insert('phone',                '+55 31 99587-2149');
   insert('whatsapp',             '5531995872149');
-  insert('instagram',            'clinicaeliscarvalho');
+  insert('instagram',            'diegomartinsbarbearia');
   insert('email',                '');
   insert('tax_registered',       'false');
   insert('gstin',                '');
@@ -610,15 +610,15 @@ function seedData(): void {
   insert('cloud_connected',      'false');
   seedBookingSettings();
 
-  const hashedPassword = bcrypt.hashSync('estetica123', 10);
-  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-1', 'Elis Carvalho', 'admin@estetica.com', hashedPassword, 'owner');
+  const hashedPassword = bcrypt.hashSync('diegomartins123', 10);
+  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-1', 'Diego Martins', 'admin@diegomartins.com', hashedPassword, 'owner');
 
   const stylistPassword = bcrypt.hashSync('stylist123', 10);
-  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-2', 'Elis Carvalho', 'stylist@flosaloon.local', stylistPassword, 'stylist');
+  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-2', 'Diego Martins', 'barbeiro@diegomartins.local', stylistPassword, 'stylist');
 
   db.prepare(`INSERT OR IGNORE INTO printers (id, name, connection_type, paper_width, is_default) VALUES (?, ?, ?, ?, ?)`).run('printer-1', 'Thermal Printer', 'usb', '80mm', 1);
 
-  seedEsteticaRadianteCatalog();
+  seedDiegoMartinsCatalog();
 
   console.log('[DB] Seed data loaded');
 }
@@ -629,7 +629,7 @@ function seedBookingSettings(): void {
 
   insert('loyalty_enabled',        'true');
   insert('loyalty_threshold',      '10');
-  insert('loyalty_reward',         'Massagem relaxante grátis');
+  insert('loyalty_reward',         'Corte de cabelo grátis');
   insert('booking_enabled',        'true');
   insert('booking_open_time',      '09:00');
   insert('booking_close_time',     '19:00');
@@ -637,8 +637,8 @@ function seedBookingSettings(): void {
   insert('booking_open_days',      '1,2,3,4,5,6');
   insert('booking_advance_days',   '45');
   insert('booking_lead_minutes',   '120');
-  insert('booking_stylist_name',   'Elis Carvalho');
-  insert('booking_stylist_role',   'Esteticista');
+  insert('booking_stylist_name',   'Diego Martins');
+  insert('booking_stylist_role',   'Barbeiro');
   insert('booking_policies', JSON.stringify([
     'Atendimento no estúdio, com horário marcado.',
     'Chegue com 10 minutos de antecedência.',
@@ -647,13 +647,13 @@ function seedBookingSettings(): void {
   ]));
 }
 
-function seedEsteticaRadianteCatalog(): void {
+function seedDiegoMartinsCatalog(): void {
   const cats = [
-    ['er-cat-destaques', 'Destaques',       '#C9A227', '✦', 1, 'Protocolos e combos especiais'],
-    ['er-cat-corpo',     'Corpo & Redução', '#7C4D8C', '❋', 2, 'Tratamentos corporais e modelagem'],
-    ['er-cat-facial',    'Facial & Pele',   '#C9A227', '✧', 3, 'Cuidados com a pele e rejuvenescimento'],
-    ['er-cat-depilacao', 'Depilação',       '#B76E79', '❀', 4, 'Depilação a laser, cera e sobrancelhas'],
-    ['er-cat-bemestar',  'Bem-estar',       '#8B6BAE', '✿', 5, 'Massagens e terapias relaxantes'],
+    ['dm-cat-destaques', 'Destaques',    '#E6FF57', '✦', 1, 'Combos e serviços em destaque'],
+    ['dm-cat-cabelo',    'Cabelo',       '#E6FF57', '✂', 2, 'Cortes, degradês e penteados'],
+    ['dm-cat-barba',     'Barba & Bigode', '#B7C94A', '❋', 3, 'Barboterapia e acabamento'],
+    ['dm-cat-combos',    'Combos',       '#9FBF2E', '✧', 4, 'Pacotes completos'],
+    ['dm-cat-extras',    'Extras',       '#8F9E45', '❀', 5, 'Tratamentos e cuidados adicionais'],
   ];
   for (const [id, name, color, icon, sort, description] of cats) {
     db.prepare(`
@@ -663,75 +663,75 @@ function seedEsteticaRadianteCatalog(): void {
   }
 
   const products: [string, string, string, string, number, number, number][] = [
-    ['er-prod-01', 'er-cat-destaques', 'Lipo Enzimática · 7 sessões',
-      'Protocolo corporal com enzimas para reduzir medidas e melhorar a textura da pele. Pacote de 7 sessões.',
-      700, 60, 1],
-    ['er-prod-02', 'er-cat-destaques', 'Combo 5 Massagens + 5 Carboxiterapia',
-      'Cinco sessões de massagem modeladora combinadas com cinco sessões de carboxiterapia. De R$ 600 por R$ 400 no Pix; no cartão, juros da máquina.',
-      400, 60, 2],
-    ['er-prod-03', 'er-cat-destaques', 'Bambu Terapia · 10 sessões',
-      'Massagem manual com bambus aquecidos, ideal para relaxar, ativar a circulação e modelar o corpo.',
-      550, 60, 3],
-    ['er-prod-04', 'er-cat-destaques', 'Combo 10 Pump Up + 10 Corrente Russa',
-      'Dez sessões de Pump Up e dez de corrente russa para tonificar e definir a musculatura.',
-      320, 50, 4],
-    ['er-prod-23', 'er-cat-destaques', 'Combo 5 Carboxiterapia + 5 Radiofrequência',
-      'Promoção relâmpago: cinco sessões de carboxiterapia e cinco de radiofrequência para reduzir medidas e firmar a pele.',
-      150, 60, 5],
-    ['er-prod-05', 'er-cat-corpo', 'Carboxiterapia',
-      'Aplicação de gás carbônico para melhorar a circulação, reduzir a flacidez e auxiliar no tratamento de celulite.',
+    ['dm-prod-01', 'dm-cat-destaques', 'Corte + Barba Completa',
+      'O clássico da casa: corte de cabelo com tesoura e máquina, barba alinhada e hidratação final.',
+      90, 60, 1],
+    ['dm-prod-02', 'dm-cat-destaques', 'Combo Barbeiro (Corte + Barba + Bigode)',
+      'Corte, barba esculpida, bigode alinhado e toque final com óleo. Pacote completo para uma segunda-feira impecável.',
+      110, 75, 2],
+    ['dm-prod-03', 'dm-cat-destaques', 'Corte Degradê + Barba',
+      'Degradê preciso com transição suave e barbadesenho alinhado ao formato do rosto.',
+      100, 70, 3],
+    ['dm-prod-04', 'dm-cat-destaques', 'Barba Terapia Completa',
+      'Toalha quente, óleo, escovação e modelagem da barba com acabamento perfeito.',
+      70, 50, 4],
+    ['dm-prod-23', 'dm-cat-destaques', 'Combo Express (Corte + Sobrancelha)',
+      'Corte rápido e bem feito com alinhamento de sobrancelhas. Ideal para o dia a dia.',
+      70, 45, 5],
+    ['dm-prod-05', 'dm-cat-cabelo', 'Corte de Cabelo Masculino',
+      'Corte com tesoura e máquina, lavagem e finalização. Escolha o estilo que combina com você.',
       60, 40, 1],
-    ['er-prod-06', 'er-cat-corpo', 'Massagem Redutora',
-      'Massagem com manobras específicas para redução de medidas, modelagem e estímulo da circulação.',
-      90, 60, 2],
-    ['er-prod-07', 'er-cat-corpo', 'Massagem Modeladora',
-      'Técnica intensa de modelagem corporal que ajuda a definir contornos e tonificar os tecidos.',
-      90, 60, 3],
-    ['er-prod-08', 'er-cat-corpo', 'Drenagem Pós-Operatório',
-      'Drenagem linfática cuidadosa para reduzir edemas e acelerar a recuperação pós-cirúrgica.',
-      100, 60, 4],
-    ['er-prod-09', 'er-cat-corpo', 'Corrente Russa',
-      'Eletroestimulação muscular para tonificação, fortalecimento e definição do corpo.',
-      70, 40, 5],
-    ['er-prod-10', 'er-cat-corpo', 'Pump Up',
-      'Eletroestimulação de alta intensidade para hipertrofia e definição muscular.',
-      70, 40, 6],
-    ['er-prod-11', 'er-cat-corpo', 'Vibromanta',
-      'Massagem com vibração e calor para relaxamento muscular, circulação e redução de tensões.',
-      80, 50, 7],
-    ['er-prod-12', 'er-cat-corpo', 'Radiofrequência Corporal',
-      'Estímulo de colágeno com radiofrequência para firmeza, celulite e flacidez corporal.',
-      160, 60, 8],
-    ['er-prod-13', 'er-cat-corpo', 'Tratamento para Estrias e Flacidez',
-      'Protocolo combinado para melhorar a aparência de estrias, textura e firmeza da pele.',
-      180, 60, 9],
-    ['er-prod-14', 'er-cat-facial', 'Limpeza de Pele',
-      'Higienização profunda com extração, esfoliação e hidratação para uma pele renovada.',
-      120, 60, 1],
-    ['er-prod-15', 'er-cat-facial', 'Microagulhamento',
-      'Indução de colágeno com microagulhas para melhorar textura, cicatrizes e firmeza da pele.',
-      180, 60, 2],
-    ['er-prod-16', 'er-cat-facial', 'Radiofrequência Facial',
-      'Firmeza e rejuvenescimento facial com estímulo de colágeno e melhora do contorno.',
-      140, 50, 3],
-    ['er-prod-17', 'er-cat-depilacao', 'Depilação a Laser',
-      'Sessão de depilação a laser com tecnologia segura para reduzir os pelos de forma duradoura.',
-      100, 30, 1],
-    ['er-prod-18', 'er-cat-depilacao', 'Depilação na Cera',
-      'Depilação tradicional com cera, rápida e cuidadosa, para uma pele lisa por mais tempo.',
-      40, 30, 2],
-    ['er-prod-19', 'er-cat-depilacao', 'Design de Sobrancelhas',
-      'Design personalizado que valoriza o formato do rosto e realça o olhar.',
-      50, 30, 3],
-    ['er-prod-20', 'er-cat-bemestar', 'Massagem Relaxante',
-      'Massagem corporal suave para aliviar o estresse, relaxar a musculatura e renovar a energia.',
-      120, 60, 1],
-    ['er-prod-21', 'er-cat-bemestar', 'Ventosas',
-      'Terapia com ventosas para melhorar a circulação, aliviar tensões e auxiliar na recuperação muscular.',
-      90, 50, 2],
-    ['er-prod-22', 'er-cat-bemestar', 'Pedras Quentes',
-      'Massagem com pedras aquecidas que proporciona relaxamento profundo e alívio de tensões.',
-      130, 60, 3],
+    ['dm-prod-06', 'dm-cat-cabelo', 'Degradê High/Low',
+      'Degradê preciso, com transição suave e linhas bem definidas.',
+      70, 50, 2],
+    ['dm-prod-07', 'dm-cat-cabelo', 'Corte com Máquina',
+      'Corte prático com máquina em números, alinhamento de contornos e finalização.',
+      45, 30, 3],
+    ['dm-prod-08', 'dm-cat-cabelo', 'Penteado / Finalização',
+      'Modelagem e finalização com pomada ou pasta, para um visual arrumado o dia todo.',
+      40, 30, 4],
+    ['dm-prod-09', 'dm-cat-cabelo', 'Coloração de Cabelo',
+      'Coloração para cobrir brancos ou mudar o visual, com acabamento natural.',
+      90, 60, 5],
+    ['dm-prod-10', 'dm-cat-barba', 'Barba Terapia',
+      'Toalha quente, óleo, penteado e modelagem da barba.',
+      50, 40, 1],
+    ['dm-prod-11', 'dm-cat-barba', 'Aparo de Barba',
+      'Aparo e alinhamento da barba com navalha e tesoura.',
+      35, 25, 2],
+    ['dm-prod-12', 'dm-cat-barba', 'Design de Bigode',
+      'Modelagem e simetria do bigode com acabamento preciso.',
+      30, 20, 3],
+    ['dm-prod-13', 'dm-cat-barba', 'Barboterapia Premium',
+      'Ritual completo com toalha quente, óleo, escova e massagem facial leve.',
+      80, 55, 4],
+    ['dm-prod-14', 'dm-cat-combos', 'Combo Clássico',
+      'Corte + barba + sobrancelha: o pacote essencial do barbeiro.',
+      95, 65, 1],
+    ['dm-prod-15', 'dm-cat-combos', 'Combo Executivo',
+      'Corte + barba terapia + penteado + sobrancelha, com óleo final.',
+      130, 85, 2],
+    ['dm-prod-16', 'dm-cat-combos', 'Combo Noivo',
+      'Corte, barba esculpida, bigode e finalização para o grande dia.',
+      150, 90, 3],
+    ['dm-prod-17', 'dm-cat-combos', 'Combo Kids',
+      'Corte infantil com paciência e carinho, para os pequenos.',
+      50, 35, 4],
+    ['dm-prod-18', 'dm-cat-extras', 'Alinhamento de Sobrancelhas',
+      'Sobrancelhas alinhadas e simétricas com navalha.',
+      25, 20, 1],
+    ['dm-prod-19', 'dm-cat-extras', 'Hidratação Capilar',
+      'Tratamento hidratante para cabelos secos e danificados.',
+      45, 30, 2],
+    ['dm-prod-20', 'dm-cat-extras', 'Massagem Facial',
+      'Massagem relaxante facial com óleos e toalha quente.',
+      40, 25, 3],
+    ['dm-prod-21', 'dm-cat-extras', 'Limpeza de Pele',
+      'Higienização e esfoliação leve para uma pele renovada.',
+      60, 40, 4],
+    ['dm-prod-22', 'dm-cat-extras', 'Toalha Quente + Óleo',
+      'Toalha quente e óleo para barba e cabelo, com fragrância à sua escolha.',
+      20, 15, 5],
   ];
 
   const insertProduct = db.prepare(`
@@ -793,16 +793,16 @@ function migrateToV2(): void {
   if (!businessName || businessName === 'My Salon') {
     const update = (key: string, value: string) =>
       db.prepare('INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, ?)').run(key, value, now());
-    update('business_name', 'Estética Radiante');
-    update('business_tagline', 'Estética & Bem-estar');
+    update('business_name', 'Diego Martins Barbearia');
+    update('business_tagline', 'Barbearia & Estilo');
     update('country', 'BR');
     update('currency', 'BRL');
     update('currency_symbol', 'R$');
     update('timezone', 'America/Sao_Paulo');
     update('phone', '+55 31 99587-2149');
     update('whatsapp', '5531995872149');
-    update('instagram', 'clinicaeliscarvalho');
-    seedEsteticaRadianteCatalog();
+    update('instagram', 'diegomartinsbarbearia');
+    seedDiegoMartinsCatalog();
   }
 
   db.prepare("INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('schema_version', ?, ?)").run(String(SCHEMA_VERSION), now());

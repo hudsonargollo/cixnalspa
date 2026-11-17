@@ -25,21 +25,21 @@ import { LoyaltyCard } from '@/components/booking/loyalty-card';
 type Step = 'services' | 'calendar' | 'identify' | 'success';
 
 const ABOUT_PHOTOS = [
-  '/er/about-1.jpg',
-  '/er/about-2.jpg',
-  '/er/about-3.jpg',
-  '/er/about-4.jpg',
+  '/dm/about-1.svg',
+  '/dm/about-2.svg',
+  '/dm/about-3.svg',
+  '/dm/about-4.svg',
 ];
 
 const HIGHLIGHT_IMAGES: Record<string, string> = {
-  'er-prod-01': '/er/highlight-lipo.jpg',
-  'er-prod-02': '/er/about-2.jpg',
-  'er-prod-03': '/er/highlight-bambu.jpg',
-  'er-prod-04': '/er/highlight-pump.jpg',
+  'dm-prod-01': '/dm/highlight-classico.svg',
+  'dm-prod-02': '/dm/about-2.svg',
+  'dm-prod-03': '/dm/highlight-barba.svg',
+  'dm-prod-04': '/dm/highlight-peinado.svg',
 };
 
 const FALLBACK_WHATSAPP = '5531995872149';
-const FALLBACK_INSTAGRAM = 'clinicaeliscarvalho';
+const FALLBACK_INSTAGRAM = 'diegomartinsbarbearia';
 
 export default function BookingPage() {
   const [config, setConfig] = useState<BookingConfig | null>(null);
@@ -85,12 +85,12 @@ export default function BookingPage() {
   }, [loadConfig]);
 
   useEffect(() => {
-    const stored = localStorage.getItem('er_booking_theme');
+    const stored = localStorage.getItem('dm_booking_theme');
     if (stored === 'light') setIsDarkMode(false);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('er_booking_theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('dm_booking_theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const openDays = config?.booking.openDays ?? [1, 2, 3, 4, 5, 6];
@@ -222,7 +222,7 @@ export default function BookingPage() {
   const whatsappNumber = business?.whatsapp || FALLBACK_WHATSAPP;
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
   const instagramUrl = `https://instagram.com/${business?.instagram || FALLBACK_INSTAGRAM}`;
-  const stylistName = config?.booking.stylist.name || 'Elis Carvalho';
+  const stylistName = config?.booking.stylist.name || 'Diego Martins';
   const phoneDigits = customerPhone.replace(/\D/g, '');
 
   const highlights = config?.services.filter((service) => service.category === 'Destaques') ?? [];
@@ -258,7 +258,7 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-6 text-center">
           <div className="w-24 h-24 mb-6 animate-pulse-soft">
-            <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-full h-full" />
+            <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-full h-full" />
           </div>
           <p className="text-sm tracking-widest uppercase" style={{ color: 'var(--text-secondary)' }}>Carregando</p>
         </div>
@@ -271,9 +271,9 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-8 text-center">
           <div className="w-20 h-20 mb-6">
-            <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-full h-full" />
+            <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-full h-full" />
           </div>
-          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Estética Radiante</h1>
+          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Diego Martins Barbearia</h1>
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>{configError || 'Serviços indisponíveis no momento.'}</p>
           <button onClick={loadConfig} className="btn-brand px-8 py-3 rounded-full text-xs font-medium tracking-widest uppercase" style={{ position: 'relative', right: 'auto' }}>
             Tentar novamente
@@ -297,9 +297,9 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-8 text-center">
           <div className="w-24 h-24 mb-6">
-            <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-full h-full" />
+            <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-full h-full" />
           </div>
-          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Estética Radiante</h1>
+          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Diego Martins Barbearia</h1>
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
             Os agendamentos online estão pausados no momento. Fale com a gente pelo WhatsApp para reservar seu horário.
           </p>
@@ -318,11 +318,11 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-6 text-center animate-fade-in">
           <div className="mb-8">
-            <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-24 h-24 mx-auto opacity-90" />
+            <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-24 h-24 mx-auto opacity-90" />
           </div>
 
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(212,175,55,0.12)', border: '1.5px solid var(--brand-gold)' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--brand-gold)' }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(230,255,87,0.12)', border: '1.5px solid var(--brand-accent)' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--brand-accent)' }}>
               <polyline points="20 6 9 17 4 12" />
             </svg>
           </div>
@@ -339,8 +339,8 @@ export default function BookingPage() {
           </p>
 
           {rewardUnlocked && (
-            <div className="w-full max-w-xs rounded-2xl p-4 mb-8" style={{ backgroundColor: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.4)' }}>
-              <h3 className="font-display text-xl font-medium mb-1 flex items-center justify-center gap-2" style={{ color: 'var(--brand-gold)' }}>
+            <div className="w-full max-w-xs rounded-2xl p-4 mb-8" style={{ backgroundColor: 'rgba(230,255,87,0.12)', border: '1px solid rgba(230,255,87,0.4)' }}>
+              <h3 className="font-display text-xl font-medium mb-1 flex items-center justify-center gap-2" style={{ color: 'var(--brand-accent)' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" />
                   <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
@@ -389,8 +389,8 @@ export default function BookingPage() {
 
           <div className="p-6 flex-1 flex flex-col max-w-sm mx-auto w-full">
             <div className="mb-8 mt-4 text-center">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.25)' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--brand-gold)' }}>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(230,255,87,0.1)', border: '1px solid rgba(230,255,87,0.25)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--brand-accent)' }}>
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
                 </svg>
               </div>
@@ -602,23 +602,23 @@ export default function BookingPage() {
           <div
             className="w-56 h-56 rounded-full mb-5 flex items-center justify-center"
             style={{
-              backgroundColor: isDarkMode ? '#120a18' : '#f1e6ed',
-              border: isDarkMode ? '1px solid rgba(212,175,55,0.28)' : '1.5px solid rgba(59,31,74,0.12)',
-              boxShadow: isDarkMode ? '0 0 50px rgba(124,77,140,0.35)' : '0 6px 32px rgba(59,31,74,0.16)',
-              backgroundImage: 'radial-gradient(circle at 50% 42%, rgba(212,175,55,0.16), transparent 62%)',
+              backgroundColor: isDarkMode ? '#1a1e14' : '#eef1e8',
+              border: isDarkMode ? '1px solid rgba(230,255,87,0.28)' : '1.5px solid rgba(31,36,24,0.12)',
+              boxShadow: isDarkMode ? '0 0 50px rgba(143,158,69,0.28)' : '0 6px 32px rgba(31,36,24,0.16)',
+              backgroundImage: 'radial-gradient(circle at 50% 42%, rgba(230,255,87,0.12), transparent 62%)',
             }}
           >
-            <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-36 h-36 object-contain" />
+            <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-36 h-36 object-contain" />
           </div>
 
           <h1 className="font-display text-4xl font-light tracking-wide mb-1" style={{ color: 'var(--text-primary)' }}>
-            Estética Radiante
+            Diego Martins Barbearia
           </h1>
           <p className="font-display text-lg italic font-light mb-1" style={{ color: 'var(--text-secondary)' }}>
-            Elis Carvalho
+            Diego Martins
           </p>
           <p className="text-xs tracking-widest uppercase mb-6" style={{ color: 'var(--text-disabled)' }}>
-            Estética &amp; Bem-estar · Minas Gerais
+            Barbearia &amp; Estilo
           </p>
 
           <div className="flex gap-3">
@@ -653,7 +653,7 @@ export default function BookingPage() {
           <div className="grid grid-cols-2" style={{ gap: '2px', backgroundColor: 'var(--border-subtle)' }}>
             {ABOUT_PHOTOS.map((src, index) => (
               <div key={src} style={{ height: '160px', overflow: 'hidden', backgroundColor: 'var(--bg-surface-hover)' }}>
-                <img src={src} alt={`Estética Radiante ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', display: 'block' }} />
+                <img src={src} alt={`Diego Martins Barbearia ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 25%', display: 'block' }} />
               </div>
             ))}
           </div>
@@ -661,7 +661,7 @@ export default function BookingPage() {
           <div className="px-5 py-5">
             <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: 'var(--text-disabled)' }}>Quem sou eu</p>
             <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
-              Um espaço dedicado a cuidar de você por inteiro. Na <strong style={{ color: 'var(--text-primary)' }}>Estética Radiante</strong>, cada protocolo é pensado para o seu corpo, a sua pele e o seu bem-estar — com atendimento próximo, técnicas atuais e muito cuidado em cada detalhe.
+              Um espaço feito para você. Na <strong style={{ color: 'var(--text-primary)' }}>Diego Martins Barbearia</strong>, cada corte e cada barba são feitos com atendimento próximo, técnica atual e atenção a cada detalhe.
             </p>
 
             <div className="divider mb-4" />
@@ -691,19 +691,19 @@ export default function BookingPage() {
         />
 
         <div className="mx-4 mb-8 rounded-2xl overflow-hidden relative" style={{ height: '200px' }}>
-          <img src="/er/cta.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} aria-hidden="true" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(14,8,18,0.92) 42%, rgba(14,8,18,0.15) 100%)' }} />
+          <img src="/dm/cta.svg" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} aria-hidden="true" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(20,22,24,0.92) 42%, rgba(20,22,24,0.15) 100%)' }} />
           <div className="relative z-10 h-full flex flex-col items-start justify-end p-6">
             <p className="font-display text-3xl font-light leading-tight mb-1" style={{ color: '#fff' }}>
               Pronta para se<br />sentir incrível?
             </p>
             <p className="text-xs mb-4" style={{ color: 'rgba(255,255,255,0.62)' }}>
-              Escolha um serviço e agende com a Elis.
+              Escolha um serviço e agende com o Diego.
             </p>
             <button
               onClick={() => servicesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase transition-all hover:opacity-90 active:scale-95"
-              style={{ backgroundColor: '#fff', color: '#0e0812' }}
+              style={{ backgroundColor: '#fff', color: '#141618' }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
@@ -761,8 +761,8 @@ export default function BookingPage() {
 
         <div className="px-6 pb-14 text-center">
           <div className="divider mb-5" />
-          <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Estética Radiante</p>
-          <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-disabled)' }}>Elis Carvalho</p>
+          <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Diego Martins Barbearia</p>
+          <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-disabled)' }}>Diego Martins</p>
           <p className="text-xs" style={{ color: 'var(--text-disabled)' }}>
             {business?.phone || '(31) 99587-2149'} · @{business?.instagram || FALLBACK_INSTAGRAM}
           </p>

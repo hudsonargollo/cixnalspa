@@ -83,8 +83,8 @@ export function getBookingSettings(): BookingSettings {
       .filter((d) => !Number.isNaN(d)),
     advanceDays: Math.max(1, parseInt(s.booking_advance_days || '45', 10) || 45),
     leadMinutes: Math.max(0, parseInt(s.booking_lead_minutes || '120', 10) || 0),
-    stylistName: s.booking_stylist_name || 'Elis Carvalho',
-    stylistRole: s.booking_stylist_role || 'Esteticista',
+    stylistName: s.booking_stylist_name || 'Diego Martins',
+    stylistRole: s.booking_stylist_role || 'Barbeiro',
     policies,
   };
 }
@@ -94,7 +94,7 @@ export function getLoyaltyConfig() {
   return {
     enabled: s.loyalty_enabled !== 'false',
     threshold: Math.max(1, parseInt(s.loyalty_threshold || '10', 10) || 10),
-    rewardDescription: s.loyalty_reward || 'Massagem relaxante grátis',
+    rewardDescription: s.loyalty_reward || 'Corte de cabelo grátis',
   };
 }
 

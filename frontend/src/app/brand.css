@@ -1,30 +1,30 @@
 /* ─────────────────────────────────────────────────────────────
-   Estética Radiante — shared brand tokens (booking + admin)
+   Diego Martins Barbearia — shared brand tokens (booking + admin)
    ───────────────────────────────────────────────────────────── */
 
 .booking-root,
 .admin-root {
-  --brand-amethyst: #7c4d8c;
-  --brand-quartz: #d9b8c4;
-  --brand-gold: #d4af37;
-  --brand-gold-soft: #e8c96a;
-  --brand-lilac: #c9a7e8;
+  --brand-lime: #e6ff57;
+  --brand-lime-soft: #c8e04a;
+  --brand-accent: #e6ff57;
+  --brand-accent-soft: #c8e04a;
+  --brand-olive: #8f9e45;
 
-  --bg-app: #0e0812;
-  --bg-surface: #17101d;
-  --bg-surface-hover: #22172b;
-  --bg-surface-active: #2d1f38;
-  --border-subtle: #33263d;
-  --text-primary: #fbf6f2;
-  --text-secondary: #c4b2c9;
-  --text-disabled: #6b5a72;
-  --btn-primary-bg: #2a1a33;
-  --btn-primary-text: #fbf6f2;
-  --btn-primary-border: #d4af37;
+  --bg-app: #141618;
+  --bg-surface: #1c1f21;
+  --bg-surface-hover: #262a2d;
+  --bg-surface-active: #30363a;
+  --border-subtle: #33383b;
+  --text-primary: #f5f7f2;
+  --text-secondary: #b8c0b4;
+  --text-disabled: #6f786e;
+  --btn-primary-bg: #1f2418;
+  --btn-primary-text: #e6ff57;
+  --btn-primary-border: #e6ff57;
   --slot-available-bg: var(--bg-surface);
-  --slot-selected-bg: #d4af37;
-  --slot-selected-text: #1a1020;
-  --accent-line: #d4af37;
+  --slot-selected-bg: #e6ff57;
+  --slot-selected-text: #141618;
+  --accent-line: #e6ff57;
 
   background-color: var(--bg-app);
   color: var(--text-primary);
@@ -36,21 +36,21 @@
 
 .booking-root[data-theme='light'],
 .admin-root[data-theme='light'] {
-  --bg-app: #fbf6f2;
+  --bg-app: #f4f6f0;
   --bg-surface: #ffffff;
-  --bg-surface-hover: #f6eee8;
-  --bg-surface-active: #efe2d9;
-  --border-subtle: #e7d8ce;
-  --text-primary: #2a1730;
-  --text-secondary: #6b5573;
-  --text-disabled: #a08aa8;
-  --btn-primary-bg: #3b1f4a;
-  --btn-primary-text: #fbf6f2;
-  --btn-primary-border: #3b1f4a;
+  --bg-surface-hover: #eef1e8;
+  --bg-surface-active: #e3e9d8;
+  --border-subtle: #dfe4d5;
+  --text-primary: #1b2018;
+  --text-secondary: #59614f;
+  --text-disabled: #909a85;
+  --btn-primary-bg: #1f2418;
+  --btn-primary-text: #e6ff57;
+  --btn-primary-border: #1f2418;
   --slot-available-bg: #ffffff;
-  --slot-selected-bg: #3b1f4a;
-  --slot-selected-text: #fbf6f2;
-  --accent-line: #b8912a;
+  --slot-selected-bg: #1f2418;
+  --slot-selected-text: #e6ff57;
+  --accent-line: #7a9220;
 }
 
 .booking-root h1,
@@ -114,8 +114,8 @@
   --ring: var(--accent-line);
   --sidebar: var(--bg-surface);
   --sidebar-foreground: var(--text-primary);
-  --sidebar-primary: var(--brand-gold);
-  --sidebar-primary-foreground: #1a1020;
+  --sidebar-primary: var(--brand-accent);
+  --sidebar-primary-foreground: #141618;
   --sidebar-accent: var(--bg-surface-hover);
   --sidebar-accent-foreground: var(--accent-line);
   --sidebar-border: var(--border-subtle);

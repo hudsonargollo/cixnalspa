@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('er_booking_theme');
+    const stored = localStorage.getItem('dm_booking_theme');
     if (stored === 'light') setIsDarkMode(false);
   }, []);
 
@@ -41,14 +41,14 @@ export default function LoginPage() {
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
                 style={{
-                  backgroundColor: isDarkMode ? '#120a18' : '#f1e6ed',
-                  border: isDarkMode ? '1px solid rgba(212,175,55,0.28)' : '1.5px solid rgba(59,31,74,0.12)',
-                  backgroundImage: 'radial-gradient(circle at 50% 42%, rgba(212,175,55,0.16), transparent 62%)',
+                  backgroundColor: isDarkMode ? '#1a1e14' : '#eef1e8',
+                  border: isDarkMode ? '1px solid rgba(230,255,87,0.28)' : '1.5px solid rgba(31,36,24,0.12)',
+                  backgroundImage: 'radial-gradient(circle at 50% 42%, rgba(230,255,87,0.12), transparent 62%)',
                 }}
               >
-                <img src="/er/logo-radiante.svg" alt="Estética Radiante" className="w-12 h-12 object-contain" />
+                <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-12 h-12 object-contain" />
               </div>
-              <h1 className="font-display text-3xl font-light tracking-wide">Estética Radiante</h1>
+              <h1 className="font-display text-3xl font-light tracking-wide">Diego Martins Barbearia</h1>
               <p className="text-xs tracking-widest uppercase mt-1 text-[var(--muted-foreground)]">Acesso da equipe</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">

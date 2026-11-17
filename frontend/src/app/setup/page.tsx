@@ -30,7 +30,7 @@ export default function SetupPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardContent className="pt-6">
-          <h1 className="text-xl font-semibold mb-1">Bem-vinda à Estética Radiante</h1>
+          <h1 className="text-xl font-semibold mb-1">Bem-vinda à Diego Martins Barbearia</h1>
           <p className="text-sm text-[var(--muted-foreground)] mb-6">Crie a conta da proprietária para começar. Nenhuma outra configuração é necessária.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

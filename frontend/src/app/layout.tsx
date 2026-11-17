@@ -21,12 +21,12 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Estética Radiante",
-  description: "Agendamento e gestão da Estética Radiante · Elis Carvalho",
+  title: "Diego Martins Barbearia",
+  description: "Agendamento e gestão da Diego Martins Barbearia · Diego Martins",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e0812",
+  themeColor: "#141618",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

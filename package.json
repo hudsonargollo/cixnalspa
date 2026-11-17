@@ -1,7 +1,7 @@
 {
-  "name": "flo-salon-desktop",
+  "name": "diegomartins-desktop",
   "version": "1.0.0",
-  "description": "FloSalon - Self-hosted Point of Sale for Salons",
+  "description": "Diego Martins Barbearia - Self-hosted Point of Sale",
   "main": "dist/index.js",
   "scripts": {
     "dev": "npm run build:frontend && npm run build && electron .",
@@ -23,10 +23,10 @@
     "test:db-audit": "npx -y ts-node --transpile-only -P tests/tsconfig.json tests/db-audit.test.ts"
   },
   "author": {
-    "name": "FloSalon",
-    "email": "support@flosaloon.local"
+    "name": "Diego Martins",
+    "email": "support@diegomartins.local"
   },
-  "homepage": "https://flosalon.local",
+  "homepage": "https://diegomartins.local",
   "license": "MIT",
   "devDependencies": {
     "@electron/rebuild": "^4.0.3",
@@ -41,11 +41,11 @@
     "@types/uuid": "^9.0.8",
     "electron": "^31.1.0",
     "electron-builder": "^24.13.3",
+    "node-gyp": "^13.1.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.10.0",
     "bonjour-service": "^1.2.1",
     "cors": "^2.8.5",
     "electron-log": "^5.4.3",
@@ -58,8 +58,8 @@
     "ws": "^8.23.0"
   },
   "build": {
-    "appId": "com.flosaloon.desktop",
-    "productName": "FloSalon",
+    "appId": "com.diegomartins.desktop",
+    "productName": "Diego Martins",
     "asar": true,
     "asarUnpack": "**/node_modules/better-sqlite3/**/*",
     "directories": {
@@ -72,7 +72,7 @@
     "publish": {
       "provider": "github",
       "owner": "FreeOpenSourcePOS",
-      "repo": "FloSalon"
+      "repo": "Diego Martins"
     },
     "extraResources": [
       {

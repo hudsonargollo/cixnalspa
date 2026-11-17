@@ -56,8 +56,8 @@ router.get('/config', (_req: Request, res: Response) => {
         policies: booking.policies,
       },
       business: {
-        name: settings.business_name || 'Estética Radiante',
-        tagline: settings.business_tagline || 'Estética & Bem-estar',
+        name: settings.business_name || 'Diego Martins Barbearia',
+        tagline: settings.business_tagline || 'Barbearia & Estilo',
         phone: settings.business_phone || settings.phone || '',
         whatsapp: settings.whatsapp || '',
         instagram: settings.instagram || '',

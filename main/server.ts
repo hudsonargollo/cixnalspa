@@ -39,7 +39,7 @@ export function startServer(): Promise<void> {
     app.get('/api/health', (_req: Request, res: Response) => {
       res.json({
         status: 'ok',
-        service: 'FloSalon Local API',
+        service: 'Diego Martins Local API',
         version: '1.0.0',
         timestamp: new Date().toISOString(),
       });
@@ -59,7 +59,7 @@ export function startServer(): Promise<void> {
       app.get('/', (_req: Request, res: Response) => {
         res.send(`
           <html><body style="font-family:sans-serif;padding:2rem">
-            <h2>FloSalon – Frontend not built</h2>
+            <h2>Diego Martins – Frontend not built</h2>
             <p>Run <code>npm run build:frontend</code> then restart the app.</p>
           </body></html>
         `);

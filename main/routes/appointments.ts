@@ -109,7 +109,7 @@ router.get('/booking-qr', async (req: Request, res: Response) => {
     const dataUrl = await QRCode.toDataURL(url, {
       width: 640,
       margin: 1,
-      color: { dark: '#3B1F4A', light: '#FFFFFF' },
+      color: { dark: '#1F2418', light: '#FFFFFF' },
     });
     res.json({ url, qr: dataUrl });
   } catch (error: any) {
