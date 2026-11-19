@@ -335,15 +335,12 @@ export default function AgendaPage() {
         </div>
       </div>
 
-      <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-[var(--border)] p-3">
+      <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--border)] p-3">
         <div className="flex items-center gap-2 text-sm">
           <Link2 className="h-4 w-4 text-[var(--muted-foreground)]" />
           <span className="text-[var(--muted-foreground)]">Link público de agendamento</span>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/agendar" target="_blank" className="text-sm underline underline-offset-2">
-            Abrir página
-          </Link>
           <Button variant="outline" size="sm" onClick={openBookingLink}>
             <QrCode className="h-4 w-4" /> Divulgar
           </Button>

@@ -28,25 +28,32 @@ function buildLocalTenant(db: ReturnType<typeof getDatabase>, userRole: string) 
   };
 }
 
+// Login accepts an email OR a phone + password (FAQ-style login for the new
+// WhatsApp-only onboarding flow). Phone is the customer-facing identifier now.
+function resolveUser(db: ReturnType<typeof getDatabase>, identifier: string, password: string) {
+  const trimmed = (identifier || '').replace(/\D/g, '');
+  const byPhone = db.prepare('SELECT * FROM users WHERE phone = ? AND is_active = 1').get(trimmed) as any;
+  if (byPhone && bcrypt.compareSync(password, byPhone.password)) return byPhone;
+  return db.prepare('SELECT * FROM users WHERE email = ? AND is_active = 1').get(identifier) as any;
+}
+
 router.post('/login', (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+    const { identifier, password } = req.body;
+    if (!identifier || !password) return res.status(400).json({ error: 'Identifier and password required' });
 
     const db = getDatabase();
-    const user = db.prepare('SELECT * FROM users WHERE email = ? AND is_active = 1').get(email) as any;
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    const user = resolveUser(db, identifier, password);
+    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role, phone: user.phone }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
     const tenant = buildLocalTenant(db, user.role);
 
     res.json({
       access_token: token,
       token_type: 'bearer',
       expires_in: 86400,
-      user: { id: user.id, name: user.name, email: user.email, role: user.role, category_ids: user.category_ids ? JSON.parse(user.category_ids) : [] },
+      user: { id: user.id, name: user.name, phone: user.phone, role: user.role },
       tenants: [tenant],
     });
   } catch (error: any) {
@@ -137,27 +144,30 @@ router.get('/setup/status', (_req: Request, res: Response) => {
 
 router.post('/setup/initialize', (req: Request, res: Response) => {
   try {
-    const { name, email, password, business_name } = req.body;
-    if (!name || !email || !password) return res.status(400).json({ error: 'Name, email, and password are required' });
+    const { name, phone, password, business_name } = req.body;
+    if (!name || !phone || !password) return res.status(400).json({ error: 'Name, phone, and password are required' });
 
     const db = getDatabase();
-    if (db.prepare('SELECT id FROM users WHERE email = ?').get(email)) {
-      return res.status(400).json({ error: 'User with this email already exists' });
+    const phoneDigits = (phone || '').replace(/\D/g, '');
+    const lookup = db.prepare('SELECT id FROM users WHERE phone = ?').get(phoneDigits) as any;
+    if (lookup) {
+      return res.status(400).json({ error: 'User with this WhatsApp already exists' });
     }
 
     const userId = uuidv4();
-    db.prepare(`INSERT INTO users (id, name, email, password, role, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`).run(userId, name, email, bcrypt.hashSync(password, 10), 'owner', 1, now(), now());
+    const email = `user-${userId}@diegomartins.local`;
+    db.prepare(`INSERT INTO users (id, name, email, phone, password, role, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'owner', 1, ?, ?)`).run(userId, name, email, phoneDigits, bcrypt.hashSync(password, 10), now(), now());
     db.prepare(`INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('business_type', 'salon', ?)`).run(now());
     if (business_name) db.prepare(`INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('business_name', ?, ?)`).run(business_name, now());
 
-    const token = jwt.sign({ userId, email, role: 'owner' }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    const token = jwt.sign({ userId, email, role: 'owner', phone: phoneDigits }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
     const tenant = buildLocalTenant(db, 'owner');
 
     res.json({
       access_token: token,
       token_type: 'bearer',
       expires_in: 86400,
-      user: { id: userId, name, email, role: 'owner' },
+      user: { id: userId, name, phone: phoneDigits, role: 'owner' },
       tenants: [tenant],
     });
   } catch (error: any) {

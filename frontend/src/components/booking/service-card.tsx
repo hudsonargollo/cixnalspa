@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { BookingService } from '@/lib/booking-types';
 import { durationLabel } from '@/lib/booking-utils';
 import { money, serviceCopy, categoryLabel, t, type Lang } from '@/lib/i18n';
+import { categoryIconMap } from '@/components/booking/highlight-card';
 
 interface ServiceCardProps {
   service: BookingService;
@@ -28,13 +29,28 @@ export function ServiceCard({ service, isSelected, onToggle, lang }: ServiceCard
       }}
       onClick={() => onToggle(service)}
     >
-      <div className="flex justify-between items-start">
-        <div className="flex-1 pr-4">
-          <h3 className="font-display text-xl font-light leading-tight mb-1.5" style={{ color: 'var(--text-primary)' }}>
-            {name}
-          </h3>
+      <div className="flex">
+        <div className="flex flex-col justify-center px-4 flex-1">
+          <div className="flex items-start gap-3 mb-2">
+            {service.categoryIcon ? (
+              <div className="w-10 h-10 flex items-center justify-center shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  {categoryIconMap[service.categoryIcon]}
+                </svg>
+              </div>
+            ) : (
+              <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
+                <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-disabled)' }}>
+                  {service.category.charAt(0)}
+                </span>
+              </div>
+            )}
+            <h3 className="font-display text-xl font-light leading-tight" style={{ color: 'var(--text-primary)' }}>
+              {name}
+            </h3>
+          </div>
 
-          <div className="flex items-center gap-3 text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
+          <div className="flex items-center gap-3 text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>
             <div className="flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />

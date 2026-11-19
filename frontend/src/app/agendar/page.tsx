@@ -688,14 +688,14 @@ export default function BookingPage() {
             <img
               src={SLIDESHOW_PHOTOS[slideshowIndex]}
               alt={`Foto ${slideshowIndex + 1}`}
-              className="w-full h-[220px] object-cover animate-fade-in-up"
+              className="w-full h-[320px] object-cover animate-fade-in-up"
             />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               {SLIDESHOW_PHOTOS.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setSlideshowIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${index === slideshowIndex ? 'bg-[#E6FF57] w-4' : 'bg-white/30'}`}
+                  className={`w-2 h-2 rounded-full transition-all ${index === slideshowIndex ? 'bg-[#E6FF57] w-4' : 'bg-white/50'}`}
                   style={{ margin: '0 3px' }}
                   aria-label={`Ver foto ${index + 1}`}
                 />

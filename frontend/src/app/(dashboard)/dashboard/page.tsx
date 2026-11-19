@@ -42,10 +42,30 @@ export default function DashboardPage() {
       <h1 className="text-xl font-semibold mb-4">Painel</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <StatCard label="Vendas de hoje" value={formatCurrency(summary?.bills.collected || 0)} />
-        <StatCard label="Comandas" value={String(summary?.orders.count ?? '—')} />
-        <StatCard label="Em atendimento agora" value={String(runningTickets)} />
-        <StatCard label="Novas clientes" value={String(summary?.customers.new ?? '—')} />
+        <Card>
+          <CardContent className="pt-4">
+            <div className="text-sm text-[var(--muted-foreground)]">Vendas de hoje</div>
+            <div className="text-2xl font-semibold mt-1">{formatCurrency(summary?.bills.collected || 0)}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4">
+            <div className="text-sm text-[var(--muted-foreground)]">Comandas</div>
+            <div className="text-2xl font-semibold mt-1">{String(summary?.orders.count ?? '—')}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4">
+            <div className="text-sm text-[var(--muted-foreground)]">Em atendimento agora</div>
+            <div className="text-2xl font-semibold mt-1">{String(runningTickets)}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="pt-4">
+            <div className="text-sm text-[var(--muted-foreground)]">Novas clientes</div>
+            <div className="text-2xl font-semibold mt-1">{String(summary?.customers.new ?? '—')}</div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
