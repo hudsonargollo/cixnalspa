@@ -1,16 +1,21 @@
 'use client';
 
 import type { BookingService } from '@/lib/booking-types';
-import { brl } from '@/lib/booking-utils';
+import { money, serviceCopy, t, type Lang } from '@/lib/i18n';
 
 interface HighlightCardProps {
   service: BookingService;
   imageUrl?: string;
   isSelected: boolean;
   onToggle: (service: BookingService) => void;
+  lang: Lang;
 }
 
-export function HighlightCard({ service, imageUrl, isSelected, onToggle }: HighlightCardProps) {
+export function HighlightCard({ service, imageUrl, isSelected, onToggle, lang }: HighlightCardProps) {
+  const copy = serviceCopy(service.id, lang);
+  const name = copy?.name ?? service.name;
+  const description = copy?.description ?? service.description;
+
   return (
     <div
       className="relative flex-none w-[220px] rounded-2xl snap-center cursor-pointer transition-all duration-300 flex flex-col overflow-hidden"
@@ -22,23 +27,23 @@ export function HighlightCard({ service, imageUrl, isSelected, onToggle }: Highl
       onClick={() => onToggle(service)}
     >
       {imageUrl && (
-        <div className="w-full h-36 overflow-hidden flex-shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
-          <img src={imageUrl} alt={service.name} className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+        <div className="w-full h-48 overflow-hidden flex-shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
+          <img src={imageUrl} alt={name} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: 'center 15%' }} />
         </div>
       )}
 
       <div className="p-4 flex flex-col flex-1">
         <h3 className="font-display text-xl font-light leading-tight mb-2" style={{ color: 'var(--text-primary)' }}>
-          {service.name}
+          {name}
         </h3>
 
         <p className="text-xs leading-relaxed flex-1 mb-4 line-clamp-3" style={{ color: 'var(--text-secondary)' }}>
-          {service.description}
+          {description}
         </p>
 
         <div className="pt-3 flex items-center justify-between" style={{ borderTop: '1px solid var(--border-subtle)' }}>
           <div>
-            <div className="font-display text-lg font-light" style={{ color: 'var(--text-primary)' }}>{brl(service.price)}</div>
+            <div className="font-display text-lg font-light" style={{ color: 'var(--text-primary)' }}>{money(service.price, lang)}</div>
             <div className="flex items-center gap-1 text-xs mt-0.5" style={{ color: 'var(--text-disabled)' }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
@@ -54,7 +59,7 @@ export function HighlightCard({ service, imageUrl, isSelected, onToggle }: Highl
               ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-app)', transform: 'scale(1.05)' }
               : { backgroundColor: 'var(--bg-surface-hover)', color: 'var(--text-disabled)', border: '1px solid var(--border-subtle)' }}
             onClick={(event) => { event.stopPropagation(); onToggle(service); }}
-            aria-label={isSelected ? 'Remover' : 'Adicionar'}
+            aria-label={isSelected ? t('remove', lang) : t('add', lang)}
           >
             {isSelected ? (
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

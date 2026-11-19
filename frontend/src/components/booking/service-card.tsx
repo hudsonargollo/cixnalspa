@@ -2,16 +2,21 @@
 
 import { useState } from 'react';
 import type { BookingService } from '@/lib/booking-types';
-import { brl, durationLabel } from '@/lib/booking-utils';
+import { durationLabel } from '@/lib/booking-utils';
+import { money, serviceCopy, categoryLabel, t, type Lang } from '@/lib/i18n';
 
 interface ServiceCardProps {
   service: BookingService;
   isSelected: boolean;
   onToggle: (service: BookingService) => void;
+  lang: Lang;
 }
 
-export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps) {
+export function ServiceCard({ service, isSelected, onToggle, lang }: ServiceCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const copy = serviceCopy(service.id, lang);
+  const name = copy?.name ?? service.name;
+  const description = copy?.description ?? service.description;
 
   return (
     <div
@@ -26,7 +31,7 @@ export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps)
       <div className="flex justify-between items-start">
         <div className="flex-1 pr-4">
           <h3 className="font-display text-xl font-light leading-tight mb-1.5" style={{ color: 'var(--text-primary)' }}>
-            {service.name}
+            {name}
           </h3>
 
           <div className="flex items-center gap-3 text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
@@ -38,13 +43,13 @@ export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps)
               {service.duration} min
             </div>
             <span>·</span>
-            <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{brl(service.price)}</span>
+            <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{money(service.price, lang)}</span>
           </div>
 
           <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
             <div className="overflow-hidden">
               <div className="text-xs pb-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                {service.description}
+                {description}
               </div>
             </div>
           </div>
@@ -54,7 +59,7 @@ export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps)
             className="text-xs font-medium flex items-center gap-1 transition-opacity hover:opacity-60"
             style={{ color: 'var(--text-secondary)' }}
           >
-            {expanded ? 'Menos' : 'Mais info'}
+            {expanded ? t('less', lang) : t('moreInfo', lang)}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="11"
@@ -74,7 +79,7 @@ export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps)
 
         <div className="flex items-center justify-center pt-1">
           <button
-            aria-label={isSelected ? `Remover ${service.name}` : `Adicionar ${service.name}`}
+            aria-label={isSelected ? `${t('remove', lang)} ${name}` : `${t('add', lang)} ${name}`}
             className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
             style={isSelected
               ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-app)', transform: 'scale(1.05)' }
@@ -96,7 +101,7 @@ export function ServiceCard({ service, isSelected, onToggle }: ServiceCardProps)
 
       <div className="mt-2 flex items-center gap-1.5 text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-disabled)' }}>
         <span className="w-1 h-1 rounded-full" style={{ backgroundColor: service.categoryColor || 'var(--accent-line)' }} />
-        {service.category}
+        {categoryLabel(service.category, lang)}
         <span className="sr-only">{durationLabel(service.duration)}</span>
       </div>
     </div>

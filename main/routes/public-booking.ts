@@ -56,14 +56,14 @@ router.get('/config', (_req: Request, res: Response) => {
         policies: booking.policies,
       },
       business: {
-        name: settings.business_name || 'Diego Martins Barbearia',
-        tagline: settings.business_tagline || 'Barbearia & Estilo',
+        name: settings.business_name || 'Barbería Diego Martins',
+        tagline: settings.business_tagline || 'Barbería · Desde 2004',
         phone: settings.business_phone || settings.phone || '',
         whatsapp: settings.whatsapp || '',
         instagram: settings.instagram || '',
         address: settings.business_address || settings.address || '',
-        currencySymbol: settings.currency_symbol || 'R$',
-        timezone: settings.timezone || 'America/Sao_Paulo',
+        currencySymbol: settings.currency_symbol || 'Bs',
+        timezone: settings.timezone || 'America/La_Paz',
       },
       loyalty,
       services,
@@ -113,7 +113,7 @@ router.post('/appointments', (req: Request, res: Response) => {
   try {
     const ip = req.ip || req.socket.remoteAddress || 'unknown';
     if (isRateLimited(ip)) {
-      return res.status(429).json({ error: 'Muitas tentativas. Aguarde alguns minutos e tente novamente.' });
+      return res.status(429).json({ error: 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.' });
     }
 
     const { name, phone, date, time, notes, services, product_ids } = req.body || {};
@@ -136,7 +136,7 @@ router.post('/appointments', (req: Request, res: Response) => {
 
     res.status(201).json({ appointment });
   } catch (error: any) {
-    res.status(400).json({ error: error.message || 'Não foi possível concluir o agendamento' });
+    res.status(400).json({ error: error.message || 'No se pudo completar la reserva' });
   }
 });
 

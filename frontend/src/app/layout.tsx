@@ -21,8 +21,8 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Diego Martins Barbearia",
-  description: "Agendamento e gestão da Diego Martins Barbearia · Diego Martins",
+  title: "Barbería Diego Martins",
+  description: "Reservas y gestión de la Barbería Diego Martins · Santa Cruz de la Sierra · Desde 2004",
 };
 
 export const viewport: Viewport = {
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="es">
       <body className={`${display.variable} ${body.variable} antialiased`}>
         <AuthGuard>{children}</AuthGuard>
         <Toaster position="top-right" />

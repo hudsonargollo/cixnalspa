@@ -1,11 +1,4 @@
-export function brl(value: number): string {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(value || 0);
-}
+import { LOCALES, type Lang } from './i18n';
 
 export function durationLabel(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);
@@ -27,11 +20,14 @@ export interface UpcomingDate {
   label: string;
 }
 
-export function getUpcomingDates(count: number, openDays: number[]): UpcomingDate[] {
+const TODAY: Record<Lang, string> = { es: 'Hoy', pt: 'Hoje', en: 'Today' };
+const TOMORROW: Record<Lang, string> = { es: 'Mañana', pt: 'Amanhã', en: 'Tomorrow' };
+
+export function getUpcomingDates(count: number, openDays: number[], lang: Lang = 'es'): UpcomingDate[] {
   const dates: UpcomingDate[] = [];
   const today = new Date();
   today.setHours(12, 0, 0, 0);
-  const weekdayShort = new Intl.DateTimeFormat('pt-BR', { weekday: 'short' });
+  const weekdayShort = new Intl.DateTimeFormat(LOCALES[lang], { weekday: 'short' });
 
   for (let offset = 0; offset < 60 && dates.length < count; offset++) {
     const day = new Date(today);
@@ -39,8 +35,8 @@ export function getUpcomingDates(count: number, openDays: number[]): UpcomingDat
     if (openDays.length > 0 && !openDays.includes(day.getDay())) continue;
 
     let label: string;
-    if (offset === 0) label = 'Hoje';
-    else if (offset === 1) label = 'Amanhã';
+    if (offset === 0) label = TODAY[lang];
+    else if (offset === 1) label = TOMORROW[lang];
     else {
       const wd = weekdayShort.format(day).replace('.', '');
       label = `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${day.getDate()}`;
@@ -51,31 +47,32 @@ export function getUpcomingDates(count: number, openDays: number[]): UpcomingDat
   return dates;
 }
 
-export function formatDateLong(dateStr: string): string {
+export function formatDateLong(dateStr: string, lang: Lang = 'es'): string {
   if (!dateStr) return '';
   const date = new Date(`${dateStr}T12:00:00`);
-  return new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat(LOCALES[lang], {
     weekday: 'long',
     day: '2-digit',
     month: 'long',
   }).format(date);
 }
 
-export function formatShortDate(dateStr: string): string {
+export function formatShortDate(dateStr: string, lang: Lang = 'es'): string {
   if (!dateStr) return '';
   const date = new Date(`${dateStr}T12:00:00`);
-  return new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat(LOCALES[lang], {
     weekday: 'short',
     day: '2-digit',
     month: '2-digit',
   }).format(date).replace('.', '');
 }
 
+// Bolivian mobile: 8 digits, grouped 3-2-3 (e.g. 700 12 345).
 export function formatPhoneInput(raw: string): string {
-  let value = raw.replace(/\D/g, '').slice(0, 11);
-  if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
-  if (value.length > 9) value = `${value.slice(0, 10)}-${value.slice(10)}`;
-  return value;
+  const digits = raw.replace(/\D/g, '').slice(0, 8);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 5) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+  return `${digits.slice(0, 3)} ${digits.slice(3, 5)} ${digits.slice(5)}`;
 }
 
 export function todayStr(): string {

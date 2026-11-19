@@ -48,10 +48,10 @@ export interface CreateAppointmentInput {
 }
 
 const DEFAULT_POLICIES = [
-  'Atendimento no estúdio, com horário marcado.',
-  'Chegue com 10 minutos de antecedência.',
-  'Cancelamentos com até 24h de antecedência.',
-  'Pagamento em Pix, dinheiro ou cartão.',
+  'Atención en la barbería, con cita previa.',
+  'Llega con 10 minutos de anticipación.',
+  'Cancelaciones con hasta 24h de anticipación.',
+  'Pago en efectivo, QR o tarjeta.',
 ];
 
 export function getSettings(): Record<string, string> {
@@ -84,7 +84,7 @@ export function getBookingSettings(): BookingSettings {
     advanceDays: Math.max(1, parseInt(s.booking_advance_days || '45', 10) || 45),
     leadMinutes: Math.max(0, parseInt(s.booking_lead_minutes || '120', 10) || 0),
     stylistName: s.booking_stylist_name || 'Diego Martins',
-    stylistRole: s.booking_stylist_role || 'Barbeiro',
+    stylistRole: s.booking_stylist_role || 'Barbero',
     policies,
   };
 }
@@ -94,7 +94,7 @@ export function getLoyaltyConfig() {
   return {
     enabled: s.loyalty_enabled !== 'false',
     threshold: Math.max(1, parseInt(s.loyalty_threshold || '10', 10) || 10),
-    rewardDescription: s.loyalty_reward || 'Corte de cabelo grátis',
+    rewardDescription: s.loyalty_reward || 'Corte gratis',
   };
 }
 
@@ -119,9 +119,9 @@ export function isValidTime(time: string): boolean {
   return minutes >= 0 && minutes < 24 * 60;
 }
 
-/** Current date/time in the salon's timezone (defaults to São Paulo). */
+/** Current date/time in the salon's timezone (defaults to Santa Cruz, Bolivia). */
 export function nowInTimezone(): { date: string; minutes: number } {
-  const timezone = getSettings().timezone || 'America/Sao_Paulo';
+  const timezone = getSettings().timezone || 'America/La_Paz';
   const parts = new Intl.DateTimeFormat('en-CA', {
     timeZone: timezone,
     year: 'numeric',
@@ -177,7 +177,7 @@ export function upsertCustomer(name: string, phone: string): any {
   const id = 'cust-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11);
   db.prepare(`
     INSERT INTO customers (id, name, phone, country_code, created_at, updated_at)
-    VALUES (?, ?, ?, '+55', ?, ?)
+    VALUES (?, ?, ?, '+591', ?, ?)
   `).run(id, name, normalizePhone(phone), now(), now());
   return db.prepare('SELECT * FROM customers WHERE id = ?').get(id);
 }
@@ -209,7 +209,7 @@ export function getBookingServices(): BookingService[] {
     description: p.description || '',
     duration: p.service_duration_minutes || 30,
     price: Number(p.price) || 0,
-    category: p.category_name || 'Serviços',
+    category: p.category_name || 'Servicios',
     categoryColor: p.category_color,
     categoryIcon: p.category_icon,
   }));
@@ -221,7 +221,7 @@ function getProductsByIds(productIds: string[]): any[] {
     const product = db.prepare(
       "SELECT * FROM products WHERE id = ? AND deleted_at IS NULL AND is_active = 1 AND kind = 'service'"
     ).get(id) as any;
-    if (!product) throw new Error(`Serviço não encontrado: ${id}`);
+    if (!product) throw new Error(`Servicio no encontrado: ${id}`);
     return product;
   });
 }
@@ -249,7 +249,7 @@ export interface Slot {
 
 export function getSlots(date: string, durationMinutes: number, ignoreAppointmentId?: string): Slot[] {
   const settings = getBookingSettings();
-  if (!isValidDate(date)) throw new Error('Data inválida');
+  if (!isValidDate(date)) throw new Error('Fecha inválida');
 
   const nowTz = nowInTimezone();
   const duration = Math.max(5, durationMinutes || 30);
@@ -307,11 +307,11 @@ export function createAppointment(input: CreateAppointmentInput): any {
   const time = String(input.time || '');
   const productIds = (input.productIds || []).filter(Boolean);
 
-  if (name.length < 2) throw new Error('Informe o seu nome completo');
-  if (phone.length < 10) throw new Error('Informe um WhatsApp válido');
-  if (!isValidDate(date)) throw new Error('Escolha uma data válida');
-  if (!isValidTime(time)) throw new Error('Escolha um horário válido');
-  if (productIds.length === 0) throw new Error('Escolha pelo menos um serviço');
+  if (name.length < 2) throw new Error('Ingresa tu nombre completo');
+  if (phone.length < 8) throw new Error('Ingresa un WhatsApp válido');
+  if (!isValidDate(date)) throw new Error('Elige una fecha válida');
+  if (!isValidTime(time)) throw new Error('Elige un horario válido');
+  if (productIds.length === 0) throw new Error('Elige al menos un servicio');
 
   const products = getProductsByIds(productIds);
   const duration = Math.max(30, products.reduce((sum, p) => sum + (Number(p.service_duration_minutes) || 0), 0));
@@ -323,7 +323,7 @@ export function createAppointment(input: CreateAppointmentInput): any {
     const slots = getSlots(date, duration);
     const slot = slots.find((s) => s.time === time);
     if (!slot || !slot.available) {
-      throw new Error('Esse horário não está mais disponível. Escolha outro, por favor.');
+      throw new Error('Ese horario ya no está disponible. Elige otro, por favor.');
     }
   }
 

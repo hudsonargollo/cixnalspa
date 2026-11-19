@@ -51,14 +51,14 @@ function shiftDate(date: string, days: number): string {
 function displayPhone(raw?: string | null): string {
   if (!raw) return '';
   const digits = raw.replace(/\D/g, '');
-  const local = digits.length > 11 ? digits.slice(-11) : digits;
+  const local = digits.length > 8 ? digits.slice(-8) : digits;
   return formatPhoneInput(local);
 }
 
 function whatsappUrl(phone?: string | null): string {
   const digits = (phone || '').replace(/\D/g, '');
   if (!digits) return '';
-  const full = digits.length <= 11 ? `55${digits}` : digits;
+  const full = digits.length <= 8 ? `591${digits}` : digits;
   return `https://wa.me/${full}`;
 }
 
@@ -470,7 +470,7 @@ export default function AgendaPage() {
               <Input
                 value={form.phone}
                 onChange={(event) => setForm({ ...form, phone: formatPhoneInput(event.target.value) })}
-                placeholder="(31) 99587-2149"
+                placeholder="700 12 345"
                 required
               />
             </div>

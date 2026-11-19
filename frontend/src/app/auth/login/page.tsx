@@ -39,17 +39,16 @@ export default function LoginPage() {
           <CardContent className="px-6 pt-8 pb-8">
             <div className="flex flex-col items-center text-center mb-7">
               <div
-                className="w-20 h-20 rounded-full flex items-center justify-center mb-4"
+                className="w-20 h-20 rounded-full flex items-center justify-center mb-4 overflow-hidden"
                 style={{
-                  backgroundColor: isDarkMode ? '#1a1e14' : '#eef1e8',
-                  border: isDarkMode ? '1px solid rgba(230,255,87,0.28)' : '1.5px solid rgba(31,36,24,0.12)',
-                  backgroundImage: 'radial-gradient(circle at 50% 42%, rgba(230,255,87,0.12), transparent 62%)',
+                  backgroundColor: '#121315',
+                  border: isDarkMode ? '1px solid rgba(201,138,75,0.35)' : '1.5px solid rgba(60,42,24,0.15)',
                 }}
               >
-                <img src="/dm/logo.svg" alt="Diego Martins Barbearia" className="w-12 h-12 object-contain" />
+                <img src="/dm/logo.webp" alt="Barbería Diego Martins" className="w-[70%] h-[70%] object-contain" />
               </div>
-              <h1 className="font-display text-3xl font-light tracking-wide">Diego Martins Barbearia</h1>
-              <p className="text-xs tracking-widest uppercase mt-1 text-[var(--muted-foreground)]">Acesso da equipe</p>
+              <h1 className="font-display text-3xl font-light tracking-wide">Barbería Diego Martins</h1>
+              <p className="text-xs tracking-widest uppercase mt-1 text-[var(--muted-foreground)]">Acceso del equipo</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

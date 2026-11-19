@@ -1,30 +1,32 @@
 /* ─────────────────────────────────────────────────────────────
-   Diego Martins Barbearia — shared brand tokens (booking + admin)
+   Barbería Diego Martins — shared brand tokens (booking + admin)
+   Palette from the logo: charcoal, wood brown, copper, cream.
    ───────────────────────────────────────────────────────────── */
 
 .booking-root,
 .admin-root {
-  --brand-lime: #e6ff57;
-  --brand-lime-soft: #c8e04a;
-  --brand-accent: #e6ff57;
-  --brand-accent-soft: #c8e04a;
-  --brand-olive: #8f9e45;
+  --brand-copper: #c98a4b;
+  --brand-copper-soft: #b0713a;
+  --brand-accent: #c98a4b;
+  --brand-accent-soft: #b0713a;
+  --brand-wood: #8a5a2e;
+  --brand-cream: #f2e8dc;
 
-  --bg-app: #141618;
-  --bg-surface: #1c1f21;
-  --bg-surface-hover: #262a2d;
-  --bg-surface-active: #30363a;
-  --border-subtle: #33383b;
-  --text-primary: #f5f7f2;
-  --text-secondary: #b8c0b4;
-  --text-disabled: #6f786e;
-  --btn-primary-bg: #1f2418;
-  --btn-primary-text: #e6ff57;
-  --btn-primary-border: #e6ff57;
+  --bg-app: #16120e;
+  --bg-surface: #201a15;
+  --bg-surface-hover: #2b231c;
+  --bg-surface-active: #372c22;
+  --border-subtle: #3b3128;
+  --text-primary: #f5efe6;
+  --text-secondary: #c4b6a6;
+  --text-disabled: #7d7164;
+  --btn-primary-bg: #2a1f14;
+  --btn-primary-text: #e8c79a;
+  --btn-primary-border: #c98a4b;
   --slot-available-bg: var(--bg-surface);
-  --slot-selected-bg: #e6ff57;
-  --slot-selected-text: #141618;
-  --accent-line: #e6ff57;
+  --slot-selected-bg: #c98a4b;
+  --slot-selected-text: #16120e;
+  --accent-line: #c98a4b;
 
   background-color: var(--bg-app);
   color: var(--text-primary);
@@ -36,21 +38,21 @@
 
 .booking-root[data-theme='light'],
 .admin-root[data-theme='light'] {
-  --bg-app: #f4f6f0;
-  --bg-surface: #ffffff;
-  --bg-surface-hover: #eef1e8;
-  --bg-surface-active: #e3e9d8;
-  --border-subtle: #dfe4d5;
-  --text-primary: #1b2018;
-  --text-secondary: #59614f;
-  --text-disabled: #909a85;
-  --btn-primary-bg: #1f2418;
-  --btn-primary-text: #e6ff57;
-  --btn-primary-border: #1f2418;
-  --slot-available-bg: #ffffff;
-  --slot-selected-bg: #1f2418;
-  --slot-selected-text: #e6ff57;
-  --accent-line: #7a9220;
+  --bg-app: #f6f1e9;
+  --bg-surface: #fffdf9;
+  --bg-surface-hover: #f0e7da;
+  --bg-surface-active: #e7dbc9;
+  --border-subtle: #e2d7c6;
+  --text-primary: #241b12;
+  --text-secondary: #6b5c4b;
+  --text-disabled: #9c8d7b;
+  --btn-primary-bg: #2a1f14;
+  --btn-primary-text: #e8c79a;
+  --btn-primary-border: #2a1f14;
+  --slot-available-bg: #fffdf9;
+  --slot-selected-bg: #2a1f14;
+  --slot-selected-text: #e8c79a;
+  --accent-line: #a06a32;
 }
 
 .booking-root h1,
@@ -115,7 +117,7 @@
   --sidebar: var(--bg-surface);
   --sidebar-foreground: var(--text-primary);
   --sidebar-primary: var(--brand-accent);
-  --sidebar-primary-foreground: #141618;
+  --sidebar-primary-foreground: #16120e;
   --sidebar-accent: var(--bg-surface-hover);
   --sidebar-accent-foreground: var(--accent-line);
   --sidebar-border: var(--border-subtle);

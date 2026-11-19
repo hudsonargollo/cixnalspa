@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import './booking.css';
 
 export const metadata: Metadata = {
-  title: 'Diego Martins Barbearia · Agendamento',
-  description: 'Agende seu horário na Diego Martins Barbearia. Cortes, barbas, combos e cuidados para o visual masculino.',
+  title: 'Barbería Diego Martins · Reservas',
+  description: 'Reserva tu horario en la Barbería Diego Martins, Santa Cruz de la Sierra. Cortes, barba, cejas y combos. Desde 2004.',
 };
 
 export const viewport: Viewport = {

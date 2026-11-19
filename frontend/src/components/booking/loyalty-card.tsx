@@ -1,14 +1,16 @@
 'use client';
 
 import type { BookingLoyalty } from '@/lib/booking-types';
+import { t, type Lang } from '@/lib/i18n';
 
 interface LoyaltyCardProps {
   visits: number;
   totalVisits?: number;
   config: BookingLoyalty;
+  lang: Lang;
 }
 
-export function LoyaltyCard({ visits, totalVisits, config }: LoyaltyCardProps) {
+export function LoyaltyCard({ visits, totalVisits, config, lang }: LoyaltyCardProps) {
   if (!config.enabled) return null;
 
   const currentProgress = visits % config.threshold;
@@ -32,12 +34,12 @@ export function LoyaltyCard({ visits, totalVisits, config }: LoyaltyCardProps) {
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--accent-line)' }}>
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
               </svg>
-              Fidelidade
+              {t('loyalty', lang)}
             </h3>
             <p className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>
               {isRewardReady
-                ? 'Sua recompensa está liberada!'
-                : `Faltam ${remaining} ${remaining === 1 ? 'visita' : 'visitas'} para ganhar`}
+                ? t('rewardReady', lang)
+                : `${t('remaining1', lang)} ${remaining} ${remaining === 1 ? t('remaining2', lang) : t('remaining2pl', lang)}`}
             </p>
           </div>
           {totalVisits !== undefined && totalVisits > 0 && (
@@ -45,7 +47,7 @@ export function LoyaltyCard({ visits, totalVisits, config }: LoyaltyCardProps) {
               className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap"
               style={{ backgroundColor: 'var(--bg-surface-hover)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)' }}
             >
-              {totalVisits === 1 ? '1 visita' : `${totalVisits} visitas`}
+              {totalVisits === 1 ? `1 ${t('visit', lang)}` : `${totalVisits} ${t('visits', lang)}`}
             </div>
           )}
         </div>
@@ -72,7 +74,7 @@ export function LoyaltyCard({ visits, totalVisits, config }: LoyaltyCardProps) {
             <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
             <path d="M18 2h-4a4 4 0 0 0-4 4v9h12V6a4 4 0 0 0-4-4Z" />
           </svg>
-          <span>A cada {config.threshold} visitas: <strong style={{ color: 'var(--text-primary)' }}>{config.rewardDescription}</strong></span>
+          <span>{t('every', lang)} {config.threshold} {t('visitsColon', lang)} <strong style={{ color: 'var(--text-primary)' }}>{config.rewardDescription}</strong></span>
         </div>
       </div>
     </div>
