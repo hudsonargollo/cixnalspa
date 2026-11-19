@@ -39,6 +39,7 @@
     "@types/node": "^20.14.0",
     "@types/qrcode": "^1.5.6",
     "@types/uuid": "^9.0.8",
+    "dmg-license": "^1.0.11",
     "electron": "^31.1.0",
     "electron-builder": "^24.13.3",
     "node-gyp": "^13.1.0",
