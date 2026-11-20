@@ -41,13 +41,12 @@ export default function LoginPage() {
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center mb-4 overflow-hidden"
                 style={{
-                  backgroundColor: '#1c1413',
-                  border: isDarkMode ? '1px solid rgba(166,90,76,0.35)' : '1.5px solid rgba(60,42,24,0.15)',
+                  backgroundColor: '#E8DDD0',
+                  border: '1px solid rgba(122,64,56,0.18)',
                 }}
               >
                 <img src="/cixnails/logo.webp" alt="Cix Nail Artist" className="w-[70%] h-[70%] object-contain" />
               </div>
-              <h1 className="font-display text-3xl font-light tracking-wide">Cix Nail Artist</h1>
               <p className="text-xs tracking-widest uppercase mt-1 text-[var(--muted-foreground)]">Acceso del equipo</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
