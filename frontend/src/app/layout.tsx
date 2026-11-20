@@ -28,7 +28,7 @@ const body = isDesktop
     };
 
 export const metadata: Metadata = {
-  title: "Cix Nail Artist",
+  title: "Área del equipo",
   description: "Reservas y gestión de Cix Nail Artist · Manicura y pedicura en Santa Cruz de la Sierra",
 };
 
