@@ -8,7 +8,7 @@
 export type Lang = 'es' | 'pt' | 'en';
 export const LANGS: Lang[] = ['es', 'pt', 'en'];
 export const LANG_LABEL: Record<Lang, string> = { es: 'ES', pt: 'PT', en: 'EN' };
-const STORAGE_KEY = 'dm_booking_lang';
+const STORAGE_KEY = 'cix_booking_lang';
 
 export function loadLang(): Lang {
   if (typeof window === 'undefined') return 'es';
@@ -32,25 +32,25 @@ export function money(value: number, lang: Lang): string {
 
 // Service copy keyed by product id (DB names stay canonical Spanish).
 const SERVICE_COPY: Record<string, Record<Lang, { name: string; description: string }>> = {
-  'dm-corte': {
-    es: { name: 'Corte', description: 'Corte a tijera y máquina, degradados y contornos definidos, con lavado y peinado final.' },
-    pt: { name: 'Corte', description: 'Corte com tesoura e máquina, degradês e contornos definidos, com lavagem e finalização.' },
-    en: { name: 'Haircut', description: 'Scissor and clipper cut, fades and crisp lines, finished with a wash and style.' },
+  'cix-prod-01': {
+    es: { name: 'Manicura Gel', description: 'Manicura en gel de larga duración. Un solo tono, francesas o decoración a elección.' },
+    pt: { name: 'Manicura Gel', description: 'Manicura em gel de longa duração. Um só tom, francesinhas ou decoração à escolha.' },
+    en: { name: 'Gel Manicure', description: 'Long-lasting gel manicure. One tone, French tips or nail art of your choice.' },
   },
-  'dm-barba': {
-    es: { name: 'Barba', description: 'Perfilado y modelado de barba con toalla caliente, navaja y aceite para un acabado impecable.' },
-    pt: { name: 'Barba', description: 'Design e modelagem de barba com toalha quente, navalha e óleo para um acabamento impecável.' },
-    en: { name: 'Beard', description: 'Beard shaping and sculpting with hot towel, razor and oil for a flawless finish.' },
+  'cix-prod-02': {
+    es: { name: 'Pedicura Pedispa', description: 'Pedicura con spa: hidratación, exfoliación y acabado perfecto. Un solo tono, francesas o decoración.' },
+    pt: { name: 'Pedicura Pedispa', description: 'Pedicura spa: hidratação, esfoliação e acabamento perfeito. Um só tom, francesinhas ou decoração.' },
+    en: { name: 'Pedispa Pedicure', description: 'Spa pedicure with hydration, exfoliation and a flawless finish. One tone, French tips or nail art.' },
   },
-  'dm-cabello-barba': {
-    es: { name: 'Cabello + Barba', description: 'El combo completo: corte de cabello más barba perfilada. Sal renovado de pies a cabeza.' },
-    pt: { name: 'Cabelo + Barba', description: 'O combo completo: corte de cabelo mais barba desenhada. Saia renovado da cabeça aos pés.' },
-    en: { name: 'Hair + Beard', description: 'The full combo: haircut plus sculpted beard. Leave looking sharp from head to toe.' },
+  'cix-prod-03': {
+    es: { name: 'Combo Manos y Pies', description: 'Manicura y pedicura en la misma sesión. Elige la técnica y el diseño para cada una.' },
+    pt: { name: 'Combo Mãos e Pés', description: 'Manicura e pedicura na mesma sessão. Escolha a técnica e o desenho para cada uma.' },
+    en: { name: 'Hands & Feet Combo', description: 'Manicure and pedicure in one session. Pick the technique and design for each.' },
   },
-  'dm-cejas': {
-    es: { name: 'Cejas', description: 'Diseño y alineación de cejas con navaja: simetría y limpieza para realzar tu mirada.' },
-    pt: { name: 'Sobrancelhas', description: 'Design e alinhamento de sobrancelhas com navalha: simetria e limpeza para realçar o olhar.' },
-    en: { name: 'Eyebrows', description: 'Eyebrow shaping and clean-up with razor: symmetry and definition to frame your look.' },
+  'cix-prod-04': {
+    es: { name: 'Manicura Acrílica con Decoración', description: 'Acrílico con diseño y decoración a mano, hecho para durar.' },
+    pt: { name: 'Manicura Acrílica com Decoração', description: 'Acrílico com design e decoração à mão, feito para durar.' },
+    en: { name: 'Acrylic Manicure with Nail Art', description: 'Acrylic with hand-painted design and decoration, made to last.' },
   },
 };
 
@@ -69,31 +69,31 @@ export function categoryLabel(name: string, lang: Lang): string {
 
 const T = {
   // header / hero
-  tagline: { es: 'Barbería · Desde 2004', pt: 'Barbearia · Desde 2004', en: 'Barbershop · Since 2004' },
-  barberRole: { es: 'Barbero', pt: 'Barbeiro', en: 'Barber' },
+  tagline: { es: 'Manicura y Pedicura · Santa Cruz', pt: 'Manicura e Pedicura · Santa Cruz', en: 'Manicure & Pedicure · Santa Cruz' },
+  barberRole: { es: 'Nail Artist', pt: 'Nail Artist', en: 'Nail Artist' },
   admin: { es: 'Admin', pt: 'Admin', en: 'Admin' },
   themeToggle: { es: 'Cambiar tema', pt: 'Alternar tema', en: 'Toggle theme' },
   langToggle: { es: 'Cambiar idioma', pt: 'Mudar idioma', en: 'Change language' },
   // about
-  aboutTitle: { es: 'Quién soy', pt: 'Quem sou eu', en: 'About me' },
+  aboutTitle: { es: 'Cix Nail Artist', pt: 'Cix Nail Artist', en: 'Cix Nail Artist' },
   aboutBody: {
-    es: 'Un espacio hecho para ti. En la Barbería Diego Martins, cada corte y cada barba se hacen con atención cercana, técnica actualizada y cuidado en cada detalle. Más de 20 años de oficio, desde 2004.',
-    pt: 'Um espaço feito para você. Na Barbería Diego Martins, cada corte e cada barba são feitos com atendimento próximo, técnica atual e atenção a cada detalhe. Mais de 20 anos de ofício, desde 2004.',
-    en: 'A space made for you. At Diego Martins Barbershop, every cut and every beard gets personal attention, modern technique and care in every detail. Over 20 years of craft, since 2004.',
+    es: 'Un espacio pensado para ti. En Cix Nail Artist cada manicura y cada pedicura se hacen con atención cercana, técnica actual y cuidado en cada detalle. Eres la razón de nuestro trabajo diario.',
+    pt: 'Um espaço feito para você. Na Cix Nail Artist cada manicura e cada pedicura são feitas com atendimento próximo, técnica atual e atenção a cada detalhe. Você é a razão do nosso trabalho diário.',
+    en: 'A space made for you. At Cix Nail Artist every manicure and pedicure gets personal attention, modern technique and care in every detail. You are the reason for our daily work.',
   },
-  serviceInfoTitle: { es: 'Atención', pt: 'Atendimento', en: 'Good to know' },
+  serviceInfoTitle: { es: 'Antes de tu cita', pt: 'Antes do seu horário', en: 'Good to know' },
   infoDuration: { es: 'Servicios de', pt: 'Procedimentos de', en: 'Services from' },
   infoDurationTo: { es: 'a', pt: 'a', en: 'to' },
-  infoLocation: { es: 'Atención en la barbería — Santa Cruz de la Sierra', pt: 'Atendimento na barbería — Santa Cruz de la Sierra', en: 'In-shop service — Santa Cruz de la Sierra' },
-  infoPayment: { es: 'Pago: efectivo, QR o tarjeta', pt: 'Pagamento: dinheiro, QR ou cartão', en: 'Payment: cash, QR or card' },
+  infoLocation: { es: 'Atención en el salón · Zona Equipetrol, Santa Cruz de la Sierra', pt: 'Atendimento no salão · Zona Equipetrol, Santa Cruz de la Sierra', en: 'In-salon service · Zona Equipetrol, Santa Cruz de la Sierra' },
+  infoPayment: { es: 'Pago: efectivo o código QR', pt: 'Pagamento: dinheiro ou código QR', en: 'Payment: cash or QR code' },
   // location
   locationTitle: { es: 'Ubicación', pt: 'Localização', en: 'Location' },
   directions: { es: 'Cómo llegar', pt: 'Como chegar', en: 'Get directions' },
   // gallery
   galleryTitle: { es: 'Nuestro trabajo', pt: 'Nosso trabalho', en: 'Our work' },
-  ctaTitle1: { es: '¿Listo para', pt: 'Pronto para', en: 'Ready to' },
-  ctaTitle2: { es: 'renovar tu estilo?', pt: 'renovar o visual?', en: 'refresh your look?' },
-  ctaSub: { es: 'Elige un servicio y agenda con Diego.', pt: 'Escolha um serviço e agende com o Diego.', en: 'Pick a service and book with Diego.' },
+  ctaTitle1: { es: '¿Lista para', pt: 'Pronta para', en: 'Ready to' },
+  ctaTitle2: { es: 'mimarte las manos?', pt: 'mimar as mãos?', en: 'treat your hands?' },
+  ctaSub: { es: 'Elige un servicio y agenda tu cita.', pt: 'Escolha um serviço e agende seu horário.', en: 'Pick a service and book your slot.' },
   bookNow: { es: 'Reservar ahora', pt: 'Agendar agora', en: 'Book now' },
   // sections
   featured: { es: 'Servicios destacados', pt: 'Serviços em destaque', en: 'Featured services' },
@@ -125,12 +125,12 @@ const T = {
     en: 'We need your WhatsApp to confirm the slot and track your visits in the loyalty program.',
   },
   yourName: { es: 'Tu nombre', pt: 'Seu nome', en: 'Your name' },
-  namePlaceholder: { es: 'Ej: Juan Pérez', pt: 'Ex: João Silva', en: 'e.g. John Smith' },
+  namePlaceholder: { es: 'Ej: María Pérez', pt: 'Ex: Maria Silva', en: 'e.g. Mary Smith' },
   welcomeBack: { es: '¡Hola de nuevo,', pt: 'Olá de volta,', en: 'Welcome back,' },
   youHave: { es: 'Tienes', pt: 'Você tem', en: 'You have' },
   visit: { es: 'visita', pt: 'visita', en: 'visit' },
   visits: { es: 'visitas', pt: 'visitas', en: 'visits' },
-  firstTime: { es: '¿Primera vez por aquí? ¡Bienvenido!', pt: 'Primeira vez por aqui? Seja muito bem-vindo!', en: 'First time here? Welcome!' },
+  firstTime: { es: '¿Primera vez por aquí? ¡Bienvenida!', pt: 'Primeira vez por aqui? Seja muito bem-vinda!', en: 'First time here? Welcome!' },
   booking: { es: 'Reservando...', pt: 'Agendando...', en: 'Booking...' },
   confirmBooking: { es: 'Confirmar reserva', pt: 'Confirmar agendamento', en: 'Confirm booking' },
   consent: { es: 'Al continuar, aceptas recibir mensajes sobre tu reserva.', pt: 'Ao continuar, você concorda em receber mensagens sobre o seu agendamento.', en: 'By continuing you agree to receive messages about your booking.' },

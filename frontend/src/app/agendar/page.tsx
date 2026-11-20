@@ -34,30 +34,33 @@ import { LoyaltyCard } from '@/components/booking/loyalty-card';
 
 type Step = 'services' | 'calendar' | 'identify' | 'success';
 
-const SLIDESHOW_PHOTOS = ['/dm/shop-1.webp', '/dm/shop-2.webp', '/dm/shop-3.webp', '/dm/shop-4.webp', '/dm/work-corte.webp', '/dm/work-barba.webp', '/dm/work-combo.webp', '/dm/work-kids.webp'];
+const SLIDESHOW_PHOTOS = [
+  '/cixnails/work-mani-1.webp',
+  '/cixnails/work-mani-2.webp',
+  '/cixnails/work-pedi-1.webp',
+  '/cixnails/work-nailart.webp',
+];
 
 const HIGHLIGHT_IMAGES: Record<string, string> = {
-  'dm-corte': '/dm/work-corte.webp',
-  'dm-barba': '/dm/work-barba.webp',
-  'dm-cabello-barba': '/dm/work-combo.webp',
-  'dm-cejas': '/dm/work-corte2.webp',
+  'cix-prod-01': '/cixnails/work-mani-1.webp',
+  'cix-prod-02': '/cixnails/work-pedi-1.webp',
+  'cix-prod-03': '/cixnails/work-nailart.webp',
+  'cix-prod-04': '/cixnails/work-mani-2.webp',
 };
 
 const GALLERY_PHOTOS = [
-  '/dm/work-corte.webp',
-  '/dm/work-barba.webp',
-  '/dm/work-combo.webp',
-  '/dm/work-kids.webp',
-  '/dm/work-corte2.webp',
-  '/dm/work-barba2.webp',
-  '/dm/work-combo2.webp',
-  '/dm/work-kids3.webp',
+  '/cixnails/work-mani-1.webp',
+  '/cixnails/work-mani-2.webp',
+  '/cixnails/work-pedi-1.webp',
+  '/cixnails/work-nailart.webp',
+  '/cixnails/shop-3.webp',
+  '/cixnails/shop-5.webp',
 ];
 
 const MAPS_URL = 'https://maps.app.goo.gl/SWzDE8chNP2KE7xV6';
-const ADDRESS = 'Dr. Alejandro Ramírez 18, Santa Cruz de la Sierra';
-const FALLBACK_INSTAGRAM = 'diegomartinsbarbearia';
-const LOGO = '/dm/diegomartins-logo.webp';
+const ADDRESS = 'Zona Equipetrol, Santa Cruz de la Sierra';
+const FALLBACK_INSTAGRAM = 'cixnailartist';
+const LOGO = '/cixnails/logo.webp';
 
 export default function BookingPage() {
   const [config, setConfig] = useState<BookingConfig | null>(null);
@@ -106,12 +109,12 @@ export default function BookingPage() {
 
   useEffect(() => {
     setLang(loadLang());
-    const stored = localStorage.getItem('dm_booking_theme');
+    const stored = localStorage.getItem('cix_booking_theme');
     if (stored === 'light') setIsDarkMode(false);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('dm_booking_theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('cix_booking_theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   const switchLang = () => {
@@ -255,10 +258,10 @@ export default function BookingPage() {
   const whatsappNumber = business?.whatsapp || '';
   const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : '';
   const instagramUrl = `https://instagram.com/${business?.instagram || FALLBACK_INSTAGRAM}`;
-  const stylistName = config?.booking.stylist.name || 'Diego Martins';
+  const stylistName = config?.booking.stylist.name || 'Cix Nail Artist';
   const phoneDigits = customerPhone.replace(/\D/g, '');
 
-  const FEATURED_IDS = ['dm-corte', 'dm-cabello-barba', 'dm-barba'];
+  const FEATURED_IDS = ['cix-prod-01', 'cix-prod-02', 'cix-prod-03'];
   const highlights = config?.services.filter((service) => FEATURED_IDS.includes(service.id)) ?? [];
   const categories = Array.from(
     new Set(config?.services.map((service) => service.category) ?? [])
@@ -304,7 +307,7 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-6 text-center">
           <div className="w-24 h-24 mb-6 animate-pulse-soft">
-            <img src={LOGO} alt="Barbería Diego Martins" className="w-full h-full object-contain" />
+            <img src={LOGO} alt="Cix Nail Artist" className="w-full h-full object-contain" />
           </div>
           <p className="text-sm tracking-widest uppercase" style={{ color: 'var(--text-secondary)' }}>{t('loading', lang)}</p>
         </div>
@@ -317,9 +320,9 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-8 text-center">
           <div className="w-20 h-20 mb-6">
-            <img src={LOGO} alt="Barbería Diego Martins" className="w-full h-full object-contain" />
+            <img src={LOGO} alt="Cix Nail Artist" className="w-full h-full object-contain" />
           </div>
-          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Barbería Diego Martins</h1>
+          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Cix Nail Artist</h1>
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>{configError ? t('loadError', lang) : t('servicesUnavailable', lang)}</p>
           <button onClick={loadConfig} className="btn-brand px-8 py-3 rounded-full text-xs font-medium tracking-widest uppercase" style={{ position: 'relative', right: 'auto' }}>
             {t('retry', lang)}
@@ -334,9 +337,9 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-8 text-center">
           <div className="w-24 h-24 mb-6">
-            <img src={LOGO} alt="Barbería Diego Martins" className="w-full h-full object-contain" />
+            <img src={LOGO} alt="Cix Nail Artist" className="w-full h-full object-contain" />
           </div>
-          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Barbería Diego Martins</h1>
+          <h1 className="font-display text-3xl font-light mb-3" style={{ color: 'var(--text-primary)' }}>Cix Nail Artist</h1>
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
             {t('bookingPaused', lang)}
           </p>
@@ -357,10 +360,10 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-6 text-center animate-fade-in">
           <div className="mb-8">
-            <img src={LOGO} alt="Barbería Diego Martins" className="w-24 h-24 mx-auto opacity-90 object-contain" />
+            <img src={LOGO} alt="Cix Nail Artist" className="w-24 h-24 mx-auto opacity-90 object-contain" />
           </div>
 
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(201,138,75,0.12)', border: '1.5px solid var(--brand-accent)' }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(166,90,76,0.12)', border: '1.5px solid var(--brand-accent)' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--brand-accent)' }}>
               <polyline points="20 6 9 17 4 12" />
             </svg>
@@ -378,7 +381,7 @@ export default function BookingPage() {
           </p>
 
           {rewardUnlocked && (
-            <div className="w-full max-w-xs rounded-2xl p-4 mb-8" style={{ backgroundColor: 'rgba(201,138,75,0.12)', border: '1px solid rgba(201,138,75,0.4)' }}>
+            <div className="w-full max-w-xs rounded-2xl p-4 mb-8" style={{ backgroundColor: 'rgba(166,90,76,0.12)', border: '1px solid rgba(166,90,76,0.4)' }}>
               <h3 className="font-display text-xl font-medium mb-1 flex items-center justify-center gap-2" style={{ color: 'var(--brand-accent)' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" />
@@ -646,7 +649,7 @@ export default function BookingPage() {
 
         <div className="flex flex-col items-center text-center pt-14 pb-6 px-6">
           <div className="mb-5">
-            <img src={LOGO} alt="Barbería Diego Martins" className="w-48 h-48 object-contain animate-fade-in-up" />
+            <img src={LOGO} alt="Cix Nail Artist" className="w-48 h-48 object-contain animate-fade-in-up" />
           </div>
 
           <p className="text-xs tracking-widest uppercase mb-6" style={{ color: 'var(--text-disabled)' }}>
@@ -695,7 +698,7 @@ export default function BookingPage() {
                 <button
                   key={index}
                   onClick={() => setSlideshowIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${index === slideshowIndex ? 'bg-[#E6FF57] w-4' : 'bg-white/50'}`}
+                  className={`w-2 h-2 rounded-full transition-all ${index === slideshowIndex ? 'bg-[#a65a4c] w-4' : 'bg-white/50'}`}
                   style={{ margin: '0 3px' }}
                   aria-label={`Ver foto ${index + 1}`}
                 />
@@ -757,8 +760,8 @@ export default function BookingPage() {
         />
 
         <div className="mx-4 mb-8 rounded-2xl overflow-hidden relative" style={{ height: '200px' }}>
-          <img src="/dm/shop-2.webp" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 35%' }} aria-hidden="true" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(18,13,9,0.92) 42%, rgba(18,13,9,0.15) 100%)' }} />
+          <img src="/cixnails/shop-2.webp" alt="" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 35%' }} aria-hidden="true" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(28,20,19,0.92) 42%, rgba(28,20,19,0.15) 100%)' }} />
           <div className="relative z-10 h-full flex flex-col items-start justify-end p-6">
             <p className="font-display text-3xl font-light leading-tight mb-1" style={{ color: '#fff' }}>
               {t('ctaTitle1', lang)}<br />{t('ctaTitle2', lang)}
@@ -844,7 +847,7 @@ export default function BookingPage() {
 
         <div className="px-6 pb-14 text-center">
           <div className="divider mb-5" />
-          <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Barbería Diego Martins</p>
+          <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Cix Nail Artist</p>
           <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-disabled)' }}>{t('tagline', lang)}</p>
           <p className="text-xs mb-1" style={{ color: 'var(--text-disabled)' }}>{ADDRESS}</p>
           <p className="text-xs" style={{ color: 'var(--text-disabled)' }}>

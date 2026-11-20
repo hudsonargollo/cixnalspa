@@ -48,10 +48,10 @@ export interface CreateAppointmentInput {
 }
 
 const DEFAULT_POLICIES = [
-  'Atención en la barbería, con cita previa.',
-  'Llega con 10 minutos de anticipación.',
-  'Cancelaciones con hasta 24h de anticipación.',
-  'Pago en efectivo, QR o tarjeta.',
+  'Elige tu servicio y confirma fecha y horario por WhatsApp.',
+  'Llega puntual para garantizar una excelente experiencia.',
+  'Si no puedes asistir, avísanos con al menos 2 horas de anticipación.',
+  'Aceptamos pagos en efectivo y mediante código QR.',
 ];
 
 export function getSettings(): Record<string, string> {
@@ -83,8 +83,8 @@ export function getBookingSettings(): BookingSettings {
       .filter((d) => !Number.isNaN(d)),
     advanceDays: Math.max(1, parseInt(s.booking_advance_days || '45', 10) || 45),
     leadMinutes: Math.max(0, parseInt(s.booking_lead_minutes || '120', 10) || 0),
-    stylistName: s.booking_stylist_name || 'Diego Martins',
-    stylistRole: s.booking_stylist_role || 'Barbero',
+    stylistName: s.booking_stylist_name || 'Cix Nail Artist',
+    stylistRole: s.booking_stylist_role || 'Nail Artist',
     policies,
   };
 }
@@ -94,7 +94,7 @@ export function getLoyaltyConfig() {
   return {
     enabled: s.loyalty_enabled !== 'false',
     threshold: Math.max(1, parseInt(s.loyalty_threshold || '10', 10) || 10),
-    rewardDescription: s.loyalty_reward || 'Corte gratis',
+    rewardDescription: s.loyalty_reward || 'Manicura gratis',
   };
 }
 

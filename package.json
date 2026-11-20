@@ -1,7 +1,7 @@
 {
-  "name": "diegomartins-desktop",
+  "name": "cixnailartist-desktop",
   "version": "1.0.0",
-  "description": "Diego Martins Barbearia - Self-hosted Point of Sale",
+  "description": "Cix Nails Artist - self-hosted nail salon POS",
   "main": "dist/index.js",
   "scripts": {
     "dev": "npm run build:frontend && npm run build && electron .",
@@ -23,10 +23,10 @@
     "test:db-audit": "npx -y ts-node --transpile-only -P tests/tsconfig.json tests/db-audit.test.ts"
   },
   "author": {
-    "name": "Diego Martins",
-    "email": "support@diegomartins.local"
+    "name": "Cix Nail Artist",
+    "email": "admin@cixnailartist.clubemkt.digital"
   },
-  "homepage": "https://diegomartins.local",
+  "homepage": "https://cixnailartist.clubemkt.digital",
   "license": "MIT",
   "devDependencies": {
     "@electron/rebuild": "^4.0.3",
@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.2.0",
     "bonjour-service": "^1.2.1",
     "cors": "^2.8.5",
     "electron-log": "^5.4.3",
@@ -59,8 +60,8 @@
     "ws": "^8.23.0"
   },
   "build": {
-    "appId": "com.diegomartins.desktop",
-    "productName": "Diego Martins",
+    "appId": "com.cixnailartist.desktop",
+    "productName": "Cix Nail Artist",
     "asar": true,
     "asarUnpack": "**/node_modules/better-sqlite3/**/*",
     "directories": {
@@ -73,7 +74,7 @@
     "publish": {
       "provider": "github",
       "owner": "FreeOpenSourcePOS",
-      "repo": "Diego Martins"
+      "repo": "cixnails"
     },
     "extraResources": [
       {

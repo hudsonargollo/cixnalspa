@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDatabase, now } from '../db';
 
 const router = Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'diegomartins-local-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'cixnailartist-local-secret-change-in-production';
 const JWT_EXPIRES_IN = '24h';
 
 function buildLocalTenant(db: ReturnType<typeof getDatabase>, userRole: string) {
@@ -14,7 +14,7 @@ function buildLocalTenant(db: ReturnType<typeof getDatabase>, userRole: string) 
 
   return {
     id: 1,
-    business_name:   s.business_name   || 'Barbería Diego Martins',
+    business_name:   s.business_name   || 'Cix Nail Artist',
     slug:            'local',
     database_name:   'local',
     business_type:   'salon',
@@ -155,7 +155,7 @@ router.post('/setup/initialize', (req: Request, res: Response) => {
     }
 
     const userId = uuidv4();
-    const email = `user-${userId}@diegomartins.local`;
+    const email = `user-${userId}@cixnailartist.local`;
     db.prepare(`INSERT INTO users (id, name, email, phone, password, role, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, 'owner', 1, ?, ?)`).run(userId, name, email, phoneDigits, bcrypt.hashSync(password, 10), now(), now());
     db.prepare(`INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('business_type', 'salon', ?)`).run(now());
     if (business_name) db.prepare(`INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('business_name', ?, ?)`).run(business_name, now());

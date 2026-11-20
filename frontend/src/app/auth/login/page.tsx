@@ -41,13 +41,13 @@ export default function LoginPage() {
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center mb-4 overflow-hidden"
                 style={{
-                  backgroundColor: '#121315',
-                  border: isDarkMode ? '1px solid rgba(201,138,75,0.35)' : '1.5px solid rgba(60,42,24,0.15)',
+                  backgroundColor: '#1c1413',
+                  border: isDarkMode ? '1px solid rgba(166,90,76,0.35)' : '1.5px solid rgba(60,42,24,0.15)',
                 }}
               >
-                <img src="/dm/logo.webp" alt="Barbería Diego Martins" className="w-[70%] h-[70%] object-contain" />
+                <img src="/cixnails/logo.webp" alt="Cix Nail Artist" className="w-[70%] h-[70%] object-contain" />
               </div>
-              <h1 className="font-display text-3xl font-light tracking-wide">Barbería Diego Martins</h1>
+              <h1 className="font-display text-3xl font-light tracking-wide">Cix Nail Artist</h1>
               <p className="text-xs tracking-widest uppercase mt-1 text-[var(--muted-foreground)]">Acceso del equipo</p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">

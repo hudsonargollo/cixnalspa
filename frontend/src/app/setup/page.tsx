@@ -42,7 +42,7 @@ export default function SetupPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardContent className="pt-6">
-          <h1 className="text-xl font-semibold mb-1">Bem-vinda à Diego Martins Barbearia</h1>
+          <h1 className="text-xl font-semibold mb-1">Bem-vinda à Cix Nails Artist</h1>
           <p className="text-sm text-[var(--muted-foreground)] mb-6">
             Preencha seu WhatsApp — ele será seu identificador. Nenhuma outra configuração é necessária.
           </p>
@@ -56,7 +56,7 @@ export default function SetupPage() {
                 onChange={(e) => setForm({ ...form, business_name: e.target.value })}
                 required
                 autoFocus
-                placeholder="Diego Martins Barbearia"
+                placeholder="Cix Nails Artist"
               />
             </div>
             <div>

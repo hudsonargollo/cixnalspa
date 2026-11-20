@@ -36,7 +36,7 @@ function setupAutoUpdater(): void {
     dialog.showMessageBox({
       type: 'info',
       title: 'Update Available',
-      message: `Diego Martins ${info.version} is available!`,
+      message: `Cix Nail Artist ${info.version} is available!`,
       buttons: ['Download', 'Later'],
       defaultId: 0,
     }).then((result) => {
@@ -101,7 +101,7 @@ function createWindow(): void {
     height: 900,
     minWidth: 1024,
     minHeight: 768,
-    title: 'Diego Martins',
+    title: 'Cix Nail Artist',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -123,7 +123,7 @@ function createWindow(): void {
     if (isLocal) {
       return {
         action: 'allow',
-        overrideBrowserWindowOptions: { width: 1280, height: 800, title: 'Diego Martins', webPreferences: { contextIsolation: true, nodeIntegration: false } },
+        overrideBrowserWindowOptions: { width: 1280, height: 800, title: 'Cix Nail Artist', webPreferences: { contextIsolation: true, nodeIntegration: false } },
       };
     }
     shell.openExternal(url);
@@ -159,12 +159,12 @@ function createTray(): void {
     tray = new Tray(icon.resize({ width: 16, height: 16 }));
 
     const contextMenu = Menu.buildFromTemplate([
-      { label: 'Open Diego Martins', click: () => mainWindow?.show() },
+      { label: 'Open Cix Nail Artist', click: () => mainWindow?.show() },
       { type: 'separator' },
       { label: 'Quit', click: () => { isQuitting = true; app.quit(); } },
     ]);
 
-    tray.setToolTip('Diego Martins');
+    tray.setToolTip('Cix Nail Artist');
     tray.setContextMenu(contextMenu);
     tray.on('double-click', () => mainWindow?.show());
   } catch {
@@ -176,14 +176,14 @@ function startMdns(): void {
   try {
     bonjour = new Bonjour();
     bonjour.publish({
-      name: 'Diego Martins',
+      name: 'Cix Nail Artist',
       type: 'http',
       port: PORT,
-      host: 'diegomartins',
+      host: 'cixnailartist',
       txt: { version: app.getVersion() },
     });
     const ip = getLocalIP();
-    console.log(`[mDNS] Advertising diegomartins.local:${PORT}  (IP fallback: http://${ip}:${PORT})`);
+    console.log(`[mDNS] Advertisesing cixnailartist.local:${PORT}  (IP fallback: http://${ip}:${PORT})`);
   } catch (err) {
     console.warn('[mDNS] Could not start Bonjour:', err);
   }
@@ -236,7 +236,7 @@ function createMenu(): void {
     {
       label: 'Help',
       submenu: [
-        { label: 'About Diego Martins', click: () => showAbout() },
+        { label: 'About Cix Nail Artist', click: () => showAbout() },
         ...(isMasBuild ? [] : [{ label: 'Check for Updates', click: () => checkForUpdates() }]),
       ],
     },
@@ -259,8 +259,8 @@ function showAbout(): void {
   const ip = getLocalIP();
   dialog.showMessageBox({
     type: 'info',
-    title: 'About Diego Martins',
-    message: 'Diego Martins Desktop',
+    title: 'About Cix Nail Artist',
+    message: 'Cix Nail Artist Desktop',
     detail: [
       `Version: ${app.getVersion()}`,
       `Electron: ${process.versions.electron}`,
@@ -268,7 +268,7 @@ function showAbout(): void {
       '',
       'A self-hosted, offline-first Salon POS system.',
       '',
-      `URL: http://diegomartins.local:${PORT}`,
+      `URL: http://cixnailartist.local:${PORT}`,
       `IP:  http://${ip}:${PORT}`,
     ].join('\n'),
   });
@@ -276,21 +276,21 @@ function showAbout(): void {
 
 async function initialize(): Promise<void> {
   try {
-    console.log('[Diego Martins] Initializing...');
+    console.log('[Cix Nail Artist] Initializing...');
 
-    console.log('[Diego Martins] Initializing database...');
+    console.log('[Cix Nail Artist] Initializing database...');
     initDatabase();
 
-    console.log('[Diego Martins] Starting local server...');
+    console.log('[Cix Nail Artist] Starting local server...');
     await startServer();
 
-    console.log('[Diego Martins] Starting mDNS advertisement...');
+    console.log('[Cix Nail Artist] Starting mDNS advertisement...');
     startMdns();
 
-    console.log('[Diego Martins] Initializing printer...');
+    console.log('[Cix Nail Artist] Initializing printer...');
     await initPrinter();
 
-    console.log('[Diego Martins] Registering IPC handlers...');
+    console.log('[Cix Nail Artist] Registering IPC handlers...');
     registerIpcHandlers();
 
     ipcMain.handle('get-update-status', () => ({ updateAvailable, updateDownloaded, version: app.getVersion() }));
@@ -305,7 +305,7 @@ async function initialize(): Promise<void> {
       };
     });
 
-    console.log('[Diego Martins] Creating window...');
+    console.log('[Cix Nail Artist] Creating window...');
     createWindow();
     createTray();
     createMenu();
@@ -314,10 +314,10 @@ async function initialize(): Promise<void> {
       setTimeout(() => checkForUpdates(), 5000);
     }
 
-    console.log('[Diego Martins] Ready!');
+    console.log('[Cix Nail Artist] Ready!');
   } catch (error) {
-    console.error('[Diego Martins] Initialization error:', error);
-    dialog.showErrorBox('Initialization Error', `Failed to start Diego Martins: ${error}`);
+    console.error('[Cix Nail Artist] Initialization error:', error);
+    dialog.showErrorBox('Initialization Error', `Failed to start Cix Nail Artist: ${error}`);
     app.quit();
   }
 }
@@ -336,12 +336,12 @@ app.on('activate', () => {
 app.on('before-quit', () => { isQuitting = true; });
 
 app.on('quit', () => {
-  console.log('[Diego Martins] Shutting down...');
+  console.log('[Cix Nail Artist] Shutting down...');
   stopMdns();
   stopServer();
   closeDatabase();
-  console.log('[Diego Martins] Goodbye!');
+  console.log('[Cix Nail Artist] Goodbye!');
 });
 
-process.on('uncaughtException', (error) => { log.error('[Diego Martins] Uncaught exception:', error); });
-process.on('unhandledRejection', (reason) => { log.error('[Diego Martins] Unhandled rejection:', reason); });
+process.on('uncaughtException', (error) => { log.error('[Cix Nail Artist] Uncaught exception:', error); });
+process.on('unhandledRejection', (reason) => { log.error('[Cix Nail Artist] Unhandled rejection:', reason); });

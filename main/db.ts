@@ -7,10 +7,10 @@ export const SCHEMA_VERSION = 2;
 
 let db: Database.Database;
 
-// Electron's app.getPath('userData') when packaged; DIEGOMARTINS_DATA_DIR overrides
+// Electron's app.getPath('userData') when packaged; CIXNAILARTIST_DATA_DIR overrides
 // for headless (web) deployments; project root fallback for dev.
 function resolveDataDir(): string {
-  if (process.env.DIEGOMARTINS_DATA_DIR) return process.env.DIEGOMARTINS_DATA_DIR;
+  if (process.env.CIXNAILARTIST_DATA_DIR) return process.env.CIXNAILARTIST_DATA_DIR;
   try {
     const electron: any = require('electron');
     const app = electron && typeof electron === 'object' ? electron.app : null;
@@ -24,7 +24,7 @@ function resolveDataDir(): string {
 }
 
 export function getDbPath(): string {
-  return path.join(resolveDataDir(), 'diegomartins.db');
+  return path.join(resolveDataDir(), 'cixnailartist.db');
 }
 
 function getBackupDir(): string {
@@ -171,7 +171,7 @@ export async function createBackup(targetPath?: string): Promise<{ path: string;
     fs.mkdirSync(backupDir, { recursive: true });
   }
 
-  const backupPath = targetPath || path.join(backupDir, `diegomartins-backup-${timestamp}.db`);
+  const backupPath = targetPath || path.join(backupDir, `cixnailartist-backup-${timestamp}.db`);
 
   await db.backup(backupPath);
 
@@ -589,17 +589,17 @@ function seedData(): void {
     db.prepare('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)').run(key, value);
 
   insert('schema_version',       String(SCHEMA_VERSION));
-  insert('business_name',        'Diego Martins Barbearia');
-  insert('business_tagline',     'Barbearia & Estilo');
+  insert('business_name',        'Cix Nail Artist');
+  insert('business_tagline',     'Manicura y Pedicura · Santa Cruz');
   insert('business_type',        'salon');
-  insert('country',              'BR');
-  insert('currency',             'BRL');
-  insert('currency_symbol',      'R$');
-  insert('timezone',             'America/Sao_Paulo');
-  insert('address',              '');
-  insert('phone',                '+55 31 99587-2149');
-  insert('whatsapp',             '5531995872149');
-  insert('instagram',            'diegomartinsbarbearia');
+  insert('country',              'BO');
+  insert('currency',             'BOB');
+  insert('currency_symbol',      'Bs');
+  insert('timezone',             'America/La_Paz');
+  insert('address',              'Zona Equipetrol, Santa Cruz de la Sierra');
+  insert('phone',                '+591 67943253');
+  insert('whatsapp',             '59167943253');
+  insert('instagram',            'cixnailartist');
   insert('email',                '');
   insert('tax_registered',       'false');
   insert('gstin',                '');
@@ -610,15 +610,15 @@ function seedData(): void {
   insert('cloud_connected',      'false');
   seedBookingSettings();
 
-  const hashedPassword = bcrypt.hashSync('diegomartins123', 10);
-  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-1', 'Diego Martins', 'admin@diegomartins.com', hashedPassword, 'owner');
+  const hashedPassword = bcrypt.hashSync('cixnail123', 10);
+  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-1', 'Cix Nails Artist', 'admin@cixnailartist.com', hashedPassword, 'owner');
 
   const stylistPassword = bcrypt.hashSync('stylist123', 10);
-  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-2', 'Diego Martins', 'barbeiro@diegomartins.local', stylistPassword, 'stylist');
+  db.prepare(`INSERT OR IGNORE INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)`).run('user-2', 'Nail Artist', 'artist@cixnailartist.com', stylistPassword, 'stylist');
 
   db.prepare(`INSERT OR IGNORE INTO printers (id, name, connection_type, paper_width, is_default) VALUES (?, ?, ?, ?, ?)`).run('printer-1', 'Thermal Printer', 'usb', '80mm', 1);
 
-  seedDiegoMartinsCatalog();
+  seedCixCatalog();
 
   console.log('[DB] Seed data loaded');
 }
@@ -629,31 +629,30 @@ function seedBookingSettings(): void {
 
   insert('loyalty_enabled',        'true');
   insert('loyalty_threshold',      '10');
-  insert('loyalty_reward',         'Corte de cabelo grátis');
+  insert('loyalty_reward',         'Manicura gratis');
   insert('booking_enabled',        'true');
   insert('booking_open_time',      '09:00');
   insert('booking_close_time',     '19:00');
-  insert('booking_slot_interval',  '30');
+  insert('booking_slot_interval',  '60');
   insert('booking_open_days',      '1,2,3,4,5,6');
   insert('booking_advance_days',   '45');
   insert('booking_lead_minutes',   '120');
-  insert('booking_stylist_name',   'Diego Martins');
-  insert('booking_stylist_role',   'Barbeiro');
+  insert('booking_stylist_name', 'Cix Nail Artist');
+  insert('booking_stylist_role', 'Nail Artist');
   insert('booking_policies', JSON.stringify([
-    'Atendimento no estúdio, com horário marcado.',
-    'Chegue com 10 minutos de antecedência.',
-    'Cancelamentos com até 24h de antecedência.',
-    'Pagamento em Pix, dinheiro ou cartão.',
+    'Elige tu servicio y confirma fecha y horario por WhatsApp.',
+    'Si no puedes asistir, avísanos con al menos 2 horas de anticipación.',
+    'Llega puntual para garantizar una excelente experiencia.',
+    'Aceptamos pagos en efectivo y mediante código QR.',
   ]));
 }
 
-function seedDiegoMartinsCatalog(): void {
+function seedCixCatalog(): void {
   const cats = [
-    ['dm-cat-destaques', 'Destaques',    '#E6FF57', '✦', 1, 'Combos e serviços em destaque'],
-    ['dm-cat-cabelo',    'Cabelo',       '#E6FF57', '✂', 2, 'Cortes, degradês e penteados'],
-    ['dm-cat-barba',     'Barba & Bigode', '#B7C94A', '❋', 3, 'Barboterapia e acabamento'],
-    ['dm-cat-combos',    'Combos',       '#9FBF2E', '✧', 4, 'Pacotes completos'],
-    ['dm-cat-extras',    'Extras',       '#8F9E45', '❀', 5, 'Tratamentos e cuidados adicionais'],
+    ['cix-cat-destaques', 'Destacados', '#A65A4C', '✦', 1, 'Manicuras y pedicuras más solicitadas'],
+    ['cix-cat-manicura',  'Manicura',    '#C4897C', '❀', 2, 'Tradicional, acrílico, gel y otros'],
+    ['cix-cat-pedicura',  'Pedicura',    '#B4705F', '✧', 3, 'Tradicional, semipermanente, pedispa y acripie'],
+    ['cix-cat-combos',    'Combos',      '#8E4E43', '❋', 4, 'Manos y pies en un solo momento'],
   ];
   for (const [id, name, color, icon, sort, description] of cats) {
     db.prepare(`
@@ -662,76 +661,42 @@ function seedDiegoMartinsCatalog(): void {
     `).run(id, name, description, color, icon, sort);
   }
 
+  // Prices are in bolivianos (Bs) and are intentionally illustrative — the
+  // salon confirms the final quote on WhatsApp. Durations drive booking slots.
   const products: [string, string, string, string, number, number, number][] = [
-    ['dm-prod-01', 'dm-cat-destaques', 'Corte + Barba Completa',
-      'O clássico da casa: corte de cabelo com tesoura e máquina, barba alinhada e hidratação final.',
-      90, 60, 1],
-    ['dm-prod-02', 'dm-cat-destaques', 'Combo Barbeiro (Corte + Barba + Bigode)',
-      'Corte, barba esculpida, bigode alinhado e toque final com óleo. Pacote completo para uma segunda-feira impecável.',
-      110, 75, 2],
-    ['dm-prod-03', 'dm-cat-destaques', 'Corte Degradê + Barba',
-      'Degradê preciso com transição suave e barbadesenho alinhado ao formato do rosto.',
-      100, 70, 3],
-    ['dm-prod-04', 'dm-cat-destaques', 'Barba Terapia Completa',
-      'Toalha quente, óleo, escovação e modelagem da barba com acabamento perfeito.',
-      70, 50, 4],
-    ['dm-prod-23', 'dm-cat-destaques', 'Combo Express (Corte + Sobrancelha)',
-      'Corte rápido e bem feito com alinhamento de sobrancelhas. Ideal para o dia a dia.',
-      70, 45, 5],
-    ['dm-prod-05', 'dm-cat-cabelo', 'Corte de Cabelo Masculino',
-      'Corte com tesoura e máquina, lavagem e finalização. Escolha o estilo que combina com você.',
-      60, 40, 1],
-    ['dm-prod-06', 'dm-cat-cabelo', 'Degradê High/Low',
-      'Degradê preciso, com transição suave e linhas bem definidas.',
-      70, 50, 2],
-    ['dm-prod-07', 'dm-cat-cabelo', 'Corte com Máquina',
-      'Corte prático com máquina em números, alinhamento de contornos e finalização.',
-      45, 30, 3],
-    ['dm-prod-08', 'dm-cat-cabelo', 'Penteado / Finalização',
-      'Modelagem e finalização com pomada ou pasta, para um visual arrumado o dia todo.',
-      40, 30, 4],
-    ['dm-prod-09', 'dm-cat-cabelo', 'Coloração de Cabelo',
-      'Coloração para cobrir brancos ou mudar o visual, com acabamento natural.',
-      90, 60, 5],
-    ['dm-prod-10', 'dm-cat-barba', 'Barba Terapia',
-      'Toalha quente, óleo, penteado e modelagem da barba.',
-      50, 40, 1],
-    ['dm-prod-11', 'dm-cat-barba', 'Aparo de Barba',
-      'Aparo e alinhamento da barba com navalha e tesoura.',
-      35, 25, 2],
-    ['dm-prod-12', 'dm-cat-barba', 'Design de Bigode',
-      'Modelagem e simetria do bigode com acabamento preciso.',
-      30, 20, 3],
-    ['dm-prod-13', 'dm-cat-barba', 'Barboterapia Premium',
-      'Ritual completo com toalha quente, óleo, escova e massagem facial leve.',
-      80, 55, 4],
-    ['dm-prod-14', 'dm-cat-combos', 'Combo Clássico',
-      'Corte + barba + sobrancelha: o pacote essencial do barbeiro.',
-      95, 65, 1],
-    ['dm-prod-15', 'dm-cat-combos', 'Combo Executivo',
-      'Corte + barba terapia + penteado + sobrancelha, com óleo final.',
-      130, 85, 2],
-    ['dm-prod-16', 'dm-cat-combos', 'Combo Noivo',
-      'Corte, barba esculpida, bigode e finalização para o grande dia.',
-      150, 90, 3],
-    ['dm-prod-17', 'dm-cat-combos', 'Combo Kids',
-      'Corte infantil com paciência e carinho, para os pequenos.',
-      50, 35, 4],
-    ['dm-prod-18', 'dm-cat-extras', 'Alinhamento de Sobrancelhas',
-      'Sobrancelhas alinhadas e simétricas com navalha.',
-      25, 20, 1],
-    ['dm-prod-19', 'dm-cat-extras', 'Hidratação Capilar',
-      'Tratamento hidratante para cabelos secos e danificados.',
-      45, 30, 2],
-    ['dm-prod-20', 'dm-cat-extras', 'Massagem Facial',
-      'Massagem relaxante facial com óleos e toalha quente.',
-      40, 25, 3],
-    ['dm-prod-21', 'dm-cat-extras', 'Limpeza de Pele',
-      'Higienização e esfoliação leve para uma pele renovada.',
-      60, 40, 4],
-    ['dm-prod-22', 'dm-cat-extras', 'Toalha Quente + Óleo',
-      'Toalha quente e óleo para barba e cabelo, com fragrância à sua escolha.',
-      20, 15, 5],
+    ['cix-prod-01', 'cix-cat-destaques', 'Manicura Gel',
+      'Manicura en gel de larga duración. Un solo tono, francesas o decoración a elección.', 80, 90, 1],
+    ['cix-prod-02', 'cix-cat-destaques', 'Pedicura Pedispa',
+      'Pedicura con spa: hidratación, exfoliación y acabado perfecto. Un solo tono, francesas o decoración.', 100, 90, 2],
+    ['cix-prod-03', 'cix-cat-destaques', 'Combo Manos y Pies',
+      'Manicura y pedicura en la misma sesión. Elige la técnica y el diseño para cada una.', 150, 150, 3],
+    ['cix-prod-04', 'cix-cat-destaques', 'Manicura Acrílica con Decoración',
+      'Acrílico con diseño y decoración a mano, hecho para durar.', 110, 120, 4],
+
+    ['cix-prod-05', 'cix-cat-manicura', 'Manicura Tradicional',
+      'Manicura clásica con limado, cutículas y un solo tono.', 50, 60, 1],
+    ['cix-prod-06', 'cix-cat-manicura', 'Manicura Acrílico',
+      'Acrílico en un solo tono, con opción de francesas o decoración.', 90, 120, 2],
+    ['cix-prod-07', 'cix-cat-manicura', 'Manicura Gel',
+      'Gel en un solo tono, con opción de francesas o decoración.', 80, 90, 3],
+    ['cix-prod-08', 'cix-cat-manicura', 'Manicura Otros',
+      'Técnica a elegir en el salón: un solo tono, francesas o decoración.', 70, 90, 4],
+
+    ['cix-prod-09', 'cix-cat-pedicura', 'Pedicura Tradicional',
+      'Pedicura clásica con un solo tono.', 60, 60, 1],
+    ['cix-prod-10', 'cix-cat-pedicura', 'Pedicura Semipermanente',
+      'Semipermanente en un solo tono, con opción de francesas o decoración.', 90, 90, 2],
+    ['cix-prod-11', 'cix-cat-pedicura', 'Pedicura Pedispa',
+      'Pedispa relajante en un solo tono, con opción de francesas o decoración.', 100, 90, 3],
+    ['cix-prod-12', 'cix-cat-pedicura', 'Pedicura Acripie',
+      'Acrílico para pies en un solo tono, con opción de francesas o decoración.', 110, 120, 4],
+
+    ['cix-prod-13', 'cix-cat-combos', 'Combo Manicura + Pedicura Tradicionales',
+      'Manos y pies con técnica tradicional, un solo tono en cada una.', 100, 120, 1],
+    ['cix-prod-14', 'cix-cat-combos', 'Combo Gel + Pedispa',
+      'Manicura en gel y pedispa, con el diseño que prefieras.', 170, 180, 2],
+    ['cix-prod-15', 'cix-cat-combos', 'Combo Acrílico + Acripie',
+      'Acrílico en manos y acripie en pies, con decoración incluida.', 200, 210, 3],
   ];
 
   const insertProduct = db.prepare(`
@@ -743,7 +708,6 @@ function seedDiegoMartinsCatalog(): void {
     insertProduct.run(id, catId, name, description, price, duration, sort);
   }
 }
-
 function migrateToV2(): void {
   console.log('[DB] Migrating schema v1 → v2 (appointments)');
 
@@ -793,16 +757,16 @@ function migrateToV2(): void {
   if (!businessName || businessName === 'My Salon') {
     const update = (key: string, value: string) =>
       db.prepare('INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, ?)').run(key, value, now());
-    update('business_name', 'Diego Martins Barbearia');
-    update('business_tagline', 'Barbearia & Estilo');
-    update('country', 'BR');
-    update('currency', 'BRL');
-    update('currency_symbol', 'R$');
-    update('timezone', 'America/Sao_Paulo');
-    update('phone', '+55 31 99587-2149');
-    update('whatsapp', '5531995872149');
-    update('instagram', 'diegomartinsbarbearia');
-    seedDiegoMartinsCatalog();
+    update('business_name', 'Cix Nail Artist');
+    update('business_tagline', 'Manicura y Pedicura · Santa Cruz');
+    update('country', 'BO');
+    update('currency', 'BOB');
+    update('currency_symbol', 'Bs');
+    update('timezone', 'America/La_Paz');
+    update('phone', '+591 67943253');
+    update('whatsapp', '59167943253');
+    update('instagram', 'cixnailartist');
+    seedCixCatalog();
   }
 
   db.prepare("INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES ('schema_version', ?, ?)").run(String(SCHEMA_VERSION), now());

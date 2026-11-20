@@ -21,13 +21,13 @@ router.get('/export', (req: Request, res: Response) => {
     }
 
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `diegomartins-export-${timestamp}.json`;
+    const filename = `cixnailartist-export-${timestamp}.json`;
 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.json({
       version: 1,
-      app: 'Diego Martins',
+      app: 'Cix Nail Artist',
       exported_at: new Date().toISOString(),
       schema_version: String(SCHEMA_VERSION),
       data: exportData,
@@ -148,7 +148,7 @@ router.get('/download', (req: Request, res: Response) => {
   try {
     const dbPath = getDbPath();
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = `diegomartins-database-${timestamp}.db`;
+    const filename = `cixnailartist-database-${timestamp}.db`;
     
     res.download(dbPath, filename);
   } catch (error: any) {

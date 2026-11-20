@@ -56,8 +56,8 @@ router.get('/config', (_req: Request, res: Response) => {
         policies: booking.policies,
       },
       business: {
-        name: settings.business_name || 'Barbería Diego Martins',
-        tagline: settings.business_tagline || 'Barbería · Desde 2004',
+        name: settings.business_name || 'Cix Nail Artist',
+        tagline: settings.business_tagline || 'Manicura y Pedicura · Santa Cruz',
         phone: settings.business_phone || settings.phone || '',
         whatsapp: settings.whatsapp || '',
         instagram: settings.instagram || '',

@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import './booking.css';
 
 export const metadata: Metadata = {
-  title: 'Barbería Diego Martins · Reservas',
-  description: 'Reserva tu horario en la Barbería Diego Martins, Santa Cruz de la Sierra. Cortes, barba, cejas y combos. Desde 2004.',
+  title: 'Cix Nail Artist · Reservas',
+  description: 'Reserva tu horario en Cix Nail Artist, Santa Cruz de la Sierra. Manicura, pedicura, gel, acrílico y pedispa.',
 };
 
 export const viewport: Viewport = {
-  themeColor: '#141618',
+  themeColor: '#1c1413',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,

@@ -8,7 +8,7 @@ export function registerIpcHandlers(): void {
     try {
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
       const result = await dialog.showSaveDialog({
-        defaultPath: path.join(app.getPath('downloads'), `diegomartins-backup-${timestamp}.db`),
+        defaultPath: path.join(app.getPath('downloads'), `cixnailartist-backup-${timestamp}.db`),
         filters: [{ name: 'SQLite Database', extensions: ['db'] }],
       });
 

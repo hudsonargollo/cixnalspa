@@ -1,4 +1,4 @@
-# Diego Martins Barbearia — Planning Document
+# Cix Nails Artist — Nail Salon POS & Booking
 
 A salon-focused fork of **FloDesktop**, reusing the same Electron + Next.js + SQLite framework but with a salon-oriented domain model.
 
@@ -6,13 +6,13 @@ This README is a **planning checklist** — every feature and DB table from FloD
 
 ## Repo layout
 
-Diego Martins is split into multiple repos:
+Cix Nail Artist is split into multiple repos:
 
-- **BarbeariaUI** — shared Next.js frontend, included as a git submodule by both desktop and cloud variants. Small UI changes vs. FloDesktop's frontend.
-- **BarbeariaDesktop** — Electron + Express + SQLite app (this planning doc's primary target). Embeds `BarbeariaUI` as the `frontend/` submodule.
-- **BarbeariaCloud** — cloud/multi-tenant variant. Also embeds `BarbeariaUI` as its frontend submodule.
+- **CixUI** — shared Next.js frontend, included as a git submodule by both desktop and cloud variants. Small UI changes vs. FloDesktop's frontend.
+- **CixDesktop** — Electron + Express + SQLite app (this planning doc's primary target). Embeds `CixUI` as the `frontend/` submodule.
+- **CixCloud** — cloud/multi-tenant variant. Also embeds `CixUI` as its frontend submodule.
 
-The shared `BarbeariaUI` must stay backend-agnostic enough to talk to either the desktop's in-process Express API or the cloud API (likely via an `API_BASE_URL` env var or runtime config).
+The shared `CixUI` must stay backend-agnostic enough to talk to either the desktop's in-process Express API or the cloud API (likely via an `API_BASE_URL` env var or runtime config).
 
 ## Tag legend
 
@@ -30,7 +30,7 @@ Reuse without changes unless we hit a specific reason to swap.
 - **Frontend:** Next.js 16 + React 19 + TypeScript, Tailwind CSS 4, shadcn/ui + Radix, Zustand, Axios, Lucide, Sonner/React Hot Toast, next-themes
 - **Backend:** Electron 31, Express 4, TypeScript, better-sqlite3, JWT + bcrypt, ws (WebSocket), Bonjour/mDNS, electron-log, electron-updater
 - **Build:** electron-builder (Win NSIS, macOS DMG/MAS, Linux AppImage/deb), x64 + arm64
-- **Project layout (BarbeariaDesktop):** `main/` (Electron + Express backend), `frontend/` (git submodule → `BarbeariaUI`), `tests/`, `assets/`, `build/`
+- **Project layout (CixDesktop):** `main/` (Electron + Express backend), `frontend/` (git submodule → `CixUI`), `tests/`, `assets/`, `build/`
 - **Architecture patterns:** single-tenant desktop, in-process Express on :3001, JWT auth, RBAC, SQLite WAL mode, versioned migrations, auto-update via GitHub releases
 
 ---
@@ -293,16 +293,16 @@ These came up while sorting features and probably need your input before we star
 2. **Service duration** — do services need a `duration_minutes` field for scheduling/reporting?
 3. **Stylist attribution** — record which stylist performed each `order_item` (for commission/performance reporting)?
 4. **Chair / station model** — any lightweight "where the service is happening" concept, or skip entirely?
-5. **Appointment / booking system** — out of scope for v1, or part of Diego Martins from day one? (FloDesktop has none today.)
+5. **Appointment / booking system** — out of scope for v1, or part of Cix Nail Artist from day one? (FloDesktop has none today.)
 6. **Addon redesign** — what does the salon addon model look like? (Hair length surcharge tiers? Add-on treatments? Product upgrades?)
 7. **Customer salon-specific fields** — preferred stylist, hair type, skin type, allergies, formula history (color formulas), photos?
 8. **Roles** — confirm `owner / manager / cashier / stylist`, or different naming?
 9. **Mobile companion app** — keep the pairing-code feature, or drop?
 10. **Cloud sync** — keep the cloud_server_url plumbing, or remove for v1?
-11. **BarbeariaUI shape** — single Next.js app shared by desktop + cloud. Need a runtime switch (env var? feature flag?) for the small UI differences between the two deployments. Auth flow differs too (desktop = local JWT + single tenant, cloud = multi-tenant). Worth defining the shared API contract early.
+11. **CixUI shape** — single Next.js app shared by desktop + cloud. Need a runtime switch (env var? feature flag?) for the small UI differences between the two deployments. Auth flow differs too (desktop = local JWT + single tenant, cloud = multi-tenant). Worth defining the shared API contract early.
 
 ---
 
 ## Next step
 
-Review the tags above, flip anything you disagree with, and answer the TBDs in section 5. Once locked, we can scaffold the Diego Martins repo by copying FloDesktop and applying the diff (drop tables/routes/UI per REMOVE list, adjust schema, redesign addons).
+Review the tags above, flip anything you disagree with, and answer the TBDs in section 5. Once locked, we can scaffold the Cix Nail Artist repo by copying FloDesktop and applying the diff (drop tables/routes/UI per REMOVE list, adjust schema, redesign addons).

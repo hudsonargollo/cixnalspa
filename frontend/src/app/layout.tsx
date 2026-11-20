@@ -28,12 +28,12 @@ const body = isDesktop
     };
 
 export const metadata: Metadata = {
-  title: "Barbería Diego Martins",
-  description: "Reservas y gestión de la Barbería Diego Martins · Santa Cruz de la Sierra · Desde 2004",
+  title: "Cix Nail Artist",
+  description: "Reservas y gestión de Cix Nail Artist · Manicura y pedicura en Santa Cruz de la Sierra",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#141618",
+  themeColor: "#1c1413",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
