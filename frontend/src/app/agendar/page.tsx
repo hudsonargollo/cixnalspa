@@ -793,6 +793,7 @@ export default function BookingPage() {
                 <HighlightCard
                   key={service.id}
                   service={service}
+                  icon={service.categoryIcon ?? undefined}
                   imageUrl={HIGHLIGHT_IMAGES[service.id] || SLIDESHOW_PHOTOS[index % SLIDESHOW_PHOTOS.length]}
                   isSelected={cart.some((item) => item.id === service.id)}
                   onToggle={toggleService}

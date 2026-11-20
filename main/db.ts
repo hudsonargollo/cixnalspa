@@ -649,10 +649,10 @@ function seedBookingSettings(): void {
 
 function seedCixCatalog(): void {
   const cats = [
-    ['cix-cat-destaques', 'Destacados', '#A65A4C', '✦', 1, 'Manicuras y pedicuras más solicitadas'],
-    ['cix-cat-manicura',  'Manicura',    '#C4897C', '❀', 2, 'Tradicional, acrílico, gel y otros'],
-    ['cix-cat-pedicura',  'Pedicura',    '#B4705F', '✧', 3, 'Tradicional, semipermanente, pedispa y acripie'],
-    ['cix-cat-combos',    'Combos',      '#8E4E43', '❋', 4, 'Manos y pies en un solo momento'],
+    ['cix-cat-destaques', 'Destacados', '#A65A4C', 'combo', 1, 'Manicuras y pedicuras más solicitadas'],
+    ['cix-cat-manicura',  'Manicura',    '#C4897C', 'manicura', 2, 'Tradicional, acrílico, gel y otros'],
+    ['cix-cat-pedicura',  'Pedicura',    '#B4705F', 'pedicura', 3, 'Tradicional, semipermanente, pedispa y acripie'],
+    ['cix-cat-combos',    'Combos',      '#8E4E43', 'combo', 4, 'Manos y pies en un solo momento'],
   ];
   for (const [id, name, color, icon, sort, description] of cats) {
     db.prepare(`
@@ -707,6 +707,10 @@ function seedCixCatalog(): void {
   for (const [id, catId, name, description, price, duration, sort] of products) {
     insertProduct.run(id, catId, name, description, price, duration, sort);
   }
+
+  // Keep icons current on existing databases too.
+  const setCategoryIcon = db.prepare('UPDATE categories SET icon = ? WHERE id = ?');
+  for (const [id, , , icon] of cats) setCategoryIcon.run(icon, id);
 }
 function migrateToV2(): void {
   console.log('[DB] Migrating schema v1 → v2 (appointments)');
