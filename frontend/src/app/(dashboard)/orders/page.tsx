@@ -16,15 +16,15 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: 'Pendente',
-  'in-service': 'Em atendimento',
-  completed: 'Concluído',
-  cancelled: 'Cancelado',
+  pending: 'Pendiente',
+  'in-service': 'En atencion',
+  completed: 'Completada',
+  cancelled: 'Cancelada',
 };
 
 const PAYMENT_LABELS: Record<string, string> = {
-  paid: 'Pago',
-  unpaid: 'Não pago',
+  paid: 'Pagada',
+  unpaid: 'Sin pagar',
   partial: 'Parcial',
 };
 
@@ -42,14 +42,14 @@ export default function OrdersPage() {
   }, []);
 
   async function updateStatus(id: number, status: string) {
-    const reason = status === 'cancelled' ? (prompt('Motivo do cancelamento (opcional)') || undefined) : undefined;
+    const reason = status === 'cancelled' ? (prompt('Motivo del cancelamiento (opcional)') || undefined) : undefined;
     try {
       await api.patch(`/orders/${id}/status`, { status, reason });
-      toast.success(status === 'cancelled' ? 'Comanda cancelada' : 'Atendimento iniciado');
+      toast.success(status === 'cancelled' ? 'Comanda cancelada' : 'Atencion iniciada');
       setSelected(null);
       load();
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Falha ao atualizar');
+      toast.error(err?.response?.data?.error || 'Error al actualizar');
     }
   }
 
@@ -62,11 +62,11 @@ export default function OrdersPage() {
           <thead className="bg-[var(--secondary)] text-left">
             <tr>
               <th className="p-3">Comanda nº</th>
-              <th className="p-3">Cliente</th>
-              <th className="p-3">Profissional</th>
+              <th>Cliente</th>
+              <th className="p-3">Profesional</th>
               <th className="p-3">Total</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Criado em</th>
+              <th className="p-3">Estado</th>
+              <th className="p-3">Creada el</th>
             </tr>
           </thead>
           <tbody>
@@ -79,12 +79,12 @@ export default function OrdersPage() {
                 <td className="p-3">
                   <span className={cn('px-2 py-0.5 rounded-full text-xs font-medium', STATUS_COLORS[o.status])}>{STATUS_LABELS[o.status] || o.status}</span>
                 </td>
-                <td className="p-3 text-[var(--muted-foreground)]">{new Date(o.created_at).toLocaleString('pt-BR')}</td>
+                <td className="p-3 text-[var(--muted-foreground)]">{new Date(o.created_at).toLocaleString('es-BO')}</td>
               </tr>
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={6} className="p-6 text-center text-[var(--muted-foreground)]">Nenhuma comanda ainda</td>
+                <td colSpan={6} className="p-6 text-center text-[var(--muted-foreground)]">Ninguna comanda todavia</td>
               </tr>
             )}
           </tbody>
@@ -107,12 +107,12 @@ export default function OrdersPage() {
               <span>{formatCurrency(selected.total)}</span>
             </div>
             <div className="text-sm text-[var(--muted-foreground)]">
-              Pagamento: {PAYMENT_LABELS[selected.bill?.payment_status || 'unpaid'] || selected.bill?.payment_status || 'Não pago'}
+              Pago: {PAYMENT_LABELS[selected.bill?.payment_status || 'unpaid'] || selected.bill?.payment_status || 'Sin pagar'}
             </div>
             <div className="flex gap-2">
               {selected.status === 'pending' && (
                 <Button variant="outline" className="flex-1" onClick={() => updateStatus(selected.id, 'in-service')}>
-                  Iniciar atendimento
+                  Iniciar atencion
                 </Button>
               )}
               {['pending', 'in-service'].includes(selected.status) && (

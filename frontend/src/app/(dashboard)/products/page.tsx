@@ -71,20 +71,20 @@ export default function ServicesPage() {
     try {
       if (editing) {
         await api.put(`/products/${editing.id}`, payload);
-        toast.success('Salvo');
+        toast.success('Guardado');
       } else {
         await api.post('/products', payload);
-        toast.success('Criado');
+        toast.success('Creado');
       }
       setOpen(false);
       load();
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Falha ao salvar');
+      toast.error(err?.response?.data?.error || 'Error al guardar');
     }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Excluir este item?')) return;
+    if (!confirm('Eliminar este item?')) return;
     await api.delete(`/products/${id}`);
     load();
   }
@@ -92,9 +92,9 @@ export default function ServicesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold">Serviços</h1>
+        <h1 className="text-xl font-semibold">Servicios</h1>
         <Button onClick={openCreate}>
-          <Plus className="h-4 w-4" /> Adicionar
+          <Plus className="h-4 w-4" /> Agregar
         </Button>
       </div>
 
@@ -102,11 +102,11 @@ export default function ServicesPage() {
         <table className="w-full text-sm">
           <thead className="bg-[var(--secondary)] text-left">
             <tr>
-              <th className="p-3">Nome</th>
+              <th className="p-3">Nombre</th>
               <th className="p-3">Tipo</th>
               <th className="p-3">Categoria</th>
-              <th className="p-3">Preço</th>
-              <th className="p-3">Detalhes</th>
+              <th className="p-3">Precio</th>
+              <th className="p-3">Detalles</th>
               <th className="p-3"></th>
             </tr>
           </thead>
@@ -116,57 +116,57 @@ export default function ServicesPage() {
                 <td className="p-3 font-medium">{p.name}</td>
                 <td className="p-3">
                   <span className={cn('px-2 py-0.5 rounded-full text-xs font-medium', p.kind === 'service' ? 'bg-pink-100 text-pink-800' : 'bg-green-100 text-green-800')}>
-                    {p.kind === 'service' ? 'serviço' : 'produto'}
+                    {p.kind === 'service' ? 'servicio' : 'producto'}
                   </span>
                 </td>
                 <td className="p-3">{p.category?.name || '—'}</td>
                 <td className="p-3">{formatCurrency(p.price)}</td>
                 <td className="p-3 text-[var(--muted-foreground)]">
-                  {p.kind === 'service' ? `${p.service_duration_minutes} min` : (p.track_inventory === 1 ? `Estoque: ${p.stock_quantity}` : '—')}
+                  {p.kind === 'service' ? `${p.service_duration_minutes} min` : (p.track_inventory === 1 ? `Stock: ${p.stock_quantity}` : '—')}
                 </td>
                 <td className="p-3 text-right space-x-2">
                   <button className="text-sm underline" onClick={() => openEdit(p)}>Editar</button>
-                  <button className="text-sm underline text-red-600" onClick={() => handleDelete(p.id)}>Excluir</button>
+                  <button className="text-sm underline text-red-600" onClick={() => handleDelete(p.id)}>Eliminar</button>
                 </td>
               </tr>
             ))}
             {products.length === 0 && (
-              <tr><td colSpan={6} className="p-6 text-center text-[var(--muted-foreground)]">Nada por aqui ainda</td></tr>
+              <tr><td colSpan={6} className="p-6 text-center text-[var(--muted-foreground)]">Nada por aqui todavia</td></tr>
             )}
           </tbody>
         </table>
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title={editing ? 'Editar item' : 'Adicionar serviço ou produto'}>
+      <Modal open={open} onClose={() => setOpen(false)} title={editing ? 'Editar item' : 'Agregar servicio o producto'}>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <Label>Tipo</Label>
             <Select value={form.kind} onChange={(e) => setForm({ ...form, kind: e.target.value })}>
-              <option value="service">Serviço (executado por uma profissional)</option>
-              <option value="retail">Produto (vendido no balcão)</option>
+              <option value="service">Servicio (ejecutado por una profesional)</option>
+              <option value="retail">Producto (vendido en el mostrador)</option>
             </Select>
           </div>
           <div>
-            <Label>Nome</Label>
+            <Label>Nombre</Label>
             <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label>Categoria</Label>
               <Select value={form.category_id} onChange={(e) => setForm({ ...form, category_id: e.target.value })}>
-                <option value="">Nenhuma</option>
+                <option value="">Ninguna</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </Select>
             </div>
             <div>
-              <Label>Preço</Label>
+              <Label>Precio</Label>
               <Input type="number" step="0.01" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} required />
             </div>
           </div>
 
           {form.kind === 'service' ? (
             <div>
-              <Label>Duração (minutos)</Label>
+              <Label>Duracion (minutos)</Label>
               <Input type="number" value={form.service_duration_minutes} onChange={(e) => setForm({ ...form, service_duration_minutes: e.target.value })} required />
             </div>
           ) : (
@@ -177,16 +177,16 @@ export default function ServicesPage() {
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="track_inventory" checked={form.track_inventory} onChange={(e) => setForm({ ...form, track_inventory: e.target.checked })} />
-                <Label htmlFor="track_inventory" className="!mb-0">Controlar estoque</Label>
+                <Label htmlFor="track_inventory" className="!mb-0">Controlar stock</Label>
               </div>
               {form.track_inventory && (
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <Label>Quantidade em estoque</Label>
+                    <Label>Cantidad en stock</Label>
                     <Input type="number" value={form.stock_quantity} onChange={(e) => setForm({ ...form, stock_quantity: e.target.value })} />
                   </div>
                   <div>
-                    <Label>Alerta de estoque baixo abaixo de</Label>
+                    <Label>Alerta de stock bajo debajo de</Label>
                     <Input type="number" value={form.low_stock_threshold} onChange={(e) => setForm({ ...form, low_stock_threshold: e.target.value })} />
                   </div>
                 </div>
@@ -196,22 +196,22 @@ export default function ServicesPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>Tipo de imposto</Label>
+              <Label>Tipo de impuesto</Label>
               <Select value={form.tax_type} onChange={(e) => setForm({ ...form, tax_type: e.target.value })}>
-                <option value="none">Nenhum</option>
-                <option value="inclusive">Incluso</option>
-                <option value="exclusive">Excluso</option>
+                <option value="none">Ninguno</option>
+                <option value="inclusive">Incluido</option>
+                <option value="exclusive">Excluido</option>
               </Select>
             </div>
             <div>
-              <Label>Alíquota %</Label>
+              <Label>Alicuota %</Label>
               <Input type="number" step="0.01" value={form.tax_rate} onChange={(e) => setForm({ ...form, tax_rate: e.target.value })} disabled={form.tax_type === 'none'} />
             </div>
           </div>
           {form.kind === 'service' && (
-            <p className="text-xs text-[var(--muted-foreground)]">Serviços são tributados pela alíquota fixa da loja, independentemente deste campo — veja Configurações → Impostos.</p>
+            <p className="text-xs text-[var(--muted-foreground)]">Los servicios se gravan con la alicuota fija de la tienda, independientemente de este campo — ver Configuracion → Impuestos.</p>
           )}
-          <Button type="submit" className="w-full">{editing ? 'Salvar alterações' : 'Criar'}</Button>
+          <Button type="submit" className="w-full">{editing ? 'Guardar cambios' : 'Crear'}</Button>
         </form>
       </Modal>
     </div>

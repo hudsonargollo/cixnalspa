@@ -14,7 +14,7 @@ export function createOrderFromAppointment(appointment: any): any {
   const settings: Record<string, string> = {};
   db.prepare('SELECT key, value FROM settings').all().forEach((row: any) => { settings[row.key] = row.value; });
   const tenantInfo = {
-    country: settings.country || 'BR',
+    country: settings.country || 'BO',
     business_type: 'salon',
     state_code: settings.state_code || '',
   };

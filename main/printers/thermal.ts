@@ -384,7 +384,7 @@ export function formatReceipt(order: any, bill: any, business?: any, template?: 
 
   const tpl = template || 'compact';
   const biz = business || { name: 'Store', address: '', phone: '', gstin: '' };
-  activeCurrencySymbol = biz.currency_symbol || 'R$';
+  activeCurrencySymbol = biz.currency_symbol || 'Bs';
 
   try {
     switch (tpl) {
@@ -439,7 +439,7 @@ function formatCompactReceipt(order: any, bill: any, biz: any, cols: number = 48
   if (bill.discount_amount > 0) {
     lines.push('Discount' + rightAlign('-' + formatCurrency(bill.discount_amount), cols - 8));
   }
-  lines.push('Tax' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
+  lines.push('IVA' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
   lines.push('{BOLD}TOTAL' + rightAlign(formatCurrency(bill.total), cols - 5) + '{/BOLD}');
 
   if (bill.payment_details) {
@@ -459,8 +459,8 @@ function formatCompactReceipt(order: any, bill: any, biz: any, cols: number = 48
   lines.push(bar);
   if (biz.address) lines.push(biz.address);
   if (biz.phone) lines.push('Ph: ' + biz.phone);
-  if (biz.gstin) lines.push('GSTIN: ' + biz.gstin);
-  lines.push('{CENTER}Thank you!{/CENTER}');
+  if (biz.gstin) lines.push('NIT: ' + biz.gstin);
+  lines.push('{CENTER}¡Gracias!{/CENTER}');
   lines.push('{CUT}');
 
   return buildEscPos(lines, useUnicode);
@@ -504,7 +504,7 @@ function formatClassicReceipt(order: any, bill: any, biz: any, cols: number = 48
   if (bill.discount_amount > 0) {
     lines.push('Discount' + rightAlign('-' + formatCurrency(bill.discount_amount), cols - 8));
   }
-  lines.push('Tax' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
+  lines.push('IVA' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
   lines.push('{BOLD}TOTAL' + rightAlign(formatCurrency(bill.total), cols - 5) + '{/BOLD}');
 
   if (bill.payment_details) {
@@ -524,8 +524,8 @@ function formatClassicReceipt(order: any, bill: any, biz: any, cols: number = 48
   lines.push(bar);
   if (biz.address) lines.push(biz.address);
   if (biz.phone) lines.push('Ph: ' + biz.phone);
-  if (biz.gstin) lines.push('GSTIN: ' + biz.gstin);
-  lines.push('{CENTER}Thank you!{/CENTER}');
+  if (biz.gstin) lines.push('NIT: ' + biz.gstin);
+  lines.push('{CENTER}¡Gracias!{/CENTER}');
   lines.push('{CUT}');
 
   return buildEscPos(lines, useUnicode);
@@ -543,7 +543,7 @@ function formatDetailedReceipt(order: any, bill: any, biz: any, cols: number = 4
   lines.push('{INIT}');
   lines.push('{CENTER}{BOLD}' + (biz.name || 'Store').toUpperCase() + '{/BOLD}{/CENTER}');
   lines.push(bar);
-  lines.push('{CENTER}TAX INVOICE{/CENTER}');
+  lines.push('{CENTER}FACTURA{/CENTER}');
   lines.push(bar);
   lines.push('Invoice #: ' + (bill.bill_number || order.order_number));
   lines.push('Date: ' + date.toLocaleDateString());
@@ -578,15 +578,15 @@ function formatDetailedReceipt(order: any, bill: any, biz: any, cols: number = 4
       if (Array.isArray(taxBreakdown) && taxBreakdown.length > 0) {
         for (const tax of taxBreakdown) {
           if (tax.amount > 0) {
-            lines.push((tax.name || 'Tax') + ' @' + tax.rate + '%' + rightAlign(formatCurrency(tax.amount), cols - 16));
+            lines.push((tax.name || 'IVA') + ' @' + tax.rate + '%' + rightAlign(formatCurrency(tax.amount), cols - 16));
           }
         }
       }
     } catch {
-      lines.push('Tax' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
+      lines.push('IVA' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
     }
   } else {
-    lines.push('Tax' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
+    lines.push('IVA' + rightAlign(formatCurrency(bill.tax_amount), cols - 3));
   }
 
   lines.push(bar);
@@ -609,8 +609,8 @@ function formatDetailedReceipt(order: any, bill: any, biz: any, cols: number = 4
   lines.push(bar);
   if (biz.address) lines.push('Address: ' + biz.address);
   if (biz.phone) lines.push('Phone: ' + biz.phone);
-  if (biz.gstin) lines.push('GSTIN: ' + biz.gstin);
-  lines.push('{CENTER}Thank you for your business!{/CENTER}');
+  if (biz.gstin) lines.push('NIT: ' + biz.gstin);
+  lines.push('{CENTER}¡Gracias por tu preferencia!{/CENTER}');
   lines.push('{CUT}');
 
   return buildEscPos(lines, useUnicode);
@@ -659,7 +659,7 @@ function parseAddons(addons: any): any[] {
   return Array.isArray(addons) ? addons : [];
 }
 
-let activeCurrencySymbol = 'R$';
+let activeCurrencySymbol = 'Bs';
 
 function formatCurrency(amount: number): string {
   const value = (Number(amount) || 0).toFixed(2).replace('.', ',');

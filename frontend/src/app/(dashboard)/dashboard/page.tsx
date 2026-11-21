@@ -39,12 +39,12 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-4">Painel</h1>
+      <h1 className="text-xl font-semibold mb-4">Panel</h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Card>
           <CardContent className="pt-4">
-            <div className="text-sm text-[var(--muted-foreground)]">Vendas de hoje</div>
+            <div className="text-sm text-[var(--muted-foreground)]">Ventas de hoy</div>
             <div className="text-2xl font-semibold mt-1">{formatCurrency(summary?.bills.collected || 0)}</div>
           </CardContent>
         </Card>
@@ -56,13 +56,13 @@ export default function DashboardPage() {
         </Card>
         <Card>
           <CardContent className="pt-4">
-            <div className="text-sm text-[var(--muted-foreground)]">Em atendimento agora</div>
+            <div className="text-sm text-[var(--muted-foreground)]">En atencion ahora</div>
             <div className="text-2xl font-semibold mt-1">{String(runningTickets)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-4">
-            <div className="text-sm text-[var(--muted-foreground)]">Novas clientes</div>
+            <div className="text-sm text-[var(--muted-foreground)]">Clientas nuevas</div>
             <div className="text-2xl font-semibold mt-1">{String(summary?.customers.new ?? '—')}</div>
           </CardContent>
         </Card>
@@ -71,10 +71,10 @@ export default function DashboardPage() {
       <div className="grid md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Serviços mais vendidos hoje</CardTitle>
+            <CardTitle>Servicios mas vendidos hoy</CardTitle>
           </CardHeader>
           <CardContent>
-            {topServices.length === 0 && <p className="text-sm text-[var(--muted-foreground)]">Nenhuma venda hoje ainda</p>}
+            {topServices.length === 0 && <p className="text-sm text-[var(--muted-foreground)]">Todavia no hay ventas hoy</p>}
             <div className="space-y-2">
               {topServices.map((s) => (
                 <div key={s.product_name} className="flex justify-between text-sm">
@@ -88,10 +88,10 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Desempenho da equipe hoje</CardTitle>
+            <CardTitle>Desempeno del equipo hoy</CardTitle>
           </CardHeader>
           <CardContent>
-            {staffPerf.length === 0 && <p className="text-sm text-[var(--muted-foreground)]">Nenhuma profissional registrada</p>}
+            {staffPerf.length === 0 && <p className="text-sm text-[var(--muted-foreground)]">Ninguna profesional registrada</p>}
             <div className="space-y-2">
               {staffPerf.map((s) => (
                 <div key={s.id} className="flex justify-between text-sm">
@@ -104,16 +104,5 @@ export default function DashboardPage() {
         </Card>
       </div>
     </div>
-  );
-}
-
-function StatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <Card>
-      <CardContent className="pt-4">
-        <div className="text-sm text-[var(--muted-foreground)]">{label}</div>
-        <div className="text-2xl font-semibold mt-1">{value}</div>
-      </CardContent>
-    </Card>
   );
 }

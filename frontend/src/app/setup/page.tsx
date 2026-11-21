@@ -17,12 +17,12 @@ export default function SetupPage() {
     e.preventDefault();
     setError('');
     if (!form.name.trim() || !form.phone.trim() || !form.password.trim() || !form.business_name.trim()) {
-      setError('Preencha todos os campos.');
+      setError('Completa todos los campos.');
       return;
     }
     const digits = form.phone.replace(/\D/g, '');
     if (!/^591\d{7,8}$/.test(`591${digits}`)) {
-      setError('WhatsApp: use o código 591 mais o número da Bolivia (8 dígitos).');
+      setError('WhatsApp: usa el código 591 más el número de Bolivia (8 dígitos).');
       return;
     }
     try {
@@ -32,9 +32,9 @@ export default function SetupPage() {
         business_name: form.business_name.trim(),
         phone: `591${digits}`,
       });
-      toast.success('Loja configurada com sucesso');
+      toast.success('Tienda configurada con éxito');
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Falha na configuração');
+      toast.error(err?.response?.data?.error || 'Error en la configuración');
     }
   }
 
@@ -42,14 +42,14 @@ export default function SetupPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardContent className="pt-6">
-          <h1 className="text-xl font-semibold mb-1">Bem-vinda à Cix Nails Artist</h1>
+          <h1 className="text-xl font-semibold mb-1">Bienvenida a Cix Nails Artist</h1>
           <p className="text-sm text-[var(--muted-foreground)] mb-6">
-            Preencha seu WhatsApp — ele será seu identificador. Nenhuma outra configuração é necessária.
+            Completa tu WhatsApp — será tu identificador. No necesitas ninguna otra configuración.
           </p>
           {error && <p className="text-xs text-red-400 mb-3">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="business_name">Nome do salão</Label>
+              <Label htmlFor="business_name">Nombre del salón</Label>
               <Input
                 id="business_name"
                 value={form.business_name}
@@ -60,13 +60,13 @@ export default function SetupPage() {
               />
             </div>
             <div>
-              <Label htmlFor="name">Nome completo</Label>
+              <Label htmlFor="name">Nombre completo</Label>
               <Input
                 id="name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                placeholder="Seu nome"
+                placeholder="Tu nombre"
               />
             </div>
             <div>
@@ -80,11 +80,11 @@ export default function SetupPage() {
                 inputMode="tel"
               />
               <p className="text-[10px] mt-1" style={{ color: 'var(--text-disabled)' }}>
-                Usa o código 591 + o número da Bolívia.
+                Usa el código 591 + el número de Bolivia.
               </p>
             </div>
             <div>
-              <Label htmlFor="password">Senha da conta</Label>
+              <Label htmlFor="password">Contrasena de la cuenta</Label>
               <Input
                 id="password"
                 type="password"
@@ -96,7 +96,7 @@ export default function SetupPage() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Configurando...' : 'Criar conta e entrar'}
+              {loading ? 'Configurando...' : 'Crear cuenta y entrar'}
             </Button>
           </form>
         </CardContent>

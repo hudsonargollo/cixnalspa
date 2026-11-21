@@ -31,6 +31,8 @@ import { ServiceCard } from '@/components/booking/service-card';
 import { HighlightCard } from '@/components/booking/highlight-card';
 import { SmartCart } from '@/components/booking/smart-cart';
 import { LoyaltyCard } from '@/components/booking/loyalty-card';
+import { BranchModal } from '@/components/booking/branch-modal';
+import { BRANCHES } from '@/lib/branches';
 
 type Step = 'services' | 'calendar' | 'identify' | 'success';
 
@@ -57,8 +59,6 @@ const GALLERY_PHOTOS = [
   '/cixnails/shop-5.webp',
 ];
 
-const MAPS_URL = 'https://maps.app.goo.gl/SWzDE8chNP2KE7xV6';
-const ADDRESS = 'Zona Equipetrol, Santa Cruz de la Sierra';
 const FALLBACK_INSTAGRAM = 'cixnailartist';
 const LOGO = '/cixnails/logo.webp';
 
@@ -86,6 +86,7 @@ export default function BookingPage() {
   const [lastAppointment, setLastAppointment] = useState<PublicAppointment | null>(null);
   const [rewardUnlocked, setRewardUnlocked] = useState(false);
   const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const [branchModalOpen, setBranchModalOpen] = useState(false);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
@@ -257,9 +258,18 @@ export default function BookingPage() {
   const business = config?.business;
   const whatsappNumber = business?.whatsapp || '';
   const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : '';
+  // Branch picker popup wins over the generic wa.me link: it lets the client
+  // message the exact sucursal (Central / Equipetrol / Urbarí).
+  const openWhatsappPicker = (event: React.MouseEvent) => {
+    event.preventDefault();
+    if (BRANCHES.length > 1) setBranchModalOpen(true);
+    else if (BRANCHES[0]) window.open(BRANCHES[0].whatsappUrl, '_blank');
+    else if (whatsappUrl) window.open(whatsappUrl, '_blank');
+  };
   const instagramUrl = `https://instagram.com/${business?.instagram || FALLBACK_INSTAGRAM}`;
   const stylistName = config?.booking.stylist.name || 'Cix Nail Artist';
   const phoneDigits = customerPhone.replace(/\D/g, '');
+  const showBranches = BRANCHES.length > 0;
 
   const FEATURED_IDS = ['cix-prod-01', 'cix-prod-02', 'cix-prod-03'];
   const highlights = config?.services.filter((service) => FEATURED_IDS.includes(service.id)) ?? [];
@@ -343,8 +353,12 @@ export default function BookingPage() {
           <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-secondary)' }}>
             {t('bookingPaused', lang)}
           </p>
-          {whatsappUrl && (
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn-brand px-8 py-3 rounded-full text-xs font-medium tracking-widest uppercase">
+          {(whatsappUrl || showBranches) && (
+            <a
+              href="#"
+              onClick={openWhatsappPicker}
+              className="btn-brand px-8 py-3 rounded-full text-xs font-medium tracking-widest uppercase"
+            >
               {t('talkWhatsapp', lang)}
             </a>
           )}
@@ -401,11 +415,10 @@ export default function BookingPage() {
             {t('newBooking', lang)}
           </button>
 
-          {whatsappUrl && (
+          {(whatsappUrl || showBranches) && (
             <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
+              onClick={openWhatsappPicker}
               className="mt-5 text-xs underline underline-offset-4"
               style={{ color: 'var(--text-secondary)' }}
             >
@@ -669,11 +682,10 @@ export default function BookingPage() {
               </svg>
               Instagram
             </a>
-            {whatsappUrl && (
+            {(whatsappUrl || showBranches) && (
               <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
+                onClick={openWhatsappPicker}
                 className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide transition-all hover:opacity-80"
                 style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
               >
@@ -728,27 +740,52 @@ export default function BookingPage() {
           </div>
         </div>
 
-        {/* Location / directions */}
+        {/* Sucursales: directions + WhatsApp per location */}
         <div className="mx-4 mb-6 rounded-2xl overflow-hidden" style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid var(--border-subtle)' }}>
           <div className="px-5 pt-5 pb-4">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-2 flex items-center gap-2" style={{ color: 'var(--text-disabled)' }}>
+            <p className="text-xs font-semibold uppercase tracking-widest mb-3 flex items-center gap-2" style={{ color: 'var(--text-disabled)' }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-line)' }}>
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
               </svg>
               {t('locationTitle', lang)}
             </p>
-            <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-primary)' }}>{ADDRESS}</p>
-            <a
-              href={MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-brand inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium tracking-widest uppercase transition-all hover:opacity-90"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="3 11 22 2 13 21 11 13 3 11" />
-              </svg>
-              {t('directions', lang)}
-            </a>
+            <div className="space-y-2.5">
+              {BRANCHES.map((branch) => (
+                <div key={branch.id} className="flex items-center justify-between gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'var(--bg-surface-hover)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>{branch.name}</p>
+                    <p className="text-[11px] leading-snug" style={{ color: 'var(--text-secondary)' }}>{branch.zone}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <a
+                      href={branch.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-2 rounded-full text-[10px] font-semibold tracking-wide uppercase transition-all hover:opacity-80"
+                      style={{ border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                      </svg>
+                      {t('directions', lang)}
+                    </a>
+                    <a
+                      href={branch.whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-2 rounded-full text-[10px] font-semibold tracking-wide uppercase transition-all hover:opacity-90"
+                      style={{ backgroundColor: '#25D366', color: '#fff' }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.148-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                        <path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.892c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.445h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.495-8.411zm-8.475 18.29h-.005c-1.78 0-3.526-.477-5.052-1.379l-.363-.214-3.756.98.999-3.648-.236-.375a9.86 9.86 0 0 1-1.516-5.26c.002-5.45 4.458-9.886 9.936-9.886 2.653 0 5.147 1.029 7.023 2.899a9.82 9.82 0 0 1 2.909 6.994c-.003 5.45-4.459 9.889-9.939 9.889z" />
+                      </svg>
+                      WhatsApp
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -850,7 +887,9 @@ export default function BookingPage() {
           <div className="divider mb-5" />
           <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Cix Nail Artist</p>
           <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-disabled)' }}>{t('tagline', lang)}</p>
-          <p className="text-xs mb-1" style={{ color: 'var(--text-disabled)' }}>{ADDRESS}</p>
+          <p className="text-xs mb-1" style={{ color: 'var(--text-disabled)' }}>
+            {business?.address || BRANCHES[0]?.zone || ''}
+          </p>
           <p className="text-xs" style={{ color: 'var(--text-disabled)' }}>
             {business?.phone ? `${business.phone} · ` : ''}@{business?.instagram || FALLBACK_INSTAGRAM}
           </p>
@@ -867,11 +906,10 @@ export default function BookingPage() {
           lang={lang}
         />
 
-        {whatsappUrl && (
+        {(whatsappUrl || showBranches) && (
           <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#"
+            onClick={openWhatsappPicker}
             className={`fixed right-4 z-20 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all hover:opacity-90 ${cart.length > 0 ? 'bottom-28' : 'bottom-6'}`}
             style={{ backgroundColor: '#25D366', color: '#fff' }}
             aria-label={t('talkWhatsapp', lang)}
@@ -882,6 +920,8 @@ export default function BookingPage() {
             </svg>
           </a>
         )}
+
+        <BranchModal open={branchModalOpen} onClose={() => setBranchModalOpen(false)} lang={lang} />
       </div>
     </div>
   );

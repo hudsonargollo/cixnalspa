@@ -26,7 +26,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
     } catch (err: any) {
-      toast.error(err?.response?.data?.error || 'Não foi possível entrar. Tente novamente.');
+      toast.error(err?.response?.data?.error || 'No se pudo entrar. Intenta de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -55,12 +55,12 @@ export default function LoginPage() {
                 <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoFocus className="rounded-xl" />
               </div>
               <div>
-                <Label htmlFor="password">Senha</Label>
+                <Label htmlFor="password">Contrasena</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="rounded-xl" />
-              </div>
-              <Button type="submit" className="w-full btn-brand rounded-xl h-11 text-xs tracking-widest uppercase" disabled={loading}>
-                {loading ? 'Entrando...' : 'Entrar'}
-              </Button>
+                      </div>
+                      <Button type="submit" className="w-full btn-brand rounded-xl h-11 text-xs tracking-widest uppercase" disabled={loading}>
+                        {loading ? 'Entrando...' : 'Entrar'}
+                      </Button>
             </form>
           </CardContent>
         </Card>

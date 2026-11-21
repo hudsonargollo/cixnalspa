@@ -84,11 +84,13 @@ const T = {
   serviceInfoTitle: { es: 'Antes de tu cita', pt: 'Antes do seu horário', en: 'Good to know' },
   infoDuration: { es: 'Servicios de', pt: 'Procedimentos de', en: 'Services from' },
   infoDurationTo: { es: 'a', pt: 'a', en: 'to' },
-  infoLocation: { es: 'Atención en el salón · Zona Equipetrol, Santa Cruz de la Sierra', pt: 'Atendimento no salão · Zona Equipetrol, Santa Cruz de la Sierra', en: 'In-salon service · Zona Equipetrol, Santa Cruz de la Sierra' },
+  infoLocation: { es: 'Atención en nuestras 3 sucursales de Santa Cruz de la Sierra', pt: 'Atendimento nas nossas 3 sucursais de Santa Cruz de la Sierra', en: 'In-salon service at our 3 branches in Santa Cruz de la Sierra' },
   infoPayment: { es: 'Pago: efectivo o código QR', pt: 'Pagamento: dinheiro ou código QR', en: 'Payment: cash or QR code' },
-  // location
-  locationTitle: { es: 'Ubicación', pt: 'Localização', en: 'Location' },
+  // locations
+  locationTitle: { es: 'Nuestras sucursales', pt: 'Nossas sucursais', en: 'Our branches' },
   directions: { es: 'Cómo llegar', pt: 'Como chegar', en: 'Get directions' },
+  chooseBranch: { es: '¿A qué sucursal escribes?', pt: 'Para qual sucursal você quer falar?', en: 'Which branch do you want to reach?' },
+  chooseBranchSub: { es: 'Elige la sucursal más cercana y te abrimos su WhatsApp.', pt: 'Escolha a sucursal mais perto e abrimos o WhatsApp dela.', en: 'Pick the nearest branch and we will open its WhatsApp chat.' },
   // gallery
   galleryTitle: { es: 'Nuestro trabajo', pt: 'Nosso trabalho', en: 'Our work' },
   ctaTitle1: { es: '¿Lista para', pt: 'Pronta para', en: 'Ready to' },

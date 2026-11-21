@@ -62,7 +62,7 @@ router.post('/', (req: Request, res: Response) => {
 
     const settings: Record<string, string> = {};
     db.prepare('SELECT key, value FROM settings').all().forEach((row: any) => { settings[row.key] = row.value; });
-    const tenantInfo = { country: settings.country || 'IN', business_type: 'salon', state_code: settings.state_code || '' };
+    const tenantInfo = { country: settings.country || 'BO', business_type: 'salon', state_code: settings.state_code || '' };
 
     const { order, orderItems } = withTxn(() => {
       const orderResult = db.prepare(`
@@ -150,7 +150,7 @@ router.post('/:id/items', (req: Request, res: Response) => {
 
     const settings: Record<string, string> = {};
     db.prepare('SELECT key, value FROM settings').all().forEach((row: any) => { settings[row.key] = row.value; });
-    const tenantInfo = { country: settings.country || 'IN', business_type: 'salon', state_code: settings.state_code || '' };
+    const tenantInfo = { country: settings.country || 'BO', business_type: 'salon', state_code: settings.state_code || '' };
     const customer = order.customer_id ? db.prepare('SELECT * FROM customers WHERE id = ?').get(order.customer_id) as any : null;
 
     const { updatedOrder, updatedItems } = withTxn(() => {

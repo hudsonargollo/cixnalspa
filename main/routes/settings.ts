@@ -25,9 +25,9 @@ function upsertSettings(db: ReturnType<typeof getDatabase>, entries: Record<stri
 function businessShape(s: Record<string, string>) {
   return {
     business_name:   s.business_name   || '',
-    timezone:        s.timezone        || 'America/Sao_Paulo',
-    currency:        s.currency        || 'BRL',
-    country:         s.country         || 'BR',
+    timezone:        s.timezone        || 'America/La_Paz',
+    currency:        s.currency        || 'BOB',
+    country:         s.country         || 'BO',
     gstin:           s.gstin           || '',
     state_code:      s.state_code      || '',
     business_address: s.business_address || '',
@@ -45,7 +45,7 @@ function taxShape(s: Record<string, string>) {
     gstin:                s.gstin           || '',
     state_code:           s.state_code      || '',
     tax_scheme:           s.tax_scheme      || 'regular',
-    country:              s.country         || 'IN',
+    country:              s.country         || 'BO',
     loyalty_enabled:      s.loyalty_enabled === 'true',
     loyalty_expiry_days:  parseInt(s.loyalty_expiry_days  || '365'),
     loyalty_points_per_rs: parseFloat(s.loyalty_points_per_rs || '1'),

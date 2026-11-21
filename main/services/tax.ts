@@ -131,7 +131,7 @@ function calculateDefaultTax(product: Product, taxableAmount: number): TaxResult
 
   return {
     tax_amount: round(taxAmount, 2),
-    tax_breakdown: [{ title: 'Tax', rate, amount: round(taxAmount, 2) }],
+    tax_breakdown: [{ title: 'IVA', rate, amount: round(taxAmount, 2) }],
     tax_type: product.tax_type,
   };
 }
@@ -187,7 +187,7 @@ export async function calculateTaxPreview(req: any, res: any): Promise<void> {
     });
 
     const tenantInfo: TenantInfo = {
-      country: settings.country || 'IN',
+      country: settings.country || 'BO',
       business_type: settings.business_type || 'salon',
       state_code: settings.state_code || '',
     };

@@ -33,10 +33,10 @@ import toast from 'react-hot-toast';
 const STATUS_META: Record<string, { label: string; className: string }> = {
   scheduled: { label: 'Agendado', className: 'bg-yellow-100 text-yellow-800' },
   confirmed: { label: 'Confirmado', className: 'bg-blue-100 text-blue-800' },
-  'checked-in': { label: 'Em atendimento', className: 'bg-purple-100 text-purple-800' },
+  'checked-in': { label: 'En atención', className: 'bg-purple-100 text-purple-800' },
   completed: { label: 'Concluído', className: 'bg-green-100 text-green-800' },
   cancelled: { label: 'Cancelado', className: 'bg-red-100 text-red-800' },
-  'no-show': { label: 'Não compareceu', className: 'bg-gray-200 text-gray-700' },
+  'no-show': { label: 'No asistió', className: 'bg-gray-200 text-gray-700' },
 };
 
 function shiftDate(date: string, days: number): string {
@@ -93,7 +93,7 @@ export default function AgendaPage() {
       setAppointments(data.appointments || []);
       setSummary(data.summary || null);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível carregar a agenda');
+      toast.error(error?.response?.data?.error || 'No se pudo cargar la agenda');
     } finally {
       setLoading(false);
     }
@@ -177,11 +177,11 @@ export default function AgendaPage() {
   async function createAppointment(event: React.FormEvent) {
     event.preventDefault();
     if (selectedServiceIds.length === 0) {
-      toast.error('Escolha pelo menos um serviço');
+      toast.error('Elige al menos un servicio');
       return;
     }
     if (!form.time && !form.force) {
-      toast.error('Escolha um horário');
+      toast.error('Elige un horario');
       return;
     }
     setSaving(true);
@@ -196,12 +196,12 @@ export default function AgendaPage() {
         notes: form.notes || null,
         force: form.force,
       });
-      toast.success('Agendamento criado');
+      toast.success('Agendamiento creado');
       setCreateOpen(false);
       setDate(form.date);
       if (form.date === date) load(date);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível criar o agendamento');
+      toast.error(error?.response?.data?.error || 'No se pudo crear el agendamiento');
     } finally {
       setSaving(false);
     }
@@ -212,17 +212,17 @@ export default function AgendaPage() {
       confirmed: 'confirmar',
       completed: 'concluir',
       cancelled: 'cancelar',
-      'no-show': 'marcar como não compareceu',
+      'no-show': 'marcar como no asistió',
     };
-    if (['cancelled', 'no-show'].includes(status) && !confirm(`Deseja realmente ${labels[status]} este agendamento?`)) {
+    if (['cancelled', 'no-show'].includes(status) && !confirm(`¿Seguro que deseas ${labels[status]} este agendamiento?`)) {
       return;
     }
     try {
       await api.patch(`/appointments/${appointment.id}/status`, { status });
-      toast.success('Status atualizado');
+      toast.success('Estado actualizado');
       load(date);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível atualizar');
+      toast.error(error?.response?.data?.error || 'No se pudo actualizar');
     }
   }
 
@@ -232,7 +232,7 @@ export default function AgendaPage() {
       toast.success(`Comanda ${data.order?.order_number || ''} aberta`);
       load(date);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível abrir a comanda');
+      toast.error(error?.response?.data?.error || 'No se pudo abrir la comanda');
     }
   }
 
@@ -248,7 +248,7 @@ export default function AgendaPage() {
       setBookingUrl(link.data.url);
       setQrCode(qr.data.qr);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível gerar o link');
+      toast.error(error?.response?.data?.error || 'No se pudo generar el enlace');
     } finally {
       setLinkLoading(false);
     }
@@ -259,7 +259,7 @@ export default function AgendaPage() {
       await navigator.clipboard.writeText(bookingUrl);
       toast.success('Link copiado');
     } catch {
-      toast.error('Não foi possível copiar');
+      toast.error('No se pudo copiar');
     }
   }
 
@@ -271,11 +271,11 @@ export default function AgendaPage() {
         date: rescheduleDate || rescheduling.date,
         time: rescheduleTime,
       });
-      toast.success('Agendamento remarcado');
+      toast.success('Agendamiento reprogramado');
       setRescheduling(null);
       load(date);
     } catch (error: any) {
-      toast.error(error?.response?.data?.error || 'Não foi possível remarcar');
+      toast.error(error?.response?.data?.error || 'No se pudo reprogramar');
     }
   }
 
@@ -289,7 +289,7 @@ export default function AgendaPage() {
           <p className="text-sm text-[var(--muted-foreground)] capitalize">{formatDateLong(date)}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, -1))} aria-label="Dia anterior">
+          <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, -1))} aria-label="Día anterior">
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <Input
@@ -298,12 +298,12 @@ export default function AgendaPage() {
             onChange={(event) => setDate(event.target.value || todayStr())}
             className="w-40"
           />
-          <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, 1))} aria-label="Próximo dia">
+          <Button variant="outline" size="icon" onClick={() => setDate(shiftDate(date, 1))} aria-label="Día siguiente">
             <ChevronRight className="h-4 w-4" />
           </Button>
           {!isToday && (
             <Button variant="ghost" onClick={() => setDate(todayStr())}>
-              Hoje
+              Hoy
             </Button>
           )}
           <Button onClick={openCreate}>
@@ -314,7 +314,7 @@ export default function AgendaPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
         <div className="rounded-lg border border-[var(--border)] p-3">
-          <div className="text-xs text-[var(--muted-foreground)]">Agendamentos</div>
+          <div className="text-xs text-[var(--muted-foreground)]">Agendamientos</div>
           <div className="text-xl font-semibold">{summary?.total ?? 0}</div>
         </div>
         <div className="rounded-lg border border-[var(--border)] p-3">
@@ -322,15 +322,15 @@ export default function AgendaPage() {
           <div className="text-xl font-semibold">{summary?.confirmed ?? 0}</div>
         </div>
         <div className="rounded-lg border border-[var(--border)] p-3">
-          <div className="text-xs text-[var(--muted-foreground)]">Em atendimento</div>
+          <div className="text-xs text-[var(--muted-foreground)]">En atención</div>
           <div className="text-xl font-semibold">{summary?.checked_in ?? 0}</div>
         </div>
         <div className="rounded-lg border border-[var(--border)] p-3">
-          <div className="text-xs text-[var(--muted-foreground)]">Concluídos</div>
+          <div className="text-xs text-[var(--muted-foreground)]">Completados</div>
           <div className="text-xl font-semibold">{summary?.completed ?? 0}</div>
         </div>
         <div className="rounded-lg border border-[var(--border)] p-3">
-          <div className="text-xs text-[var(--muted-foreground)]">Receita prevista</div>
+          <div className="text-xs text-[var(--muted-foreground)]">Ingreso previsto</div>
           <div className="text-xl font-semibold">{formatCurrency(summary?.expected_revenue ?? 0)}</div>
         </div>
       </div>
@@ -338,28 +338,28 @@ export default function AgendaPage() {
       <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--border)] p-3">
         <div className="flex items-center gap-2 text-sm">
           <Link2 className="h-4 w-4 text-[var(--muted-foreground)]" />
-          <span className="text-[var(--muted-foreground)]">Link público de agendamento</span>
+          <span className="text-[var(--muted-foreground)]">Enlace público de agendamiento</span>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={openBookingLink}>
-            <QrCode className="h-4 w-4" /> Divulgar
+            <QrCode className="h-4 w-4" /> Compartir
           </Button>
         </div>
       </div>
 
       {loading ? (
         <div className="rounded-lg border border-[var(--border)] p-10 text-center text-sm text-[var(--muted-foreground)]">
-          Carregando agenda...
+          Cargando agenda...
         </div>
       ) : appointments.length === 0 ? (
         <div className="rounded-lg border border-dashed border-[var(--border)] p-12 text-center">
           <CalendarDays className="h-10 w-10 mx-auto mb-3 text-[var(--muted-foreground)]" />
-          <p className="font-medium mb-1">Nenhum agendamento neste dia</p>
+          <p className="font-medium mb-1">Ningún agendamiento este día</p>
           <p className="text-sm text-[var(--muted-foreground)] mb-4">
-            Crie um horário manualmente ou compartilhe o link público.
+            Crea un horario manualmente o comparte el enlace público.
           </p>
           <Button onClick={openCreate}>
-            <Plus className="h-4 w-4" /> Novo agendamento
+            <Plus className="h-4 w-4" /> Nuevo agendamiento
           </Button>
         </div>
       ) : (
@@ -376,7 +376,7 @@ export default function AgendaPage() {
                 <div className="md:w-28 shrink-0">
                   <div className="text-lg font-semibold">{appointment.start_time.slice(0, 5)}</div>
                   <div className="text-xs text-[var(--muted-foreground)]">
-                    até {appointment.end_time.slice(0, 5)} · {durationLabel(appointment.duration_minutes)}
+                    hasta {appointment.end_time.slice(0, 5)} · {durationLabel(appointment.duration_minutes)}
                   </div>
                 </div>
 
@@ -421,7 +421,7 @@ export default function AgendaPage() {
                   )}
                   {appointment.status === 'checked-in' && (
                     <Button size="sm" onClick={() => updateStatus(appointment, 'completed')}>
-                      <Check className="h-3.5 w-3.5" /> Concluir
+                      <Check className="h-3.5 w-3.5" /> Completar
                     </Button>
                   )}
                   {isActive && (
@@ -435,7 +435,7 @@ export default function AgendaPage() {
                   )}
                   {isActive && (
                     <Button size="sm" variant="outline" onClick={() => updateStatus(appointment, 'no-show')}>
-                      <UserX className="h-3.5 w-3.5" /> Faltou
+                      <UserX className="h-3.5 w-3.5" /> Faltó
                     </Button>
                   )}
                   {isActive && (
@@ -455,7 +455,7 @@ export default function AgendaPage() {
         </div>
       )}
 
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Novo agendamento">
+      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="Nuevo agendamiento">
         <form onSubmit={createAppointment} className="space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -474,7 +474,7 @@ export default function AgendaPage() {
           </div>
 
           <div>
-            <Label>Serviços</Label>
+            <Label>Servicios</Label>
             <div className="max-h-44 overflow-y-auto rounded-md border border-[var(--border)] p-2 space-y-1">
               {services.map((service) => (
                 <label key={service.id} className="flex items-start gap-2 text-sm p-1.5 rounded hover:bg-[var(--secondary)] cursor-pointer">
@@ -495,14 +495,14 @@ export default function AgendaPage() {
             </div>
             {selectedServices.length > 0 && (
               <p className="text-xs text-[var(--muted-foreground)] mt-1">
-                {selectedServices.length} serviço(s) · {durationLabel(formDuration)} · {formatCurrency(formTotal)}
+                {selectedServices.length} servicio(s) · {durationLabel(formDuration)} · {formatCurrency(formTotal)}
               </p>
             )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <Label>Data</Label>
+              <Label>Fecha</Label>
               <Input
                 type="date"
                 value={form.date}
@@ -511,16 +511,16 @@ export default function AgendaPage() {
               />
             </div>
             <div>
-              <Label>Horário</Label>
+              <Label>Horario</Label>
               <Select
                 value={form.time}
                 onChange={(event) => setForm({ ...form, time: event.target.value })}
                 disabled={form.force || slotsLoading}
               >
-                <option value="">{slotsLoading ? 'Carregando...' : 'Escolha'}</option>
+                <option value="">{slotsLoading ? 'Cargando...' : 'Elige'}</option>
                 {slots.map((slot) => (
                   <option key={slot.id} value={slot.time} disabled={!slot.available}>
-                    {slot.time}{slot.available ? '' : ' — indisponível'}
+                    {slot.time}{slot.available ? '' : ' — no disponible'}
                   </option>
                 ))}
               </Select>
@@ -533,35 +533,35 @@ export default function AgendaPage() {
               checked={form.force}
               onChange={(event) => setForm({ ...form, force: event.target.checked })}
             />
-            Ignorar disponibilidade (encaixe)
+            Ignorar disponibilidad (espacio)
           </label>
 
           {form.force && (
             <div>
-              <Label>Horário do encaixe</Label>
+              <Label>Horario del espacio</Label>
               <Input type="time" value={form.time} onChange={(event) => setForm({ ...form, time: event.target.value })} required />
             </div>
           )}
 
           <div>
-            <Label>Observações</Label>
+            <Label>Observaciones</Label>
             <Input value={form.notes} onChange={(event) => setForm({ ...form, notes: event.target.value })} />
           </div>
 
           <Button type="submit" className="w-full" disabled={saving}>
-            {saving ? 'Salvando...' : 'Criar agendamento'}
+            {saving ? 'Guardando...' : 'Crear agendamiento'}
           </Button>
         </form>
       </Modal>
 
-      <Modal open={Boolean(rescheduling)} onClose={() => setRescheduling(null)} title="Remarcar agendamento">
+      <Modal open={Boolean(rescheduling)} onClose={() => setRescheduling(null)} title="Reprogramar agendamiento">
         {rescheduling && (
           <form onSubmit={submitReschedule} className="space-y-3">
             <p className="text-sm text-[var(--muted-foreground)]">
               {rescheduling.customer_name} · {rescheduling.items.map((item) => item.product_name).join(' · ')}
             </p>
             <div>
-              <Label>Nova data</Label>
+              <Label>Nueva fecha</Label>
               <Input
                 type="date"
                 value={rescheduleDate}
@@ -570,10 +570,10 @@ export default function AgendaPage() {
               />
             </div>
             <div>
-              <Label>Novo horário</Label>
+              <Label>Nuevo horario</Label>
               <div className="grid grid-cols-4 gap-2">
                 {rescheduleSlots.length === 0 && (
-                  <p className="col-span-4 text-sm text-[var(--muted-foreground)]">Sem horários disponíveis.</p>
+                  <p className="col-span-4 text-sm text-[var(--muted-foreground)]">Sin horarios disponibles.</p>
                 )}
                 {rescheduleSlots.map((slot) => (
                   <button
@@ -596,34 +596,34 @@ export default function AgendaPage() {
               </div>
             </div>
             <Button type="submit" className="w-full" disabled={!rescheduleTime}>
-              Salvar novo horário
+              Guardar nuevo horario
             </Button>
           </form>
         )}
       </Modal>
 
-      <Modal open={linkOpen} onClose={() => setLinkOpen(false)} title="Divulgar agendamento online">
+      <Modal open={linkOpen} onClose={() => setLinkOpen(false)} title="Compartir agendamiento en línea">
         {linkLoading ? (
-          <p className="text-sm text-[var(--muted-foreground)]">Gerando...</p>
+          <p className="text-sm text-[var(--muted-foreground)]">Generando...</p>
         ) : (
           <div className="space-y-4">
             <p className="text-sm text-[var(--muted-foreground)]">
-              Compartilhe este link com suas clientes ou imprima o QR Code para a recepção.
+              Comparte este enlace con tus clientas o imprime el código QR para recepción.
             </p>
             <div className="flex items-center gap-2">
               <Input readOnly value={bookingUrl} />
-              <Button variant="outline" size="icon" onClick={copyLink} aria-label="Copiar link">
+              <Button variant="outline" size="icon" onClick={copyLink} aria-label="Copiar enlace">
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
             {qrCode && (
               <div className="flex justify-center">
-                <img src={qrCode} alt="QR Code do agendamento" className="w-56 h-56 rounded-lg border border-[var(--border)]" />
+                <img src={qrCode} alt="Código QR del agendamiento" className="w-56 h-56 rounded-lg border border-[var(--border)]" />
               </div>
             )}
             <div className="flex justify-center">
               <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="text-sm underline underline-offset-2">
-                Abrir página de agendamento
+                Abrir página de agendamiento
               </a>
             </div>
           </div>
