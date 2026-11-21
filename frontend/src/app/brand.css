@@ -26,10 +26,10 @@
   --ebg-accent: #c9a87c;
   --ebg-ink: #3b2b21;
 
-  /* Full-screen paper from imgs/bck.webp (gradient flattened, 16:9 cover).
-     One continuous sheet behind the page; the cropped embossed logo-mark sits
-     on top. --ebg is the sampled average colour, used as the base beneath it. */
-  --ebg-image: url('/cixnails/bck-full.webp');
+  /* Real paper texture from imgs/bck.webp — the original file, verbatim.
+     It covers the viewport (no tiling), so the cropped embossed logo-mark sits
+     on one continuous sheet. --ebg is the sampled average colour beneath it. */
+  --ebg-image: url('/cixnails/bck.webp');
 
   --bg-app: #1c1413;
   --bg-surface: #271d1b;

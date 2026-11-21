@@ -667,7 +667,7 @@ export default function BookingPage() {
             <img
               src={LOGO_MARK}
               alt="Cix Nail Artist"
-              className="logo-mark w-72 md:w-96 object-contain animate-fade-in-up"
+              className="logo-mark w-60 md:w-80 object-contain animate-fade-in-up"
             />
           </div>
 
