@@ -1,18 +1,19 @@
 'use client';
 
-import { BRANCHES } from '@/lib/branches';
+import type { BookingBranch } from '@/lib/booking-types';
 import { t, type Lang } from '@/lib/i18n';
 
 interface BranchModalProps {
   open: boolean;
   onClose: () => void;
   lang: Lang;
+  branches: BookingBranch[];
 }
 
 // Popup shown when the client taps any WhatsApp CTA: pick a sucursal,
 // then jump straight to that branch's WhatsApp chat.
-export function BranchModal({ open, onClose, lang }: BranchModalProps) {
-  if (!open) return null;
+export function BranchModal({ open, onClose, lang, branches }: BranchModalProps) {
+  if (!open || branches.length === 0) return null;
 
   return (
     <div
@@ -48,7 +49,7 @@ export function BranchModal({ open, onClose, lang }: BranchModalProps) {
         </div>
 
         <div className="p-4 space-y-3">
-          {BRANCHES.map((branch) => (
+          {branches.map((branch) => (
             <div
               key={branch.id}
               className="rounded-xl p-4"

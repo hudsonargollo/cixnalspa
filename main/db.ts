@@ -314,6 +314,9 @@ function runMigrations(): void {
   // values from older installs, never a value the salon configured.
   normalizeBoliviaDefaults();
 
+  // Ensure the branches table and its seed rows exist on older databases too.
+  ensureBranchTable();
+
   console.log('[DB] Migrations complete');
 }
 
@@ -337,9 +340,53 @@ function normalizeBoliviaDefaults(): void {
   }
 }
 
+// Ensure branch storage exists on every install (including pre-branch DBs).
+// Seed rows use INSERT OR IGNORE so deleted/edited branches stay deleted/edited.
+function ensureBranchTable(): void {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS branches (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      zone TEXT,
+      whatsapp_url TEXT,
+      maps_url TEXT,
+      is_active INTEGER DEFAULT 1,
+      sort_order INTEGER DEFAULT 0,
+      deleted_at TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+  // Older installs may lack deleted_at — add it before seeding/querying.
+  if (!getColumns(db, 'branches').includes('deleted_at')) {
+    db.exec('ALTER TABLE branches ADD COLUMN deleted_at TEXT');
+  }
+  const seed = [
+    ['cix-central', 'CIX Central', 'Zona Norte · Av. Beni', 'https://wa.me/message/SGYOW5XIK73RP1', 'https://maps.app.goo.gl/xiD6tQbQ9jn4egry9', 1],
+    ['cix-equipetrol', 'CIX Equipetrol', 'Zona Equipetrol', 'https://api.whatsapp.com/send?phone=59167943253', 'https://maps.app.goo.gl/hLMgcDFuUdGJR9Xr9', 2],
+    ['cix-urbari', 'CIX Urbarí', 'Zona Urbarí y Las Palmas', 'https://api.whatsapp.com/send?phone=59168906506', 'https://maps.app.goo.gl/pQu2CgVUhfLFa5Y99', 3],
+  ];
+  const insert = db.prepare(`INSERT OR IGNORE INTO branches (id, name, zone, whatsapp_url, maps_url, is_active, sort_order, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?)`);
+  for (const [id, name, zone, wa, maps, order] of seed) insert.run(id, name, zone, wa, maps, order, now(), now());
+}
+
 function createSchema(): void {
   db.exec(`
     -- ── Master data ──────────────────────────────────────────────────────
+
+    CREATE TABLE IF NOT EXISTS branches (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      zone TEXT,
+      whatsapp_url TEXT,
+      maps_url TEXT,
+      is_active INTEGER DEFAULT 1,
+      sort_order INTEGER DEFAULT 0,
+      deleted_at TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
 
     CREATE TABLE IF NOT EXISTS categories (
       id TEXT PRIMARY KEY,

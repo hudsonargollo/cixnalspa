@@ -21,6 +21,16 @@ export interface BookingLoyalty {
   rewardDescription: string;
 }
 
+export interface BookingBranch {
+  id: string;
+  name: string;
+  zone: string;
+  whatsappUrl: string;
+  mapsUrl: string;
+  sortOrder?: number;
+  isActive?: boolean;
+}
+
 export interface BookingBusiness {
   name: string;
   tagline: string;
@@ -47,6 +57,7 @@ export interface BookingConfig {
   loyalty: BookingLoyalty;
   services: BookingService[];
   categories: BookingCategory[];
+  branches: BookingBranch[];
 }
 
 export interface TimeSlot {

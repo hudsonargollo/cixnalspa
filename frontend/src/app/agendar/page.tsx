@@ -32,7 +32,6 @@ import { HighlightCard } from '@/components/booking/highlight-card';
 import { SmartCart } from '@/components/booking/smart-cart';
 import { LoyaltyCard } from '@/components/booking/loyalty-card';
 import { BranchModal } from '@/components/booking/branch-modal';
-import { BRANCHES } from '@/lib/branches';
 
 type Step = 'services' | 'calendar' | 'identify' | 'success';
 
@@ -262,14 +261,15 @@ export default function BookingPage() {
   // message the exact sucursal (Central / Equipetrol / Urbarí).
   const openWhatsappPicker = (event: React.MouseEvent) => {
     event.preventDefault();
-    if (BRANCHES.length > 1) setBranchModalOpen(true);
-    else if (BRANCHES[0]) window.open(BRANCHES[0].whatsappUrl, '_blank');
+    if (branches.length > 1) setBranchModalOpen(true);
+    else if (branches[0]?.whatsappUrl) window.open(branches[0].whatsappUrl, '_blank');
     else if (whatsappUrl) window.open(whatsappUrl, '_blank');
   };
   const instagramUrl = `https://instagram.com/${business?.instagram || FALLBACK_INSTAGRAM}`;
   const stylistName = config?.booking.stylist.name || 'Cix Nail Artist';
   const phoneDigits = customerPhone.replace(/\D/g, '');
-  const showBranches = BRANCHES.length > 0;
+  const branches = config?.branches ?? [];
+  const showBranches = branches.length > 0;
 
   const FEATURED_IDS = ['cix-prod-01', 'cix-prod-02', 'cix-prod-03'];
   const highlights = config?.services.filter((service) => FEATURED_IDS.includes(service.id)) ?? [];
@@ -750,7 +750,7 @@ export default function BookingPage() {
               {t('locationTitle', lang)}
             </p>
             <div className="space-y-2.5">
-              {BRANCHES.map((branch) => (
+              {branches.map((branch) => (
                 <div key={branch.id} className="flex items-center justify-between gap-3 rounded-xl px-4 py-3" style={{ backgroundColor: 'var(--bg-surface-hover)', border: '1px solid var(--border-subtle)' }}>
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate" style={{ color: 'var(--text-primary)' }}>{branch.name}</p>
@@ -888,7 +888,7 @@ export default function BookingPage() {
           <p className="font-display text-xl font-light mb-1" style={{ color: 'var(--text-primary)' }}>Cix Nail Artist</p>
           <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-disabled)' }}>{t('tagline', lang)}</p>
           <p className="text-xs mb-1" style={{ color: 'var(--text-disabled)' }}>
-            {business?.address || BRANCHES[0]?.zone || ''}
+            {business?.address || branches[0]?.zone || ''}
           </p>
           <p className="text-xs" style={{ color: 'var(--text-disabled)' }}>
             {business?.phone ? `${business.phone} · ` : ''}@{business?.instagram || FALLBACK_INSTAGRAM}
@@ -921,7 +921,7 @@ export default function BookingPage() {
           </a>
         )}
 
-        <BranchModal open={branchModalOpen} onClose={() => setBranchModalOpen(false)} lang={lang} />
+        <BranchModal open={branchModalOpen} onClose={() => setBranchModalOpen(false)} lang={lang} branches={branches} />
       </div>
     </div>
   );

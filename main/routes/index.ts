@@ -14,6 +14,7 @@ import { printerRoutes } from './printers';
 import { databaseRoutes } from './database';
 import { appointmentRoutes } from './appointments';
 import { publicBookingRoutes } from './public-booking';
+import { branchRoutes } from './branches';
 import { getDatabase, now, parseItemJson } from '../db';
 
 export function registerRoutes(app: Express): void {
@@ -33,6 +34,7 @@ export function registerRoutes(app: Express): void {
   app.use('/api/db', databaseRoutes);
   app.use('/api/appointments', appointmentRoutes);
   app.use('/api/public/booking', publicBookingRoutes);
+  app.use('/api/branches', branchRoutes);
 
   app.post('/api/tax/preview', async (req, res) => {
     const { calculateTaxPreview } = await import('../services/tax');

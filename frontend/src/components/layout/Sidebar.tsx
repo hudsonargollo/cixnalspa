@@ -14,6 +14,7 @@ import {
   Settings,
   LogOut,
   PanelLeft,
+  MapPin,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { cn } from '@/lib/utils';
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { href: '/products', label: 'Servicios', icon: Package, roles: ['owner', 'manager'] },
   { href: '/customers', label: 'Clientes', icon: Users, roles: ['owner', 'manager', 'cashier', 'stylist'] },
   { href: '/staff', label: 'Equipo', icon: UserCog, roles: ['owner', 'manager'] },
+  { href: '/sucursales', label: 'Sucursales', icon: MapPin, roles: ['owner', 'manager'] },
   { href: '/settings', label: 'Configuracion', icon: Settings, roles: ['owner', 'manager'] },
 ];
 

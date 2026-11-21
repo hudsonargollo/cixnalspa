@@ -1,3 +1,4 @@
+import { getDatabase } from '../db';
 import { Router, Request, Response } from 'express';
 import {
   createAppointment,
@@ -43,6 +44,14 @@ router.get('/config', (_req: Request, res: Response) => {
     const booking = getBookingSettings();
     const loyalty = getLoyaltyConfig();
     const { services, categories } = groupServices();
+    const branches = (getDatabase().prepare(
+      `SELECT id, name, COALESCE(zone,'') AS zone, COALESCE(whatsapp_url,'') AS whatsappUrl,
+              COALESCE(maps_url,'') AS mapsUrl, sort_order AS sortOrder
+       FROM branches WHERE deleted_at IS NULL AND is_active = 1 ORDER BY sort_order, name`
+    ).all() as any[]).map((b) => ({
+      id: b.id, name: b.name, zone: b.zone, whatsappUrl: b.whatsappUrl,
+      mapsUrl: b.mapsUrl, sortOrder: b.sortOrder,
+    }));
 
     res.json({
       booking: {
@@ -68,6 +77,7 @@ router.get('/config', (_req: Request, res: Response) => {
       loyalty,
       services,
       categories,
+      branches,
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
