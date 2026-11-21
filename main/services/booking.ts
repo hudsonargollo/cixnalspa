@@ -23,6 +23,8 @@ export interface BookingService {
   categoryColor?: string | null;
   categoryIcon?: string | null;
   image_url?: string | null;
+  /** Public URL of the generated service photo, or null when not yet made. */
+  image?: string | null;
 }
 
 export interface AppointmentItemRow {
@@ -212,6 +214,7 @@ export function getBookingServices(): BookingService[] {
     category: p.category_name || 'Servicios',
     categoryColor: p.category_color,
     categoryIcon: p.category_icon,
+    image: p.image_key ? `/cixnails/services/${p.image_key}.webp` : null,
   }));
 }
 

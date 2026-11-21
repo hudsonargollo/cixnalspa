@@ -7,6 +7,8 @@ export interface BookingService {
   category: string;
   categoryColor?: string | null;
   categoryIcon?: string | null;
+  /** Generated service photo URL, or null → fall back to the icon. */
+  image?: string | null;
 }
 
 export interface BookingCategory {

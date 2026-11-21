@@ -33,12 +33,12 @@ export function HighlightCard({ service, imageUrl, isSelected, onToggle, lang, i
       onClick={() => onToggle(service)}
     >
       <div className="w-full h-48 overflow-hidden flex-shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
-        {iconUrl(icon) ? (
+        {imageUrl ? (
+          <img src={imageUrl} alt={name} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: 'center 15%' }} />
+        ) : iconUrl(icon) ? (
           <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
             <img src={iconUrl(icon)!} alt="" className="w-20 h-20 object-contain" aria-hidden="true" />
           </div>
-        ) : imageUrl ? (
-          <img src={imageUrl} alt={name} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: 'center 15%' }} />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.55 }}>

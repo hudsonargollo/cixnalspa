@@ -32,7 +32,9 @@ export function ServiceCard({ service, isSelected, onToggle, lang }: ServiceCard
       <div className="flex">
         <div className="flex flex-col justify-center px-4 flex-1">
           <div className="flex items-start gap-3 mb-2">
-            {iconUrl(service.categoryIcon) ? (
+            {service.image ? (
+              <img src={service.image} alt="" loading="lazy" className="w-10 h-10 rounded-full shrink-0 object-cover" aria-hidden="true" />
+            ) : iconUrl(service.categoryIcon) ? (
               <img src={iconUrl(service.categoryIcon)!} alt="" className="w-10 h-10 shrink-0 object-contain" aria-hidden="true" />
             ) : (
               <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>

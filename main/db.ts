@@ -323,6 +323,14 @@ function runMigrations(): void {
     db.exec('ALTER TABLE users ADD COLUMN phone TEXT');
   }
 
+  // Service card images: products.image_key names a file in
+  // frontend/public/cixnails/services/<image_key>.webp. Added after the fact so
+  // existing installs self-heal on startup; then fill it for the Cix catalog.
+  if (!getColumns(db, 'products').includes('image_key')) {
+    db.exec('ALTER TABLE products ADD COLUMN image_key TEXT');
+  }
+  seedServiceImageKeys();
+
   console.log('[DB] Migrations complete');
 }
 
@@ -429,6 +437,7 @@ function createSchema(): void {
       tax_rate REAL DEFAULT 0,
       cb_percent REAL DEFAULT 0,
       tags TEXT,
+      image_key TEXT,
       deleted_at TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -790,6 +799,35 @@ function seedCixCatalog(): void {
   // Keep icons current on existing databases too.
   const setCategoryIcon = db.prepare('UPDATE categories SET icon = ? WHERE id = ?');
   for (const [id, , , icon] of cats) setCategoryIcon.run(icon, id);
+}
+
+// Service card images. The key doubles as the file name in
+// frontend/public/cixnails/services/<image_key>.webp — see docs/IMAGE-PROMPTS.md.
+// Keys are written with UPDATE (not INSERT OR IGNORE) so a reseed does not
+// overwrite a key the salon set by hand, but a missing key still self-heals.
+const SERVICE_IMAGE_KEYS: Record<string, string> = {
+  'cix-prod-01': 'mani-gel-nude',
+  'cix-prod-02': 'pedi-spa-linen',
+  'cix-prod-03': 'combo-matching-rosewood',
+  'cix-prod-04': 'mani-acrylic-floral-art',
+  'cix-prod-05': 'mani-traditional-nude',
+  'cix-prod-06': 'mani-acrylic-french',
+  'cix-prod-07': 'mani-gel-rose',
+  'cix-prod-08': 'mani-others-lineart',
+  'cix-prod-09': 'pedi-traditional-nude',
+  'cix-prod-10': 'pedi-semi-terracotta',
+  'cix-prod-11': 'pedi-spa-nude',
+  'cix-prod-12': 'pedi-acrylic-french',
+  'cix-prod-13': 'combo-traditional-nude',
+  'cix-prod-14': 'combo-gel-pedispa',
+  'cix-prod-15': 'combo-acrylic-acripie',
+};
+
+function seedServiceImageKeys(): void {
+  const update = db.prepare(
+    "UPDATE products SET image_key = ?, updated_at = ? WHERE id = ? AND (image_key IS NULL OR image_key = '')"
+  );
+  for (const [id, key] of Object.entries(SERVICE_IMAGE_KEYS)) update.run(key, now(), id);
 }
 function migrateToV2(): void {
   console.log('[DB] Migrating schema v1 → v2 (appointments)');
