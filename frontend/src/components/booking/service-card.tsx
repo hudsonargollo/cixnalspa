@@ -18,66 +18,77 @@ export function ServiceCard({ service, isSelected, onToggle, lang }: ServiceCard
   const copy = serviceCopy(service.id, lang);
   const name = copy?.name ?? service.name;
   const description = copy?.description ?? service.description;
+  const thumb = service.image ?? iconUrl(service.categoryIcon);
 
   return (
     <div
-      className="relative p-4 mb-3 rounded-2xl transition-all duration-300 cursor-pointer"
+      className="relative p-4 mb-4 rounded-3xl transition-all duration-300 cursor-pointer"
       style={{
         backgroundColor: 'var(--bg-surface)',
-        border: isSelected ? '1.5px solid var(--text-primary)' : '1px solid var(--border-subtle)',
-        boxShadow: isSelected ? '0 2px 16px rgba(0,0,0,0.1)' : '0 1px 4px rgba(0,0,0,0.04)',
+        border: isSelected ? '1.5px solid var(--brand-accent)' : '1px solid var(--border-subtle)',
+        boxShadow: isSelected
+          ? '0 8px 24px rgba(166,90,76,0.16)'
+          : '0 2px 10px rgba(0,0,0,0.05)',
       }}
       onClick={() => onToggle(service)}
     >
-      <div className="flex">
-        <div className="flex flex-col justify-center px-4 flex-1">
-          <div className="flex items-start gap-3 mb-2">
-            {service.image ? (
-              <img src={service.image} alt="" loading="lazy" className="w-10 h-10 rounded-full shrink-0 object-cover" aria-hidden="true" />
-            ) : iconUrl(service.categoryIcon) ? (
-              <img src={iconUrl(service.categoryIcon)!} alt="" className="w-10 h-10 shrink-0 object-contain" aria-hidden="true" />
-            ) : (
-              <div className="w-10 h-10 flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--bg-surface-hover)' }}>
-                <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: 'var(--text-disabled)' }}>
-                  {service.category.charAt(0)}
-                </span>
-              </div>
-            )}
-            <h3 className="font-display text-xl font-light leading-tight" style={{ color: 'var(--text-primary)' }}>
-              {name}
-            </h3>
+      <div className="flex items-start gap-4">
+        {thumb ? (
+          <img
+            src={thumb}
+            alt=""
+            loading="lazy"
+            className="w-24 h-24 rounded-2xl shrink-0 object-cover"
+            style={{
+              objectFit: service.image ? 'cover' : 'contain',
+              padding: service.image ? 0 : '10px',
+              backgroundColor: service.image ? 'var(--bg-surface-hover)' : 'transparent',
+            }}
+            aria-hidden="true"
+          />
+        ) : (
+          <div
+            className="w-24 h-24 rounded-2xl flex items-center justify-center shrink-0"
+            style={{ backgroundColor: 'var(--bg-surface-hover)' }}
+          >
+            <span className="text-sm font-bold uppercase tracking-widest" style={{ color: 'var(--text-disabled)' }}>
+              {service.category.charAt(0)}
+            </span>
           </div>
+        )}
 
-          <div className="flex items-center gap-3 text-xs mb-1" style={{ color: 'var(--text-secondary)' }}>
-            <div className="flex items-center gap-1">
+        <div className="flex flex-col justify-center flex-1 min-w-0">
+          <h3
+            className="font-display text-[22px] font-light leading-snug mb-1.5"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            {name}
+          </h3>
+
+          <div className="flex items-center gap-2.5 text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>
+            <span className="flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
               {service.duration} min
-            </div>
-            <span>·</span>
-            <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{money(service.price, lang)}</span>
-          </div>
-
-          <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-            <div className="overflow-hidden">
-              <div className="text-xs pb-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-                {description}
-              </div>
-            </div>
+            </span>
+            <span className="w-1 h-1 rounded-full" style={{ backgroundColor: service.categoryColor || 'var(--accent-line)' }} />
+            <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>
+              {money(service.price, lang)}
+            </span>
           </div>
 
           <button
             onClick={(event) => { event.stopPropagation(); setExpanded(!expanded); }}
-            className="text-xs font-medium flex items-center gap-1 transition-opacity hover:opacity-60"
-            style={{ color: 'var(--text-secondary)' }}
+            className="self-start text-[11px] font-medium uppercase tracking-widest flex items-center gap-1.5 transition-opacity hover:opacity-60"
+            style={{ color: 'var(--brand-accent)' }}
           >
             {expanded ? t('less', lang) : t('moreInfo', lang)}
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="11"
-              height="11"
+              width="10"
+              height="10"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -91,30 +102,37 @@ export function ServiceCard({ service, isSelected, onToggle, lang }: ServiceCard
           </button>
         </div>
 
-        <div className="flex items-center justify-center pt-1">
-          <button
-            aria-label={isSelected ? `${t('remove', lang)} ${name}` : `${t('add', lang)} ${name}`}
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-            style={isSelected
-              ? { backgroundColor: 'var(--text-primary)', color: 'var(--bg-app)', transform: 'scale(1.05)' }
-              : { backgroundColor: 'var(--bg-surface-hover)', color: 'var(--text-disabled)', border: '1px solid var(--border-subtle)' }}
-          >
-            {isSelected ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            )}
-          </button>
+        <button
+          aria-label={isSelected ? `${t('remove', lang)} ${name}` : `${t('add', lang)} ${name}`}
+          className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-300 shrink-0"
+          style={isSelected
+            ? { backgroundColor: 'var(--brand-accent)', color: '#fff3ee', transform: 'scale(1.05)' }
+            : { backgroundColor: 'var(--bg-surface-hover)', color: 'var(--text-disabled)', border: '1px solid var(--border-subtle)' }}
+          onClick={(event) => { event.stopPropagation(); onToggle(service); }}
+        >
+          {isSelected ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      <div className={`grid transition-[grid-template-rows] duration-300 ease-out ${expanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+        <div className="overflow-hidden">
+          <p className="text-xs pt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            {description}
+          </p>
         </div>
       </div>
 
-      <div className="mt-2 flex items-center gap-1.5 text-[10px] uppercase tracking-widest" style={{ color: 'var(--text-disabled)' }}>
-        <span className="w-1 h-1 rounded-full" style={{ backgroundColor: service.categoryColor || 'var(--accent-line)' }} />
+      <div className="mt-3 pt-3 flex items-center gap-1.5 text-[10px] uppercase tracking-widest" style={{ borderTop: '1px solid var(--border-subtle)', color: 'var(--text-disabled)' }}>
+        <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: service.categoryColor || 'var(--accent-line)' }} />
         {categoryLabel(service.category, lang)}
         <span className="sr-only">{durationLabel(service.duration)}</span>
       </div>
