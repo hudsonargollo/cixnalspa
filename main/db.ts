@@ -309,7 +309,32 @@ function runMigrations(): void {
     migrateToV2();
   }
 
+  // Normalize Bolivia market defaults on every startup. This is safe to
+  // re-run: it only rewrites keys that still hold BR/India placeholder
+  // values from older installs, never a value the salon configured.
+  normalizeBoliviaDefaults();
+
   console.log('[DB] Migrations complete');
+}
+
+// Rewrite only known BR/India placeholder values; leave anything the salon
+// has actually configured untouched. Runs on every startup (idempotent).
+function normalizeBoliviaDefaults(): void {
+  const normalize: Record<string, Record<string, string>> = {
+    country:                 { BR: 'BO', IN: 'BO', TH: 'BO', '': 'BO' },
+    currency:                { BRL: 'BOB', INR: 'BOB', THB: 'BOB', '': 'BOB' },
+    currency_symbol:         { 'R$': 'Bs', '₹': 'Bs', '฿': 'Bs', '': 'Bs' },
+    timezone:                { 'America/Sao_Paulo': 'America/La_Paz', 'Asia/Kolkata': 'America/La_Paz', 'Asia/Bangkok': 'America/La_Paz', '': 'America/La_Paz' },
+    state_code:              { '': '' },
+  };
+  const stmt = db.prepare('SELECT value FROM settings WHERE key = ?');
+  const update = db.prepare('UPDATE settings SET value = ?, updated_at = ? WHERE key = ?');
+  for (const [key, map] of Object.entries(normalize)) {
+    const row = stmt.get(key) as { value: string } | undefined;
+    if (!row) continue;
+    const next = map[row.value];
+    if (next !== undefined && next !== row.value) update.run(next, now(), key);
+  }
 }
 
 function createSchema(): void {
