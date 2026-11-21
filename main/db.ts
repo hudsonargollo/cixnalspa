@@ -317,6 +317,12 @@ function runMigrations(): void {
   // Ensure the branches table and its seed rows exist on older databases too.
   ensureBranchTable();
 
+  // Legacy DBs were created without users.phone, but login queries/updates it.
+  // PRAGMA returns one row per column — use .all(), not .get().
+  if (!getColumns(db, 'users').includes('phone')) {
+    db.exec('ALTER TABLE users ADD COLUMN phone TEXT');
+  }
+
   console.log('[DB] Migrations complete');
 }
 
@@ -487,6 +493,7 @@ function createSchema(): void {
         CHECK (role IN ('owner', 'manager', 'cashier', 'stylist')),
       pin TEXT,
       category_ids TEXT,
+      phone TEXT,
       is_active INTEGER DEFAULT 1,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
