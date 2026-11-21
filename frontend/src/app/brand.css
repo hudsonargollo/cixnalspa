@@ -2,8 +2,13 @@
    Cix Nail Artist — shared brand tokens (booking + admin)
    Palette: antique rose / rosewood / cream, from the salon's
    neutral, spa-like aesthetic.
+
+   The cream paper values (--ebg*) were sampled from the CIX logo
+   cardstock: avg RGB (229, 218, 204) = #E5DACC. The real paper
+   texture is imgs/bck.webp, served at /cixnails/bck.webp.
    ───────────────────────────────────────────────────────────── */
 
+/* ── Base tokens (dark theme) ────────────────────────────────── */
 .booking-root,
 .admin-root {
   --brand-copper: #a65a4c;
@@ -12,6 +17,19 @@
   --brand-accent-soft: #8e4e43;
   --brand-wood: #7a4038;
   --brand-cream: #f3e7e2;
+
+  /* Embossed paper background — matches the logo cardstock */
+  --ebg: #e5dacc;
+  --ebg-paper: #f3efe8;
+  --ebg-fibre: #e6e0d2;
+  --ebg-detail: #d8cfc0;
+  --ebg-accent: #c9a87c;
+  --ebg-ink: #3b2b21;
+
+  /* Real paper texture from imgs/bck.webp. The page background is always this
+     file — the original embossed logo sits on it unchanged, so it blends in.
+     --ebg is the sampled average colour, used as the base beneath it. */
+  --ebg-image: url('/cixnails/bck.webp');
 
   --bg-app: #1c1413;
   --bg-surface: #271d1b;
@@ -28,6 +46,7 @@
   --slot-selected-bg: #a65a4c;
   --slot-selected-text: #1c1413;
   --accent-line: #a65a4c;
+  --canvas-image: var(--ebg-image);
 
   background-color: var(--bg-app);
   color: var(--text-primary);
@@ -37,25 +56,31 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ── Embossed paper palette — reused by the light theme and .ebg ── */
 .booking-root[data-theme='light'],
-.admin-root[data-theme='light'] {
-  --bg-app: #f9f2ee;
-  --bg-surface: #fffaf7;
-  --bg-surface-hover: #f2e2dc;
-  --bg-surface-active: #e9d3ca;
-  --border-subtle: #e8d6cf;
-  --text-primary: #2a1714;
-  --text-secondary: #76574f;
-  --text-disabled: #a5897f;
+.admin-root[data-theme='light'],
+.ebg {
+  --bg-app: var(--ebg);
+  --bg-surface: var(--ebg-paper);
+  --bg-surface-hover: var(--ebg-fibre);
+  --bg-surface-active: var(--ebg-detail);
+  --border-subtle: #cbb9a2;
+  --text-primary: var(--ebg-ink);
+  --text-secondary: #6b5445;
+  --text-disabled: #9c8571;
   --btn-primary-bg: #7a4038;
   --btn-primary-text: #fff3ee;
   --btn-primary-border: #7a4038;
-  --slot-available-bg: #fffaf7;
+  --slot-available-bg: var(--ebg-paper);
   --slot-selected-bg: #7a4038;
   --slot-selected-text: #fff3ee;
   --accent-line: #a65a4c;
+  --canvas-image: var(--ebg-image);
+
+  color: var(--text-primary);
 }
 
+/* ── Typography / shared controls ───────────────────────────── */
 .booking-root h2,
 .booking-root h3,
 .booking-root .font-display,
@@ -121,4 +146,39 @@
   --sidebar-accent: var(--bg-surface-hover);
   --sidebar-accent-foreground: var(--accent-line);
   --sidebar-border: var(--border-subtle);
+}
+
+/* ── App canvases ────────────────────────────────────────────── */
+/* The booking frame and admin root sit on the bck.webp paper texture in both
+   themes, so the original embossed logo blends into the page. */
+.admin-root,
+.booking-frame {
+  background-color: var(--bg-app);
+  background-image: var(--canvas-image);
+  background-repeat: repeat;
+  background-size: 384px auto;
+  color: var(--text-primary);
+  font-family: var(--font-body), 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── .ebg — reusable embossed-paper utility ───────────────────
+   Apply directly to any container to give it the real paper texture. */
+.ebg {
+  background-color: var(--ebg);
+  background-image: var(--ebg-image);
+  background-repeat: repeat;
+  background-size: 384px auto;
+  font-family: var(--font-body), 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.ebg .ebg-paper { background-color: var(--ebg-paper); }
+.ebg .ebg-fibre { background-color: var(--ebg-fibre); }
+.ebg .ebg-detail { background-color: var(--ebg-detail); }
+.ebg .ebg-accent { background-color: var(--ebg-accent); }
+.ebg,
+.ebg * {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

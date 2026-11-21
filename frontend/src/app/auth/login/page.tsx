@@ -41,7 +41,7 @@ export default function LoginPage() {
               <div
                 className="w-20 h-20 rounded-full flex items-center justify-center mb-4 overflow-hidden"
                 style={{
-                  backgroundColor: '#E8DDD0',
+                  backgroundColor: 'var(--ebg)',
                   border: '1px solid rgba(122,64,56,0.18)',
                 }}
               >
