@@ -39,7 +39,9 @@
   margin-right: auto;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  /* overflow is visible so the logo's soft drop shadow is not clipped at the
+     frame's top edge; content still scrolls. */
+  overflow-x: hidden;
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.45);
   /* Paper palette + grain come from brand.css (.booking-frame) so the
      frame follows the theme: cream cardstock in light, espresso in dark. */

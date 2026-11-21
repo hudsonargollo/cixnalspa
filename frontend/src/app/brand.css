@@ -26,10 +26,10 @@
   --ebg-accent: #c9a87c;
   --ebg-ink: #3b2b21;
 
-  /* Real paper texture from imgs/bck.webp. The page background is always this
-     file — the original embossed logo sits on it unchanged, so it blends in.
-     --ebg is the sampled average colour, used as the base beneath it. */
-  --ebg-image: url('/cixnails/bck.webp');
+  /* Full-screen paper from imgs/bck.webp (gradient flattened, 16:9 cover).
+     One continuous sheet behind the page; the cropped embossed logo-mark sits
+     on top. --ebg is the sampled average colour, used as the base beneath it. */
+  --ebg-image: url('/cixnails/bck-full.webp');
 
   --bg-app: #1c1413;
   --bg-surface: #271d1b;
@@ -149,14 +149,16 @@
 }
 
 /* ── App canvases ────────────────────────────────────────────── */
-/* The booking frame and admin root sit on the bck.webp paper texture in both
-   themes, so the original embossed logo blends into the page. */
+/* Full-screen paper: the background image covers the viewport (no tiling) in
+   both themes, so the cropped embossed logo sits on one continuous sheet. */
 .admin-root,
 .booking-frame {
   background-color: var(--bg-app);
   background-image: var(--canvas-image);
-  background-repeat: repeat;
-  background-size: 384px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-body), 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -169,10 +171,28 @@
 .ebg {
   background-color: var(--ebg);
   background-image: var(--ebg-image);
-  background-repeat: repeat;
-  background-size: 384px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   font-family: var(--font-body), 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Embossed logo mark ───────────────────────────────────────
+ logo-mark.webp is the copper artwork cut out of the cardstock (transparent
+ paper). It is featured large, with a soft shadow that lifts it off the
+ page. Apply to the img itself.
+
+ drop-shadow tracks the glyph outlines, so the transparent paper lets the
+ page's own paper texture show through — the logo sits ON the background
+ rather than on a second sheet. */
+.logo-mark {
+filter: drop-shadow(0 18px 32px rgba(28, 20, 19, 0.38));
+}
+.booking-root[data-theme='light'] .logo-mark,
+.admin-root[data-theme='light'] .logo-mark,
+.ebg .logo-mark {
+  filter: drop-shadow(0 18px 32px rgba(90, 62, 45, 0.34));
 }
 .ebg .ebg-paper { background-color: var(--ebg-paper); }
 .ebg .ebg-fibre { background-color: var(--ebg-fibre); }

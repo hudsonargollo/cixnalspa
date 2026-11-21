@@ -60,6 +60,8 @@ const GALLERY_PHOTOS = [
 
 const FALLBACK_INSTAGRAM = 'cixnailartist';
 const LOGO = '/cixnails/logo.webp';
+// Cropped embossed artwork (transparent paper) — featured large on the page.
+const LOGO_MARK = '/cixnails/logo-mark.webp';
 
 export default function BookingPage() {
   const [config, setConfig] = useState<BookingConfig | null>(null);
@@ -374,7 +376,7 @@ export default function BookingPage() {
       <div className="booking-root" data-theme={isDarkMode ? 'dark' : 'light'}>
         <div className="booking-frame flex flex-col items-center justify-center p-6 text-center animate-fade-in">
           <div className="mb-8">
-            <img src={LOGO} alt="Cix Nail Artist" className="w-24 h-24 mx-auto opacity-90 object-contain" />
+            <img src={LOGO_MARK} alt="Cix Nail Artist" className="logo-mark w-32 mx-auto object-contain" />
           </div>
 
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ backgroundColor: 'rgba(166,90,76,0.12)', border: '1.5px solid var(--brand-accent)' }}>
@@ -662,7 +664,11 @@ export default function BookingPage() {
 
         <div className="flex flex-col items-center text-center pt-14 pb-6 px-6">
           <div className="mb-5">
-            <img src={LOGO} alt="Cix Nail Artist" className="w-48 h-48 object-contain animate-fade-in-up" />
+            <img
+              src={LOGO_MARK}
+              alt="Cix Nail Artist"
+              className="logo-mark w-72 md:w-96 object-contain animate-fade-in-up"
+            />
           </div>
 
           <p className="text-xs tracking-widest uppercase mb-6" style={{ color: 'var(--text-disabled)' }}>
